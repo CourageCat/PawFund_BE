@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  pawfund.api:
+    image: ${DOCKER_REGISTRY-}pawfundapi
+    build:
+      context: .
+      dockerfile: src/PawFund.API/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+  pawfund.database:
+    image: mcr.microsoft.com/mssql/server
+    container_name: pawfund.database
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=123456a@
+    volumes:
+      - ./.containers/pawfund-db:/var/lib/mssql/data
+    ports:
+      - 5432:5432
