@@ -18,8 +18,4 @@
     <ProjectReference Include="..\PawFund.Domain\PawFund.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configuration\" />
-  </ItemGroup>
-
 </Project>
