@@ -16,7 +16,10 @@ public class Branch : DomainEntity<Guid>
     public string Province { get; set; } = string.Empty;
     public string PostalCode { get; set; } = string.Empty;
 
-    [ForeignKey("Branch_Account")]
     public Guid AccountId { get; set; }
+    [ForeignKey("Branch_Account")]
     public virtual Account Account { get; set; } = new Account();
+    public virtual ICollection<Event> Events { get; set; }
+    public virtual ICollection<Cat> Cats { get; set; }
+
 }
