@@ -13,8 +13,8 @@ namespace PawFund.Domain.Entities
         public string Color {  get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
-        public Guid BranchId { get; set; }
         [ForeignKey("Cat_Branch")]
+        public Guid BranchId { get; set; }
         public virtual Branch Branch { get; set; } = new Branch();
         public virtual ICollection<AdoptPetApplication> AdoptPetApplications { get; set; }
         public virtual ICollection<HistoryCat> HistoryCats { get; set; }

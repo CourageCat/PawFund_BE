@@ -7,12 +7,15 @@ namespace PawFund.Domain.Entities
     public class AdoptPetApplication : DomainEntity<Guid>
     {
         public DateTime AdoptDate {  get; set; }
-        public bool Status { get; set; }
-        public Guid AccountId { get; set; }
+        public DateTime ExpirationDate { get; set; }
+        public int Status { get; set; }
+        public bool IsFinalized { get; set; }
+        public string AdoptProfile {  get; set; }
         [ForeignKey("AdoptPetApplication_Account")]
+        public Guid AccountId { get; set; }
         public virtual Account Account { get; set; } = new Account();
-        public Guid CatId { get; set; }
         [ForeignKey("AdoptPetApplication_Cat")]
+        public Guid CatId { get; set; }
         public virtual Cat Cat { get; set; } = new Cat();
     }
 }

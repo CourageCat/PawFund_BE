@@ -54,7 +54,6 @@ namespace PawFund.Persistence.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
                     RoleUserId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -87,7 +86,6 @@ namespace PawFund.Persistence.Migrations
                     Province = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Branch_Account = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
@@ -96,8 +94,8 @@ namespace PawFund.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Branchs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Branchs_Accounts_Branch_Account",
-                        column: x => x.Branch_Account,
+                        name: "FK_Branchs_Accounts_AccountId",
+                        column: x => x.AccountId,
                         principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -138,7 +136,6 @@ namespace PawFund.Persistence.Migrations
                     Color = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
                     BranchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Cat_Branch = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
@@ -147,8 +144,8 @@ namespace PawFund.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Cats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cats_Branchs_Cat_Branch",
-                        column: x => x.Cat_Branch,
+                        name: "FK_Cats_Branchs_BranchId",
+                        column: x => x.BranchId,
                         principalTable: "Branchs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -186,11 +183,12 @@ namespace PawFund.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AdoptDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    IsFinalized = table.Column<bool>(type: "bit", nullable: false),
+                    AdoptProfile = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AdoptPetApplication_Account = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AdoptPetApplication_Cat = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
@@ -220,8 +218,6 @@ namespace PawFund.Persistence.Migrations
                     DateAdopt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    HistoryCat_Account = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    HistoryCat_Cat = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
@@ -324,14 +320,14 @@ namespace PawFund.Persistence.Migrations
                 column: "CatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Branchs_Branch_Account",
+                name: "IX_Branchs_AccountId",
                 table: "Branchs",
-                column: "Branch_Account");
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cats_Cat_Branch",
+                name: "IX_Cats_BranchId",
                 table: "Cats",
-                column: "Cat_Branch");
+                column: "BranchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EventActivities_EventId",

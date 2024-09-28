@@ -63,9 +63,6 @@ namespace PawFund.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<int>("RoleUserId")
                         .HasColumnType("int");
 
@@ -91,11 +88,9 @@ namespace PawFund.Persistence.Migrations
                     b.Property<DateTime>("AdoptDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("AdoptPetApplication_Account")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AdoptPetApplication_Cat")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("AdoptProfile")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("CatId")
                         .HasColumnType("uniqueidentifier");
@@ -103,14 +98,20 @@ namespace PawFund.Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFinalized")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -128,9 +129,6 @@ namespace PawFund.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AccountId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("Branch_Account")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("CreatedDate")
@@ -193,7 +191,7 @@ namespace PawFund.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Branch_Account");
+                    b.HasIndex("AccountId");
 
                     b.ToTable("Branchs", (string)null);
                 });
@@ -214,9 +212,6 @@ namespace PawFund.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
-
-                    b.Property<Guid>("Cat_Branch")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -251,7 +246,7 @@ namespace PawFund.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Cat_Branch");
+                    b.HasIndex("BranchId");
 
                     b.ToTable("Cats", (string)null);
                 });
@@ -363,12 +358,6 @@ namespace PawFund.Persistence.Migrations
 
                     b.Property<DateTime>("DateAdopt")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("HistoryCat_Account")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("HistoryCat_Cat")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
@@ -546,7 +535,7 @@ namespace PawFund.Persistence.Migrations
                 {
                     b.HasOne("PawFund.Domain.Entities.Account", "Account")
                         .WithMany("Branches")
-                        .HasForeignKey("Branch_Account")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -557,7 +546,7 @@ namespace PawFund.Persistence.Migrations
                 {
                     b.HasOne("PawFund.Domain.Entities.Branch", "Branch")
                         .WithMany("Cats")
-                        .HasForeignKey("Cat_Branch")
+                        .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

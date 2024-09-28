@@ -17,7 +17,7 @@ public class Account : DomainEntity<Guid>
     public string Password { get; set; } = string.Empty;
 
     [ForeignKey("Account_RoleUser")]
-    public int RoleId { get; set; } = 3;
+    public int RoleUserId { get; set; } = 3;
     public virtual RoleUser RoleUser { get; set; } = new RoleUser();
 
     public virtual ICollection<Branch> Branches { get; set; }
