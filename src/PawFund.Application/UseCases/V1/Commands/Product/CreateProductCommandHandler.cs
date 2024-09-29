@@ -9,10 +9,10 @@ namespace PawFund.Application.UseCases.V1.Commands.Product;
 public sealed class CreateProductCommandHandler : ICommandHandler<Command.CreateProductCommand>
 {
     private readonly IRepositoryBase<PawFund.Domain.Entities.Product, Guid> _productRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IEFUnitOfWork _unitOfWork;
 
     public CreateProductCommandHandler
-        (IRepositoryBase<Domain.Entities.Product, Guid> productRepository, IUnitOfWork unitOfWork)
+        (IRepositoryBase<Domain.Entities.Product, Guid> productRepository, IEFUnitOfWork unitOfWork)
     {
         _productRepository = productRepository;
         _unitOfWork = unitOfWork;

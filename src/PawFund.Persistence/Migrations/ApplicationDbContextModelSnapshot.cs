@@ -56,8 +56,7 @@ namespace PawFund.Persistence.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -66,15 +65,12 @@ namespace PawFund.Persistence.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoleUserId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleUserId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Accounts", (string)null);
                 });
@@ -223,7 +219,7 @@ namespace PawFund.Persistence.Migrations
                 {
                     b.HasOne("PawFund.Domain.Entities.RoleUser", "RoleUser")
                         .WithMany("Accounts")
-                        .HasForeignKey("RoleUserId")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

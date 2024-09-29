@@ -2,9 +2,9 @@
 
 namespace PawFund.Application.Mapper;
 
-public class ServiceProfile : Profile
+public class UserProfile : Profile
 {
-    public ServiceProfile()
+    public UserProfile()
     {
     }
 }

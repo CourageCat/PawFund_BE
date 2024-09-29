@@ -8,9 +8,9 @@ public sealed class TransactionBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IEFUnitOfWork _unitOfWork;
 
-    public TransactionBehavior(IUnitOfWork unitOfWork)
+    public TransactionBehavior(IEFUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
