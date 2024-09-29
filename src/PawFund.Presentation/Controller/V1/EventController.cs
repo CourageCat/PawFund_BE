@@ -37,5 +37,29 @@ namespace PawFund.Presentation.Controller.V1
 
             return Ok(result);
         }
+
+        [HttpPut(Name = "UpdateEventById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateEventById([FromBody] Command.UpdateEventCommand updateEvent)
+        {
+            var result = await Sender.Send(updateEvent);
+            if (result.IsFailure)
+                return HandlerFailure(result);
+
+            return Ok(result);
+        }
+
+        [HttpDelete(Name = "DeleteEventById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteEventById([FromBody] Command.DeleteEventCommand Id)
+        {
+            var result = await Sender.Send(Id);
+            if (result.IsFailure)
+                return HandlerFailure(result);
+
+            return Ok(result);
+        }
     }
 }

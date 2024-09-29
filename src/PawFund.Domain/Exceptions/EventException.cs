@@ -14,5 +14,12 @@ namespace PawFund.Domain.Exceptions
             {
             }
         }
+
+        public class EventIsDeletedException : BadRequestException
+        {
+            public EventIsDeletedException(string message) : base(message)
+            {
+            }
+        }
     }
 }
