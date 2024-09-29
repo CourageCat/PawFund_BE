@@ -12,7 +12,7 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240928192438_InitialCreate")]
+    [Migration("20240929092557_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -264,7 +264,6 @@ namespace PawFund.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("CreatedDate")
-                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")

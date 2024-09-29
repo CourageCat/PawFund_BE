@@ -20,7 +20,10 @@ namespace PawFund.Persistence.Configuration
                 .IsRequired()
                 .HasMaxLength(1000);
 
-            builder.Property(p => p.CreatedDate)
+            builder.Property(p => p.StartDate)
+                .IsRequired();
+
+            builder.Property(p => p.EndDate)
                 .IsRequired();
         }
     }
