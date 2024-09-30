@@ -2,15 +2,15 @@
 
 namespace PawFund.Persistence;
 
-public class EFUnitOfWork : IUnitOfWork
+public class EFUnitOfWork : IEFUnitOfWork
 {
     private readonly ApplicationDbContext _context;
 
     public EFUnitOfWork(ApplicationDbContext context)
         => _context = context;
 
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-        => await _context.SaveChangesAsync();
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+     =>   await _context.SaveChangesAsync();
 
     async ValueTask IAsyncDisposable.DisposeAsync()
         => await _context.DisposeAsync();
