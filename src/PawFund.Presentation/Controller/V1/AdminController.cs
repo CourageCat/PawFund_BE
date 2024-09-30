@@ -15,16 +15,16 @@ namespace PawFund.Presentation.Controller.V1
         }
 
 
-        //[HttpPost(Name = "CreateProducts")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //public async Task<IActionResult> Products([FromBody] Command.CreateProductCommand CreateProduct)
-        //{
-        //    var result = await Sender.Send(CreateProduct);
-        //    if (result.IsFailure)
-        //        return HandlerFailure(result);
+        [HttpPost("get_all_users",Name = "GetAllUser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> User([FromBody] Command.CreateProductCommand CreateProduct)
+        {
+            var result = await Sender.Send(CreateProduct);
+            if (result.IsFailure)
+                return HandlerFailure(result);
 
-        //    return Ok(result);
-        //}
+            return Ok(result);
+        }
     }
 }
