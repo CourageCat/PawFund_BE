@@ -1,12 +1,8 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using PawFund.Contract.Abstractions;
+﻿using PawFund.Contract.Abstractions;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
-using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
-using PawFund.Domain.Abstractions.Repositories;
-using PawFund.Domain.Entities;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 
 namespace PawFund.Application.UseCases.V1.Queries.Authentication;
@@ -14,18 +10,15 @@ namespace PawFund.Application.UseCases.V1.Queries.Authentication;
 public sealed class LoginQueryHandler : IQueryHandler<Query.LoginQuery, Response.LoginResponse>
 {
     private readonly ITokenGeneratorService _tokenGeneratorService;
-    private readonly IResponseCacheService _responseCacheService;
     private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IPasswordHashService _passwordHashService;
 
     public LoginQueryHandler
         (ITokenGeneratorService tokenGeneratorService,
-        IResponseCacheService responseCacheService,
         IDPUnitOfWork dpUnitOfWork,
         IPasswordHashService passwordHashService)
     {
         _tokenGeneratorService = tokenGeneratorService;
-        _responseCacheService = responseCacheService;
         _dpUnitOfWork = dpUnitOfWork;
         _passwordHashService = passwordHashService;
     }

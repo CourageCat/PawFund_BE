@@ -25,4 +25,10 @@ public static class AuthenticationException
         public PasswordNotMatchException() 
             : base($"Passwords do not match") { }
     }
+
+    public sealed class RefreshTokenNull : AuthorizeException
+    {
+        public RefreshTokenNull()
+           : base($"Het han dang nhap, xin vui long dang nhap lai") { }
+    }
 }

@@ -60,4 +60,32 @@ public sealed class TokenGeneratorService : ITokenGeneratorService
                 claims);
         return null;
     }
+
+    public string ValidateAndGetUserIdFromRefreshToken(string refreshToken)
+    {
+        TokenValidationParameters validationParameters = new()
+        {
+            IssuerSigningKey = new SymmetricSecurityKey
+            (Encoding.UTF8.GetBytes(_authenticationConfiguration.RefreshSecretToken)),
+            ValidIssuer = _authenticationConfiguration.Issuer,
+            ValidAudience = _authenticationConfiguration.Audience,
+            ValidateIssuerSigningKey = true,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ClockSkew = TimeSpan.Zero,
+        };
+
+        JwtSecurityTokenHandler tokenHandler = new();
+        try
+        {
+            var principal = tokenHandler.ValidateToken(refreshToken, validationParameters, out SecurityToken validatedToken);
+            var userIdClaim = principal.Claims.FirstOrDefault(c => c.Type == "UserId");
+            return userIdClaim?.Value;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
 }

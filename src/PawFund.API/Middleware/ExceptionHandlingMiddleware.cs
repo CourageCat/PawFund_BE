@@ -48,6 +48,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
         {
             BadRequestException => StatusCodes.Status400BadRequest,
             NotFoundException => StatusCodes.Status404NotFound,
+            AuthorizeException => StatusCodes.Status401Unauthorized,
             //Application.Exceptions.ValidationException => StatusCodes.Status422UnprocessableEntity,
             FluentValidation.ValidationException => StatusCodes.Status400BadRequest,
             FormatException => StatusCodes.Status422UnprocessableEntity,

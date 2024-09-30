@@ -8,4 +8,8 @@ public static class Response
         string LastName,
         string AccessToken,
         string RefreshToken);
+
+    public record RefreshTokenResponse
+        (string AccessToken,
+        string RefreshToken);
 }

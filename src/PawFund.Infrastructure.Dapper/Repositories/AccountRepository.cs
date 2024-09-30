@@ -52,9 +52,15 @@ public class AccountRepository : IAccountRepository
         }
     }
 
-    public Task<Account>? GetByIdAsync()
+    public async Task<Account> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var sql = "SELECT Id, FirstName, LastName, Email, PhoneNumber, Password, RoleId, IsDeleted FROM Accounts WHERE Id = @id";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.QuerySingleOrDefaultAsync<Account>(sql, new { Id = id });
+            return result;
+        }
     }
 
     public Task<int> UpdateAsync(Account entity)
