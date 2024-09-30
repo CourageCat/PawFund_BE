@@ -19,4 +19,7 @@ public class Branch : DomainEntity<Guid>
     [ForeignKey("Branch_Account")]
     public Guid AccountId { get; set; }
     public virtual Account Account { get; set; } = new Account();
+    public virtual ICollection<Event> Events { get; set; }
+    public virtual ICollection<Cat> Cats { get; set; }
+
 }

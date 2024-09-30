@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PawFund.Persistence;
 
@@ -11,9 +12,11 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240928192438_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,13 +59,14 @@ namespace PawFund.Persistence.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int>("RoleUserId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -70,7 +74,7 @@ namespace PawFund.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("RoleUserId");
 
                     b.ToTable("Accounts", (string)null);
                 });
@@ -504,7 +508,7 @@ namespace PawFund.Persistence.Migrations
                 {
                     b.HasOne("PawFund.Domain.Entities.RoleUser", "RoleUser")
                         .WithMany("Accounts")
-                        .HasForeignKey("RoleId")
+                        .HasForeignKey("RoleUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

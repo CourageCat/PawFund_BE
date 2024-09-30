@@ -39,6 +39,9 @@ public class Account : DomainEntity<Guid>
     public virtual RoleUser RoleUser { get; set; } = new RoleUser();
 
     public virtual ICollection<Branch> Branches { get; set; }
+    public virtual ICollection<AdoptPetApplication> AdoptPetApplication { get; set; }
+
+    public virtual ICollection<HistoryCat> HistoryCats { get; set; }
 
     public static Account CreateMemberAccount
         (string firstName, string lastName, string email, string phoneNumber, string password)
