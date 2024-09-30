@@ -37,6 +37,24 @@ public class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey>, IDi
     public async Task<TEntity> FindSingleAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includeProperties)
         => await FindAll(null, includeProperties).AsTracking().SingleOrDefaultAsync(predicate, cancellationToken);
 
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includeProperties)
+    {
+        IQueryable<TEntity> items = _context.Set<TEntity>().AsNoTracking(); // Importance Always include AsNoTracking for Query Side
+        if (includeProperties != null)
+        {
+            foreach (var includeProperty in includeProperties)
+            {
+                items = items.Include(includeProperty);
+            }
+        }
+        if (predicate != null)
+        {
+            items = items.Where(predicate);
+        }
+
+        return await items.AnyAsync(cancellationToken);
+    }
+
     public void Add(TEntity entity)
         => _context.Add(entity);
 

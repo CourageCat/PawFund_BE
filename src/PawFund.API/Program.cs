@@ -5,6 +5,8 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Serilog;
 using PawFund.Persistence.DependencyInjection.Options;
 using PawFund.Persistence.DependencyInjection.Extensions;
+using PawFund.Infrastructure.DependencyInjection.Extensions;
+using PawFund.Infrastructure.Dapper.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,11 +31,23 @@ builder
 
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
+builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
+
 // Configure Options and SQL
 builder.Services.ConfigureSqlServerRetryOptions(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
 builder.Services.AddSqlConfiguration();
 builder.Services.AddRepositoryBaseConfiguration();
 builder.Services.AddConfigurationAutoMapper();
+
+// Configure Dapper
+builder.Services.AddInfrastructureDapper();
+
+// Configure Options and Redis
+builder.Services.AddConfigurationRedis(builder.Configuration);
+
+builder.Services.AddConfigurationService();
+
+builder.Services.AddConfigurationAppSetting(builder.Configuration);
 
 builder.Services
         .AddSwaggerGenNewtonsoftSupport()
