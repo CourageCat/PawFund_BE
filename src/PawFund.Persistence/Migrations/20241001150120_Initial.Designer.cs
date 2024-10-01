@@ -12,8 +12,8 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240928192438_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241001150120_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,14 +59,13 @@ namespace PawFund.Persistence.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleUserId")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -74,7 +73,7 @@ namespace PawFund.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleUserId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Accounts", (string)null);
                 });
@@ -508,7 +507,7 @@ namespace PawFund.Persistence.Migrations
                 {
                     b.HasOne("PawFund.Domain.Entities.RoleUser", "RoleUser")
                         .WithMany("Accounts")
-                        .HasForeignKey("RoleUserId")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

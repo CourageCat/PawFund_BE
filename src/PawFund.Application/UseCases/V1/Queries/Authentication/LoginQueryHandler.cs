@@ -33,6 +33,7 @@ public sealed class LoginQueryHandler : IQueryHandler<Query.LoginQuery, Response
         if (isVerifyPassword == false) throw new PasswordNotMatchException();
 
         var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, account.RoleId);
+        //Sai chính tả nè cu
         var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, account.RoleId);
 
         return Result.Success

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace PawFund.Contract.Services.Admin
 {
-    internal class Response
+    public static class Response
     {
+        public record UserResponse();
     }
 }
