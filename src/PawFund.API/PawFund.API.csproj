@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
       <PrivateAssets>all</PrivateAssets>
@@ -27,8 +28,14 @@
   <ItemGroup>
     <ProjectReference Include="..\PawFund.Application\PawFund.Application.csproj" />
     <ProjectReference Include="..\PawFund.Contract\PawFund.Contract.csproj" />
+    <ProjectReference Include="..\PawFund.Infrastructure.Dapper\PawFund.Infrastructure.Dapper.csproj" />
+    <ProjectReference Include="..\PawFund.Infrastructure\PawFund.Infrastructure.csproj" />
     <ProjectReference Include="..\PawFund.Persistence\PawFund.Persistence.csproj" />
     <ProjectReference Include="..\PawFund.Presentation\PawFund.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="logs\" />
   </ItemGroup>
 
 </Project>

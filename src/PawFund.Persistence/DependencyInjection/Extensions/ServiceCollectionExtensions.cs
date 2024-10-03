@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
 
     public static void AddRepositoryBaseConfiguration(this IServiceCollection services)
     {
-        services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
+        services.AddTransient(typeof(IEFUnitOfWork), typeof(EFUnitOfWork));
         services.AddTransient(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>));
     }
 
