@@ -9,5 +9,7 @@ public static class ServiceCollectionExtensions
 {
     public static void AddInfrastructureDapper(this IServiceCollection services)
         => services.AddTransient<IAccountRepository, AccountRepository>()
-                    .AddTransient<IDPUnitOfWork, DPUnitOfWork>();
+                    .AddTransient<IDPUnitOfWork, DPUnitOfWork>()
+        .AddTransient<IAdoptRepository, AdoptRepository>()
+        .AddTransient<ICatRepository, CatRepository>();
 }

@@ -31,4 +31,8 @@ public static class AuthenticationException
         public RefreshTokenNull()
            : base($"Het han dang nhap, xin vui long dang nhap lai") { }
     }
+    public sealed class UserNotFoundByIdException : NotFoundException 
+    { 
+    public UserNotFoundByIdException(Guid Id) : base($"Can not found User with Id: {Id}") { }
+    }
 }

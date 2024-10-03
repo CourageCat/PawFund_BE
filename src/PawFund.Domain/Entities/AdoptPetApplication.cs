@@ -6,11 +6,10 @@ namespace PawFund.Domain.Entities
 {
     public class AdoptPetApplication : DomainEntity<Guid>
     {
-        public DateTime AdoptDate {  get; set; }
-        public DateTime ExpirationDate { get; set; }
-        public int Status { get; set; }
-        public bool IsFinalized { get; set; }
-        public string AdoptProfile {  get; set; }
+        public DateTime? MeetingDate { get; set; }
+        public int Status { get; set; } = 0;
+        public bool IsFinalized { get; set; } = false;
+        public string Description { get; set; } = string.Empty;
         [ForeignKey("AdoptPetApplication_Account")]
         public Guid AccountId { get; set; }
         public virtual Account Account { get; set; } = new Account();
