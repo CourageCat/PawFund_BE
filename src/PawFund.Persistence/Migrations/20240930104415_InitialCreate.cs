@@ -53,8 +53,8 @@ namespace PawFund.Persistence.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    RoleUserId = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
@@ -63,8 +63,8 @@ namespace PawFund.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Accounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Accounts_RoleUsers_RoleUserId",
-                        column: x => x.RoleUserId,
+                        name: "FK_Accounts_RoleUsers_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "RoleUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -305,9 +305,9 @@ namespace PawFund.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Accounts_RoleUserId",
+                name: "IX_Accounts_RoleId",
                 table: "Accounts",
-                column: "RoleUserId");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdoptPetApplications_AccountId",
