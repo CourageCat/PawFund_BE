@@ -14,5 +14,11 @@ namespace PawFund.Domain.Exceptions
             {
             }
         }
+        public class AdoptApplicationNotBelongToAdopterException : BadRequestException
+        {
+            public AdoptApplicationNotBelongToAdopterException() : base($"This adopt application does not belong to this adopter!")
+            {
+            }
+        }
     }
 }

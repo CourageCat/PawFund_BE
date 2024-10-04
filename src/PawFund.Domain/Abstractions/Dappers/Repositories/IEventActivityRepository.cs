@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 
-    public interface IAdoptRepository: IGenericRepository<AdoptPetApplication>
+    public interface IEventActivityRepository : IGenericRepository<EventActivity>
     {
     }
 

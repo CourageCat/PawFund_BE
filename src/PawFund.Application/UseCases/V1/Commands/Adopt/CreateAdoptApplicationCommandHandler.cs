@@ -45,8 +45,10 @@ public sealed class CreateAdoptApplicationCommandHandler : ICommandHandler<Comma
             Status = 0,
             IsFinalized = false,
             Description = request.Description,
-            Account = userFound,  // Set the reference to the existing Account
-            Cat = catFound,        // Set the reference to the existing Cat
+            AccountId = request.AccountId,  // Set the reference to the existing Account
+            CatId = request.CatId,        // Set the reference to the existing Cat
+            CreatedDate = DateTime.UtcNow,
+            IsDeleted = false,
         };
 
         _adoptApplicationRepository.Add(adoptApplication);

@@ -12,9 +12,9 @@ namespace PawFund.Domain.Entities
         public string Description { get; set; } = string.Empty;
         [ForeignKey("AdoptPetApplication_Account")]
         public Guid AccountId { get; set; }
-        public virtual Account Account { get; set; } = new Account();
+        public virtual Account Account { get; set; }
         [ForeignKey("AdoptPetApplication_Cat")]
         public Guid CatId { get; set; }
-        public virtual Cat Cat { get; set; } = new Cat();
+        public virtual Cat Cat { get; set; }
     }
 }

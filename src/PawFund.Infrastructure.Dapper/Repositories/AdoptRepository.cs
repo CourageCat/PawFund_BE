@@ -9,8 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PawFund.Infrastructure.Dapper.Repositories
-{
+namespace PawFund.Infrastructure.Dapper.Repositories;
+
     public class AdoptRepository : IAdoptRepository
     {
         private readonly IConfiguration _configuration;
@@ -73,4 +73,4 @@ namespace PawFund.Infrastructure.Dapper.Repositories
             throw new NotImplementedException();
         }
     }
-}
+

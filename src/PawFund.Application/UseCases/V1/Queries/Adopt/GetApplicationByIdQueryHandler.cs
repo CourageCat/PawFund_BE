@@ -6,7 +6,7 @@ using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Entities;
 using PawFund.Domain.Exceptions;
-using PawFund.Domain.DTOs.Adopt;
+using PawFund.Contract.DTOs.Adopt;
 
 
 namespace PawFund.Application.UseCases.V1.Commands.Adopt
@@ -25,7 +25,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt
         public async Task<Result<Response.GetApplicationByIdResponse>> Handle(Query.GetApplicationByIdQuery request, CancellationToken cancellationToken)
         {
             var applicationById = await _dpUnitOfWork.AdoptRepositories.GetByIdAsync(request.Id);
-            if (applicationById == null)
+            if (applicationById == null || applicationById.IsDeleted == true)
             {
                 throw new AdoptApplicationException.AdoptApplicationNotFoundException(request.Id);
             }

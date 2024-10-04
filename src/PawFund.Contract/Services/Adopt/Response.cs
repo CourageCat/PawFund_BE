@@ -1,6 +1,4 @@
-﻿using PawFund.Domain.DTOs.Adopt;
-using PawFund.Domain.Entities;
-
+﻿using PawFund.Contract.DTOs.Adopt;
 namespace PawFund.Contract.Services.Adopt;
 
 public static class Response

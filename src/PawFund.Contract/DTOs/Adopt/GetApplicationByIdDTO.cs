@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PawFund.Domain.DTOs.Adopt
+namespace PawFund.Contract.DTOs.Adopt
 {
     public class GetApplicationByIdDTO
     {
