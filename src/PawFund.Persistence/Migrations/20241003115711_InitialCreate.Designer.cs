@@ -12,7 +12,7 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240928192438_InitialCreate")]
+    [Migration("20241003115711_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -59,14 +59,13 @@ namespace PawFund.Persistence.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleUserId")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -74,7 +73,7 @@ namespace PawFund.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleUserId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Accounts", (string)null);
                 });
@@ -88,27 +87,24 @@ namespace PawFund.Persistence.Migrations
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("AdoptDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AdoptProfile")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("CatId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsFinalized")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("MeetingDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -508,7 +504,7 @@ namespace PawFund.Persistence.Migrations
                 {
                     b.HasOne("PawFund.Domain.Entities.RoleUser", "RoleUser")
                         .WithMany("Accounts")
-                        .HasForeignKey("RoleUserId")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
