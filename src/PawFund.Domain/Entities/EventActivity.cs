@@ -12,7 +12,7 @@ namespace PawFund.Domain.Entities
         public bool Status {  get; set; } = false;
         [ForeignKey("EventActivity_Event")]
         public Guid EventId { get; set; }
-        public virtual Event Event { get; set; } = new Event();
+        public virtual Event Event { get; set; }
         public virtual ICollection<VolunteerApplicationDetail> VolunteerApplicationDetails { get; set; }
     }
 }

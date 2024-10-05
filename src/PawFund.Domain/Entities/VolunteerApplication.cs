@@ -9,7 +9,7 @@ namespace PawFund.Domain.Entities
 
         [ForeignKey("VolunteerApplication_Account")]
         public Guid AccountId { get; set; }
-        public virtual Account Account { get; set; } = new Account();
+        public virtual Account Account { get; set; }
         public virtual ICollection<VolunteerApplicationDetail> ApplicationDetails { get; set; }
     }
 }

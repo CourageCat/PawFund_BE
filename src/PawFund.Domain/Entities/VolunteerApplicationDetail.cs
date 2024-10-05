@@ -9,10 +9,10 @@ namespace PawFund.Domain.Entities
 
         [ForeignKey("VolunteerApplicationDetail_VolunteerApplication")]
         public Guid VolunteerApplicationId { get; set; }
-        public virtual VolunteerApplication VolunteerApplication { get; set; } = new VolunteerApplication();
+        public virtual VolunteerApplication VolunteerApplication { get; set; }
 
         [ForeignKey("VolunteerApplicationDetail_EventActivity")]
         public Guid EventActivityId { get; set; }
-        public virtual EventActivity EventActivity { get; set; } = new EventActivity();
+        public virtual EventActivity EventActivity { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace PawFund.Domain.Entities
 
         [ForeignKey("Event_Branch")]
         public Guid BranchId { get; set; }
-        public virtual Branch Branch { get; set; } = new Branch();
+        public virtual Branch Branch { get; set; }
         public virtual ICollection<EventActivity> Activities { get; set; }
     }
 }
