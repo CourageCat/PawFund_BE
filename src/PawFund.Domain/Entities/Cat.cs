@@ -15,7 +15,7 @@ namespace PawFund.Domain.Entities
 
         [ForeignKey("Cat_Branch")]
         public Guid BranchId { get; set; }
-        public virtual Branch Branch { get; set; } = new Branch();
+        public virtual Branch Branch { get; set; }
         public virtual ICollection<AdoptPetApplication> AdoptPetApplications { get; set; }
         public virtual ICollection<HistoryCat> HistoryCats { get; set; }
     }

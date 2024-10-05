@@ -11,7 +11,7 @@ using static PawFund.Domain.Exceptions.AuthenticationException;
 
 namespace PawFund.Application.UseCases.V1.Commands.Authentication;
 
-public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEmail>
+public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEmailCommand>
 {
     private readonly IRepositoryBase<Account, Guid> _accountRepository;
     private readonly IResponseCacheService _responseCacheService;
@@ -33,7 +33,7 @@ public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEm
         _passwordHashService = passwordHashService;
     }
 
-    public async Task<Result> Handle(Command.VerifyEmail request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(Command.VerifyEmailCommand request, CancellationToken cancellationToken)
     {
         var isCheckEmail = await _dbUnitOfWork.AccountRepositories.EmailExistSystem(request.Email);
         if (isCheckEmail) throw new EmailExistException();

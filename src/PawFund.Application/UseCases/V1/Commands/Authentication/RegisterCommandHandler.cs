@@ -4,8 +4,6 @@ using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
-using PawFund.Domain.Abstractions.Repositories;
-using PawFund.Domain.Entities;
 using System.Text.Json;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 
