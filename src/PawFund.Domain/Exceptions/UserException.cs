@@ -13,5 +13,11 @@ namespace PawFund.Domain.Exceptions
             public UserNotFoundException(Guid Id)
                 : base($"User with id:{Id} was not found !") { }
         }
+
+        public sealed class ListUserNotFoundException : NotFoundException
+        {
+            public ListUserNotFoundException()
+                : base($"Do not have any user in list !") { }
+        }
     }
 }

@@ -12,13 +12,8 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:src/PawFund.Persistence/Migrations/20241001150120_Initial.Designer.cs
-    [Migration("20241001150120_Initial")]
-    partial class Initial
-========
-    [Migration("20241003115711_InitialCreate")]
-    partial class InitialCreate
->>>>>>>> master:src/PawFund.Persistence/Migrations/20241003115711_InitialCreate.Designer.cs
+    [Migration("20241005091646_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

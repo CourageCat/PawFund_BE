@@ -36,9 +36,16 @@ public class AccountRepository : IAccountRepository
         }
     }
 
-    public Task<IReadOnlyCollection<Account>> GetAllAsync()
+    public async Task<List<Account>> GetListUser()
     {
-        throw new NotImplementedException();
+        var sql = "SELECT * FROM Accounts";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.QueryAsync<Account>(
+                    sql);
+            return (List<Account>)result;
+        }
     }
 
     public async Task<Account> GetByEmailAsync(string email)
@@ -64,6 +71,11 @@ public class AccountRepository : IAccountRepository
     }
 
     public Task<int> UpdateAsync(Account entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IReadOnlyCollection<Account>> GetAllAsync()
     {
         throw new NotImplementedException();
     }

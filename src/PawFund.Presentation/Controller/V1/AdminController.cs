@@ -46,23 +46,23 @@ namespace PawFund.Presentation.Controller.V1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserById([FromQuery] Guid id)
         {
-            var result = await Sender.Send(new Query.GetUserById(id));
+            var result = await Sender.Send(new Query.GetUserByIdQuery(id));
             if (result.IsFailure)
                 return HandlerFailure(result);
 
             return Ok(result);
         }
 
-        //[HttpGet("get_list_user", Name = "GetListUser")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //public async Task<IActionResult> GetListUser()
-        //{
-        //    var result = await Sender.Send(new Query.GetUserById());
-        //    if (result.IsFailure)
-        //        return HandlerFailure(result);
+        [HttpGet("get_list_user", Name = "GetListUser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetListUser()
+        {
+            var result = await Sender.Send(new Query.GetListUserQuery());
+            if (result.IsFailure)
+                return HandlerFailure(result);
 
-        //    return Ok(result);
-        //}
+            return Ok(result);
+        }
     }
 }

@@ -10,8 +10,8 @@ namespace PawFund.Contract.Services.Accounts
 {
     public static class Query
     {
-        public record GetUserById(Guid Id) : IQuery<UserResponse>;
+        public record GetUserByIdQuery(Guid Id) : IQuery<UserResponse>;
 
-        public record GetListUser() : IQuery<UserResponse>;
+        public record GetListUserQuery() : IQuery<GetListUser>;
     }
 }
