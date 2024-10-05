@@ -25,7 +25,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt
         public async Task<Result<Response.GetApplicationByIdResponse>> Handle(Query.GetApplicationByIdQuery request, CancellationToken cancellationToken)
         {
             var applicationById = await _dpUnitOfWork.AdoptRepositories.GetByIdAsync(request.Id);
-            if (applicationById == null || applicationById.IsDeleted == true)
+            if (applicationById == null)
             {
                 throw new AdoptApplicationException.AdoptApplicationNotFoundException(request.Id);
             }

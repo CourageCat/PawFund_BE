@@ -39,6 +39,11 @@ public sealed class CreateAdoptApplicationCommandHandler : ICommandHandler<Comma
         {
             throw new CatException.CatNotFoundException(request.CatId);
         }
+        var hasAccountRegisteredWithCat = await _dbUnitOfWork.AdoptRepositories.HasAccountRegisterdWithPet(request.AccountId, request.CatId);
+        if (hasAccountRegisteredWithCat)
+        {
+            throw new AdoptApplicationException.AdopterHasAlreadyRegisteredWithCatException();
+        }
 
         var adoptApplication = new AdoptPetApplication()
         {
@@ -47,7 +52,8 @@ public sealed class CreateAdoptApplicationCommandHandler : ICommandHandler<Comma
             Description = request.Description,
             AccountId = request.AccountId,  // Set the reference to the existing Account
             CatId = request.CatId,        // Set the reference to the existing Cat
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = DateTime.Now,
+            ModifiedDate = DateTime.Now,
             IsDeleted = false,
         };
 

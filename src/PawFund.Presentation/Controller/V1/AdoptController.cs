@@ -68,33 +68,33 @@ public class AdoptController : ApiController
     [HttpGet("get_all_application", Name = "GetAllAplication")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllAplication([FromQuery] Guid Id)
+    public async Task<IActionResult> GetAllAplication()
     {
-        var result = await Sender.Send(new Query.GetApplicationByIdQuery(Id));
+        var result = await Sender.Send(new Query.GetAllApplication());
         if (result.IsFailure)
             return HandlerFailure(result);
 
         return Ok(result);
     }
 
-    [HttpGet("get_all_application_by_adopter", Name = "GetAllAplicationByAdopter")]
+    [HttpGet("get_all_application_by_adopter", Name = "GetAllApplicationByAdopter")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllAplicationByAdopter([FromQuery] Guid Id)
+    public async Task<IActionResult> GetAllApplicationByAdopter([FromQuery] Guid AccountId)
     {
-        var result = await Sender.Send(new Query.GetApplicationByIdQuery(Id));
+        var result = await Sender.Send(new Query.GetApplicationByIdQuery(AccountId));
         if (result.IsFailure)
             return HandlerFailure(result);
 
         return Ok(result);
     }
 
-    [HttpGet("get_all_application_on_cat", Name = "GetAllAplicationOnCat")]
+    [HttpGet("get_all_application_on_cat", Name = "GetAllApplicationOnCat")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllAplicationOnCat([FromQuery] Guid Id)
+    public async Task<IActionResult> GetAllApplicationOnCat([FromQuery] Guid CatId)
     {
-        var result = await Sender.Send(new Query.GetApplicationByIdQuery(Id));
+        var result = await Sender.Send(new Query.GetApplicationByIdQuery(CatId));
         if (result.IsFailure)
             return HandlerFailure(result);
 

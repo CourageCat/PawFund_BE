@@ -62,7 +62,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt;
             AccountId = adoptApplicationFound.Account.Id,
             CatId = (Guid)(request.CatId != null ? request.CatId : adoptApplicationFound.Cat.Id),
             CreatedDate = adoptApplicationFound.CreatedDate,
-            ModifiedDate = DateTime.UtcNow,
+            ModifiedDate = DateTime.Now,
             IsDeleted = adoptApplicationFound.IsDeleted
         };
         _adoptApplicationRepository.Update(adoptApplicationUpdated);
