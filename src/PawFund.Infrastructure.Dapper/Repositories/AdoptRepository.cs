@@ -56,7 +56,7 @@ public class AdoptRepository : IAdoptRepository
         FROM AdoptPetApplications a
         JOIN Accounts acc ON acc.Id = a.AccountId
         JOIN Cats c ON c.Id = a.CatId
-        WHERE a.Id = @Id AND IsDeleted = 0";
+        WHERE a.Id = @Id AND a.IsDeleted = 0";
 
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {

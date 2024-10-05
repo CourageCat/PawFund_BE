@@ -13,12 +13,10 @@ public static class Command
     public record UpdateAdoptApplicationCommand
         (Guid AdoptId,
         string Description,
-        Guid AccountId,
         Guid? CatId)
         : ICommand;
 
     public record DeleteAdoptApplicationByAdopterCommand
-        (Guid AdoptId,
-        Guid AccountId)
+        (Guid AdoptId)
         : ICommand;
 }

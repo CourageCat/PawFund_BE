@@ -29,11 +29,6 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt;
 
     public async Task<Result> Handle(Command.UpdateAdoptApplicationCommand request, CancellationToken cancellationToken)
     {
-        var userFound = await _dbUnitOfWork.AccountRepositories.GetByIdAsync(request.AccountId);
-        if (userFound == null)
-        {
-            throw new AuthenticationException.UserNotFoundByIdException(request.AccountId);
-        }
         if (request.CatId != null) {
             var catFound = await _dbUnitOfWork.CatRepositories.GetByIdAsync((Guid)request.CatId);
             if (catFound == null)
@@ -45,10 +40,6 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt;
         if(adoptApplicationFound == null)
         {
             throw new AdoptApplicationException.AdoptApplicationNotFoundException(request.AdoptId);
-        }
-        if(adoptApplicationFound.Account.Id.CompareTo(request.AccountId) != 0)
-        {
-            throw new AdoptApplicationException.AdoptApplicationNotBelongToAdopterException();
         }
         //adoptApplicationFound.Description = request.Description;
         //adoptApplicationFound.CatId = (Guid)request.CatId;
@@ -63,7 +54,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt;
             CatId = (Guid)(request.CatId != null ? request.CatId : adoptApplicationFound.Cat.Id),
             CreatedDate = adoptApplicationFound.CreatedDate,
             ModifiedDate = DateTime.Now,
-            IsDeleted = adoptApplicationFound.IsDeleted
+            IsDeleted = false
         };
         _adoptApplicationRepository.Update(adoptApplicationUpdated);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);

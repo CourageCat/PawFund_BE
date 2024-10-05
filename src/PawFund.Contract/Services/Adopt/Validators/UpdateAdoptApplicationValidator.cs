@@ -13,7 +13,6 @@ namespace PawFund.Contract.Services.Adopt.Validators
         {
             RuleFor(x => x.AdoptId).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.AccountId).NotEmpty();
         }
     }
 }

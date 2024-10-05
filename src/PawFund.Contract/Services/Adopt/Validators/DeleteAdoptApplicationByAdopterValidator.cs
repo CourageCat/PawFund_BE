@@ -12,7 +12,6 @@ namespace PawFund.Contract.Services.Adopt.Validators
         public DeleteAdoptApplicationByAdopterValidator()
         {
             RuleFor(x => x.AdoptId).NotEmpty();
-            RuleFor(x => x.AccountId).NotEmpty();
         }
     }
 }

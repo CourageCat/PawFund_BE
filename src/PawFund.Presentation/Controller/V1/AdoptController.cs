@@ -44,9 +44,9 @@ public class AdoptController : ApiController
     [HttpDelete("delete_adopt_application_by_adopter", Name = "DeleteAdoptApplicationByAdopter")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteAdoptApplicationByAdopter([FromBody] Command.DeleteAdoptApplicationByAdopterCommand DeleteAdoptApplicationByAdopter)
+    public async Task<IActionResult> DeleteAdoptApplicationByAdopter([FromQuery] Guid Id)
     {
-        var result = await Sender.Send(DeleteAdoptApplicationByAdopter);
+        var result = await Sender.Send(new Command.DeleteAdoptApplicationByAdopterCommand(Id));
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -65,17 +65,17 @@ public class AdoptController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("get_all_application", Name = "GetAllAplication")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllAplication()
-    {
-        var result = await Sender.Send(new Query.GetAllApplication());
-        if (result.IsFailure)
-            return HandlerFailure(result);
+    //[HttpGet("get_all_application", Name = "GetAllAplication")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
+    //public async Task<IActionResult> GetAllAplication()
+    //{
+    //    var result = await Sender.Send(new Query.GetAllApplication());
+    //    if (result.IsFailure)
+    //        return HandlerFailure(result);
 
-        return Ok(result);
-    }
+    //    return Ok(result);
+    //}
 
     [HttpGet("get_all_application_by_adopter", Name = "GetAllApplicationByAdopter")]
     [ProducesResponseType(StatusCodes.Status200OK)]
