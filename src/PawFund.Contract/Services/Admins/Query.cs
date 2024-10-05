@@ -10,6 +10,6 @@ namespace PawFund.Contract.Services.Admin
 {
     public static class Query
     {
-        public record GetAllUser() : IQuery<UserResponse>;
+      
     }
 }
