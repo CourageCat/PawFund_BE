@@ -34,7 +34,7 @@ public class Account : DomainEntity<Guid>
     public bool Status { get; set; } = false;
     public string Password { get; set; } = string.Empty;
 
-    public int RoleId { get; set; } = 3;
+    public int RoleId { get; set; }
     [ForeignKey("RoleId")]
     public virtual RoleUser RoleUser { get; set; }
 
