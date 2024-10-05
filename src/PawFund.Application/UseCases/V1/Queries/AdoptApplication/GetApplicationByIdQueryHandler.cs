@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using PawFund.Contract.Abstractions.Message;
-using PawFund.Contract.Services.Adopt;
+using PawFund.Contract.Services.AdoptApplications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;

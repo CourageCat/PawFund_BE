@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PawFund.Contract.Services.Adopt;
+using PawFund.Contract.Services.AdoptApplications;
 using PawFund.Presentation.Abstractions;
 using System;
 using System.Collections.Generic;

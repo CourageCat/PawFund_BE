@@ -10,5 +10,6 @@ namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 public interface IAdoptRepository : IGenericRepository<AdoptPetApplication>
 {
     Task<bool> HasAccountRegisterdWithPet(Guid accountId, Guid catId);
+    Task<AdoptPetApplication> GetByIdNotInclude(Guid id);
 }
 

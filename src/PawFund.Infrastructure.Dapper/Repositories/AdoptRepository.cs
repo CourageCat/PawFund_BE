@@ -50,7 +50,7 @@ public class AdoptRepository : IAdoptRepository
     {
         var sql = @"
         SELECT
-            a.Id, a.MeetingDate, a.Status, a.IsFinalized, a.Description, a.IsDeleted as IsAdoptDeleted,
+            a.Id, a.MeetingDate, a.Status, a.IsFinalized, a.Description, a.CreatedDate, a.IsDeleted as IsAdoptDeleted,
             acc.Id, acc.FirstName, acc.LastName, acc.Email, acc.PhoneNumber, acc.IsDeleted as IsAccountDeleted,
             c.Id, c.Sex, c.Name, c.Age, c.Breed, c.Size, c.Color, c.Description
         FROM AdoptPetApplications a
@@ -80,6 +80,11 @@ public class AdoptRepository : IAdoptRepository
 
 
     public Task<int> UpdateAsync(AdoptPetApplication entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<AdoptPetApplication> GetByIdNotInclude(Guid id)
     {
         throw new NotImplementedException();
     }
