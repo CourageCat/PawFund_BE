@@ -12,8 +12,8 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241005111604_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241006071246_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -250,6 +250,85 @@ namespace PawFund.Persistence.Migrations
                     b.ToTable("Cats", (string)null);
                 });
 
+            modelBuilder.Entity("PawFund.Domain.Entities.Donation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PaymentMethodId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.ToTable("Donation");
+                });
+
+            modelBuilder.Entity("PawFund.Domain.Entities.DonationEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PaymentMethodId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.ToTable("DonationEvent");
+                });
+
             modelBuilder.Entity("PawFund.Domain.Entities.Event", b =>
                 {
                     b.Property<Guid>("Id")
@@ -371,6 +450,34 @@ namespace PawFund.Persistence.Migrations
                     b.HasIndex("CatId");
 
                     b.ToTable("HistoryCats", (string)null);
+                });
+
+            modelBuilder.Entity("PawFund.Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MethodDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MethodName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentMethod");
                 });
 
             modelBuilder.Entity("PawFund.Domain.Entities.Product", b =>
@@ -552,6 +659,52 @@ namespace PawFund.Persistence.Migrations
                     b.Navigation("Branch");
                 });
 
+            modelBuilder.Entity("PawFund.Domain.Entities.Donation", b =>
+                {
+                    b.HasOne("PawFund.Domain.Entities.Account", "Account")
+                        .WithMany("Donations")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PawFund.Domain.Entities.PaymentMethod", "PaymentMethod")
+                        .WithMany("Donations")
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("PaymentMethod");
+                });
+
+            modelBuilder.Entity("PawFund.Domain.Entities.DonationEvent", b =>
+                {
+                    b.HasOne("PawFund.Domain.Entities.Account", "Account")
+                        .WithMany("DonationEvents")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PawFund.Domain.Entities.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PawFund.Domain.Entities.PaymentMethod", "PaymentMethod")
+                        .WithMany("DonationEvents")
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Event");
+
+                    b.Navigation("PaymentMethod");
+                });
+
             modelBuilder.Entity("PawFund.Domain.Entities.Event", b =>
                 {
                     b.HasOne("PawFund.Domain.Entities.Branch", "Branch")
@@ -629,6 +782,10 @@ namespace PawFund.Persistence.Migrations
 
                     b.Navigation("Branches");
 
+                    b.Navigation("DonationEvents");
+
+                    b.Navigation("Donations");
+
                     b.Navigation("HistoryCats");
                 });
 
@@ -654,6 +811,13 @@ namespace PawFund.Persistence.Migrations
             modelBuilder.Entity("PawFund.Domain.Entities.EventActivity", b =>
                 {
                     b.Navigation("VolunteerApplicationDetails");
+                });
+
+            modelBuilder.Entity("PawFund.Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Navigation("DonationEvents");
+
+                    b.Navigation("Donations");
                 });
 
             modelBuilder.Entity("PawFund.Domain.Entities.RoleUser", b =>

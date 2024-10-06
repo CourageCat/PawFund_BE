@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Enumarations\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Services\Accounts\Validator\" />
   </ItemGroup>
 
   <ItemGroup>
