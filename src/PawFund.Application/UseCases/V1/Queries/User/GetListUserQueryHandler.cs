@@ -24,22 +24,25 @@ namespace PawFund.Application.UseCases.V1.Queries.User
 
         public async Task<Result<Response.GetListUser>> Handle(Query.GetListUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _dPUnitOfWork.AccountRepositories.GetListUser() ?? throw new UserException.ListUserNotFoundException();
+            List<GetUserAccount.AccountDto> listAccountDto = new List<GetUserAccount.AccountDto>();
+            var listUser = await _dPUnitOfWork.AccountRepositories.GetListUser() ?? throw new UserException.ListUserNotFoundException();
 
-            var listUserDto = new GetUserAccount.ListAccountDto()
+            if(listUser != null)
             {
-                listAccount = user.Select(account => new GetUserAccount.AccountDto
+                foreach (var account in listUser)
                 {
-                    Id = account.Id,
-                    FirstName = account.FirstName,
-                    LastName = account.LastName,
-                    Email = account.Email,
-                    PhoneNumber = account.PhoneNumber,
-                   
-                }).ToList()
-            };
+                    listAccountDto.Add(new GetUserAccount.AccountDto
+                    {
+                        Id = account.Id,
+                        FirstName = account.FirstName,
+                        LastName = account.LastName,
+                        Email = account.Email,
+                        PhoneNumber = account.PhoneNumber,
+                    });
+                }
+            }
 
-            var result = new Response.GetListUser(listUserDto);
+            var result = new Response.GetListUser(listAccountDto);
             return Result.Success(result);
         }
     }

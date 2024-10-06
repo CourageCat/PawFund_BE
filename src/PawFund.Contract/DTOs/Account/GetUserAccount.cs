@@ -8,12 +8,6 @@ namespace PawFund.Contract.DTOs.Account
 {
     public class GetUserAccount
     {
-        public class ListAccountDto
-        {
-            public List<AccountDto> listAccount { get; set; }
-        }
-
-
         public class AccountDto
         {
             public Guid Id { get; set; }
