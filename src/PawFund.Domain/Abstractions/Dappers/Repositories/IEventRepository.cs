@@ -9,5 +9,6 @@ namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 
     public interface IEventRepository : IGenericRepository<Event>
     {
+    public Task<IEnumerable<Event>> GetAll();
     }
 
