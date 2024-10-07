@@ -25,12 +25,12 @@ public class AuthenticationController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("verify_email", Name = "VerifyEmail")]
+    [HttpGet("verify-email", Name = "VerifyEmailCommand")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> VerifyEmail([FromQuery] string email)
     {
-        var result = await Sender.Send(new Command.VerifyEmail(email));
+        var result = await Sender.Send(new Command.VerifyEmailCommand(email));
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -67,7 +67,7 @@ public class AuthenticationController : ApiController
         });
     }
 
-    [HttpGet("refresh_token", Name = "RefreshToken")]
+    [HttpGet("refresh-token", Name = "RefreshToken")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> RefreshToken()
@@ -95,6 +95,42 @@ public class AuthenticationController : ApiController
             TokenType = "Bearer",
             value.AccessToken,
         });
+    }
+
+    [HttpPost("forgot-password-email", Name = "ForgotPasswordEmailCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ForgotPasswordEmail([FromBody] Command.ForgotPasswordEmailCommand ForgotPasswordEmail)
+    {
+        var result = await Sender.Send(ForgotPasswordEmail);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPost("forgot-password-otp", Name = "ForgotPasswordOtpCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ForgotPasswordOtp([FromBody] Command.ForgotPasswordOtpCommand ForgotPasswordOtp)
+    {
+        var result = await Sender.Send(ForgotPasswordOtp);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPost("forgot-password-change", Name = "ForgotPasswordChangeCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ForgotPasswordChange([FromBody] Command.ForgotPasswordChangeCommand ForgotPasswordChange)
+    {
+        var result = await Sender.Send(ForgotPasswordChange);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
     }
 
     [Authorize]
