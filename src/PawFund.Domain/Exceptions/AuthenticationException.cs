@@ -1,4 +1,6 @@
-﻿namespace PawFund.Domain.Exceptions;
+﻿using PawFund.Contract.MessagesList;
+
+namespace PawFund.Domain.Exceptions;
 
 public static class AuthenticationException
 {
@@ -11,7 +13,8 @@ public static class AuthenticationException
     public sealed class EmailNotFoundException : NotFoundException
     {
         public EmailNotFoundException()
-           : base($"This email has not been registered, please try again") { }
+           : base(MessagesList.AuthEmailNotFoundException.GetMessage().Message,
+                 MessagesList.AuthEmailNotFoundException.GetMessage().Code) { }
     }
 
     public sealed class UserNotFoundException : BadRequestException
