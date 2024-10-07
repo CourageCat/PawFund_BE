@@ -33,6 +33,20 @@ public static class AuthenticationException
     }
     public sealed class UserNotFoundByIdException : NotFoundException 
     { 
-    public UserNotFoundByIdException(Guid Id) : base($"Can not found User with Id: {Id}") { }
+        public UserNotFoundByIdException(Guid Id) :
+            base($"Can not found User with Id: {Id}") { }
+    }
+    public sealed class OtpForgotPasswordNotMatch : NotFoundException
+    {
+        public OtpForgotPasswordNotMatch() :
+            base($"Your otp does not match")
+        { }
+    }
+
+    public sealed class ErrorChangePassword : BadRequestException
+    {
+        public ErrorChangePassword() :
+           base($"An error occurred, please try again")
+        { }
     }
 }

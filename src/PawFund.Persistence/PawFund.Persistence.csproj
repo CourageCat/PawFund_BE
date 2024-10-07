@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PawFund.Domain\PawFund.Domain.csproj" />
+    <ProjectReference Include="..\PawFund.Infrastructure.Dapper\PawFund.Infrastructure.Dapper.csproj" />
   </ItemGroup>
 
 </Project>
