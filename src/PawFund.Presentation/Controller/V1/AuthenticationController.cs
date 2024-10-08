@@ -140,7 +140,7 @@ public class AuthenticationController : ApiController
         var result = await Sender.Send(ForgotPasswordChange);
         if (result.IsFailure)
             return HandlerFailure(result);
-
+        
         return Ok(result);
     }
 

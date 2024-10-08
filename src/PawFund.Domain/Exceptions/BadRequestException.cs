@@ -1,8 +1,8 @@
 ﻿namespace PawFund.Domain.Exceptions;
 public abstract class BadRequestException : DomainException
 {
-    protected BadRequestException(string message)
-        : base("Bad Request", message)
+    protected BadRequestException(string message, string? errorCode = null)
+        : base("Bad Request", message, errorCode)
     {
     }
 }
