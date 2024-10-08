@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using PawFund.Contract.Services.Adopt;
+using PawFund.Contract.Services.AdoptApplications;
 using System;
 using System.Collections.Generic;
 using System.Linq;

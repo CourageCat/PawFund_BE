@@ -2,7 +2,7 @@
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Entities;
-using PawFund.Contract.Services.Adopt;
+using PawFund.Contract.Services.AdoptApplications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,13 +29,14 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt
 
         public async Task<Result> Handle(Command.DeleteAdoptApplicationByAdopterCommand request, CancellationToken cancellationToken)
         {
-            var accountFound = await _dbUnitOfWork.AccountRepositories.GetByIdAsync(request.AccountId);
-            if(accountFound == null)
+            var adoptApplicationFound = await _adoptApplicationRepository.FindByIdAsync(request.AdoptId);
+            if(adoptApplicationFound == null)
             {
-                throw new AuthenticationException.UserNotFoundByIdException(request.AccountId);
+                throw new AdoptApplicationException.AdoptApplicationNotFoundException(request.AdoptId);
             }
-            return null;
-
+            _adoptApplicationRepository.Remove(adoptApplicationFound);
+            await _efUnitOfWork.SaveChangesAsync(cancellationToken);
+            return Result.Success("Delete Adopt Pet Application Successfully.");
         }
     }
 }
