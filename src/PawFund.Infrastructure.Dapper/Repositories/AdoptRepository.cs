@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using PawFund.Contract.DTOs.Adopt;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
 using System;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace PawFund.Infrastructure.Dapper.Repositories;
 
@@ -36,7 +38,7 @@ public class AdoptRepository : IAdoptRepository
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();
-            var result = await connection.ExecuteScalarAsync<bool>(sql, new { AccountId = accountId, CatId = catId});
+            var result = await connection.ExecuteScalarAsync<bool>(sql, new { AccountId = accountId, CatId = catId });
             return result;
         }
     }
@@ -88,5 +90,36 @@ public class AdoptRepository : IAdoptRepository
     {
         throw new NotImplementedException();
     }
+
+    public async Task<List<AdoptPetApplication>> GetAllApplicationsAsync()
+    {
+        var sql = @"
+        SELECT
+            a.Id, a.MeetingDate, a.Status, a.IsFinalized, a.Description, a.CreatedDate, a.IsDeleted as IsAdoptDeleted,
+            acc.Id, acc.FirstName, acc.LastName, acc.Email, acc.PhoneNumber, acc.IsDeleted as IsAccountDeleted,
+            c.Id, c.Sex, c.Name, c.Age, c.Breed, c.Size, c.Color, c.Description
+        FROM AdoptPetApplications a
+        JOIN Accounts acc ON acc.Id = a.AccountId
+        JOIN Cats c ON c.Id = a.CatId
+        ";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.QueryAsync<AdoptPetApplication, Account, Cat, AdoptPetApplication>(
+                sql,
+                (adoptPetApplication, account, cat) =>
+                {
+                    adoptPetApplication.Account = account;
+                    adoptPetApplication.Cat = cat;
+                    return adoptPetApplication;
+                },
+                splitOn: "IsAdoptDeleted,IsAccountDeleted"
+            );
+            return result.ToList();
+        }
+    }
+
+
 }
 

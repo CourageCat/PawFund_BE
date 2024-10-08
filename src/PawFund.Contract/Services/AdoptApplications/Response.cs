@@ -12,7 +12,7 @@ public static class Response
         GetApplicationByIdDTO.AccountDto Account,
         GetApplicationByIdDTO.CatDto Cat);
 
-    public record GetAllApplicationResponse();
+    public record GetAllApplicationResponse(List<GetAllApplicationsDTO.AdoptApplicationDTO> List);
 
     
 }

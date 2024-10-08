@@ -26,5 +26,12 @@ namespace PawFund.Domain.Exceptions
             {
             }
         }
+        public class AdoptApplicationEmptyException : NotFoundException
+        {
+            public AdoptApplicationEmptyException() : base("Can not found any adopt applications!")
+            {
+
+            }
+        }
     }
 }

@@ -65,17 +65,17 @@ public class AdoptController : ApiController
         return Ok(result);
     }
 
-    //[HttpGet("get_all_application", Name = "GetAllAplication")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> GetAllAplication()
-    //{
-    //    var result = await Sender.Send(new Query.GetAllApplication());
-    //    if (result.IsFailure)
-    //        return HandlerFailure(result);
+    [HttpGet("get_all_application", Name = "GetAllAplication")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllAplication()
+    {
+        var result = await Sender.Send(new Query.GetAllApplicationQuery());
+        if (result.IsFailure)
+            return HandlerFailure(result);
 
-    //    return Ok(result);
-    //}
+        return Ok(result);
+    }
 
     [HttpGet("get_all_application_by_adopter", Name = "GetAllApplicationByAdopter")]
     [ProducesResponseType(StatusCodes.Status200OK)]

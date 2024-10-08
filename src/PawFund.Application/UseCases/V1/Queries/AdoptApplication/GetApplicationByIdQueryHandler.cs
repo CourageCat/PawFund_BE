@@ -9,9 +9,8 @@ using PawFund.Domain.Exceptions;
 using PawFund.Contract.DTOs.Adopt;
 
 
-namespace PawFund.Application.UseCases.V1.Commands.Adopt
-{
-    public class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetApplicationByIdQuery, Response.GetApplicationByIdResponse>
+namespace PawFund.Application.UseCases.V1.Commands.Adopt;
+    public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetApplicationByIdQuery, Response.GetApplicationByIdResponse>
     {
         private readonly IRepositoryBase<AdoptPetApplication, Guid> _adoptRepository;
         private readonly IDPUnitOfWork _dpUnitOfWork;
@@ -29,6 +28,8 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt
             {
                 throw new AdoptApplicationException.AdoptApplicationNotFoundException(request.Id);
             }
+
+            //Convert Entity to DTO
             var result = new Response.GetApplicationByIdResponse(applicationById.Id, applicationById.MeetingDate, applicationById.Status, applicationById.Description, applicationById.IsFinalized,
                 new GetApplicationByIdDTO.AccountDto
                 {
@@ -54,4 +55,4 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt
 
 
     }
-}
+

@@ -7,6 +7,6 @@ public static class Query
     public record GetApplicationByIdQuery
         (Guid Id) : IQuery<Response.GetApplicationByIdResponse>;
 
-    public record GetAllApplicationQuery : IQuery<Response.GetAllApplicationResponse>;
+    public record GetAllApplicationQuery() : IQuery<Response.GetAllApplicationResponse>;
 
 }

@@ -1,4 +1,5 @@
-﻿using PawFund.Domain.Entities;
+﻿using PawFund.Contract.DTOs.Adopt;
+using PawFund.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 public interface IAdoptRepository : IGenericRepository<AdoptPetApplication>
 {
     Task<bool> HasAccountRegisterdWithPet(Guid accountId, Guid catId);
+    Task<List<AdoptPetApplication>> GetAllApplicationsAsync();
     Task<AdoptPetApplication> GetByIdNotInclude(Guid id);
 }
 
