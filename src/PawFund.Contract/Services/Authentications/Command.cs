@@ -11,6 +11,9 @@ public static class Command
         string PhoneNumber, 
         string Password) 
         : ICommand;
+    public record VerifyEmailCommand(string Email) : ICommand;
+    public record ForgotPasswordEmailCommand(string Email): ICommand;
+    public record ForgotPasswordOtpCommand(string Email, string Otp) : ICommand;
+    public record ForgotPasswordChangeCommand(string Email, string Password, string Otp) : ICommand;
 
-    public record VerifyEmail(string Email) : ICommand;
 }
