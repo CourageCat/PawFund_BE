@@ -7,22 +7,18 @@ using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Entities;
 using PawFund.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PawFund.Application.UseCases.V1.Commands.Adopt;
+
+namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication;
 public sealed class CreateAdoptApplicationCommandHandler : ICommandHandler<Command.CreateAdoptApplicationCommand>
 {
     private readonly IRepositoryBase<AdoptPetApplication, Guid> _adoptApplicationRepository;
     private readonly IRepositoryBase<Account, Guid> _accountRepository;
-    private readonly IRepositoryBase<Cat, Guid> _catRepository;
+    private readonly IRepositoryBase<PawFund.Domain.Entities.Cat, Guid> _catRepository;
     private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IDPUnitOfWork _dbUnitOfWork;
 
-    public CreateAdoptApplicationCommandHandler(IRepositoryBase<AdoptPetApplication, Guid> adoptApplicationRepository, IRepositoryBase<Account, Guid> accountRepository, IRepositoryBase<Cat, Guid> catRepository, IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dbUnitOfWork)
+    public CreateAdoptApplicationCommandHandler(IRepositoryBase<AdoptPetApplication, Guid> adoptApplicationRepository, IRepositoryBase<Account, Guid> accountRepository, IRepositoryBase<PawFund.Domain.Entities.Cat, Guid> catRepository, IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dbUnitOfWork)
     {
         _adoptApplicationRepository = adoptApplicationRepository;
         _accountRepository = accountRepository;
