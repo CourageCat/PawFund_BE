@@ -13,6 +13,8 @@ namespace PawFund.Domain.Entities
         public decimal Amount { get; set; } = 0;
         public string Description { get; set; } = string.Empty;
 
+        public bool Status { get; set; } = false;
+
         [ForeignKey("Donation_Account")]
         public Guid AccountId { get; set; }
         public virtual Account Account { get; set; }

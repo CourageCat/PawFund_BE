@@ -8,7 +8,7 @@ namespace PawFund.Contract.Services.Donors
 {
     public static class Command
     {
-        public record CreateDonationCommand(decimal amount, string description) : Abstractions.Message.ICommand;
+        public record CreateDonationCommand(Guid id, decimal amount, string description, Guid PaymentMethodId) : Abstractions.Message.ICommand;
 
     }
 }

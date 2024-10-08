@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace PawFund.Presentation.Controller.V1
 {
-    public class CreateDonationController : ApiController
+    public class DonationController : ApiController
     {
-        public CreateDonationController(ISender sender) : base(sender)
+        public DonationController(ISender sender) : base(sender)
         {
         }
 
         [HttpPost("create_donation", Name = "CreateDonation")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateDonation([FromForm] Contract.Services.Admins.Command.ChangeUserStatusCommand ChangeStatus)
+        public async Task<IActionResult> CreateDonation([FromForm] Contract.Services.Donors.Command.CreateDonationCommand donationInfo)
         {
-            var result = await Sender.Send(ChangeStatus);
+            var result = await Sender.Send(donationInfo);
             if (result.IsFailure)
                 return HandlerFailure(result);
 

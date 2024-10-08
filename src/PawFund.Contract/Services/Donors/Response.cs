@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PawFund.Contract.Services.Donors
 {
-    internal class Response
+    public class Response
     {
     }
 }
