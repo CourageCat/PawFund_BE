@@ -20,6 +20,9 @@ public enum MessagesList
     [Message("Registration successful, please check email for confirmation", "auth_noti_03")]
     AuthRegisterSuccess,
 
+    [Message("Account confirmation successful", "auth_noti_04")]
+    VerifyEmailSuccess,
+
     [Message("Cannot find user with Id: {0}", "auth06")]
     AuthUserNotFoundByIdException,
 
