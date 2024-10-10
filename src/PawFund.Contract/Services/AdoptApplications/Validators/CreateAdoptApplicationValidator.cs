@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PawFund.Contract.Services.Adopt.Validators
+namespace PawFund.Contract.Services.AdoptApplications.Validators
 {
-    public class UpdateAdoptApplicationValidator : AbstractValidator<Command.UpdateAdoptApplicationCommand>
+    public class CreateAdoptApplicationValidator : AbstractValidator<Command.CreateAdoptApplicationCommand>
     {
-        public UpdateAdoptApplicationValidator()
+        public CreateAdoptApplicationValidator()
         {
-            RuleFor(x => x.AdoptId).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.AccountId).NotEmpty();
+            RuleFor(x => x.CatId).NotEmpty();
         }
     }
 }

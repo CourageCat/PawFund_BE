@@ -14,5 +14,18 @@
             {
             }
         }
+        public class AdopterHasAlreadyRegisteredWithCatException : BadRequestException
+        {
+            public AdopterHasAlreadyRegisteredWithCatException() : base($"This adopter has already registered adopt application with this cat!")
+            {
+            }
+        }
+        public class AdoptApplicationEmptyException : NotFoundException
+        {
+            public AdoptApplicationEmptyException() : base("Can not found any adopt applications!")
+            {
+
+            }
+        }
     }
 }
