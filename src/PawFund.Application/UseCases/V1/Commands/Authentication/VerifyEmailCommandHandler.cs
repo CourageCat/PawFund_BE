@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PawFund.Contract.Abstractions;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.MessagesList;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
@@ -55,6 +56,7 @@ public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEm
 
         await _responseCacheService.DeleteCacheResponseAsync($"register_{request.Email}");
 
-        return Result.Success("Account confirmation successful");
+        return Result.Success(new Success(MessagesList.VerifyEmailSuccess.GetMessage().Code,
+            MessagesList.VerifyEmailSuccess.GetMessage().Message));
     }
 }

@@ -63,11 +63,27 @@ builder.Services
         options.SubstituteApiVersionInUrl = true;
     });
 
+// Config CORS
+builder.Services.AddCors(options =>
+{
+    var clientUrl = builder.Configuration["ClientConfiguration:Url"];
+    options.AddPolicy("AllowSpecificOrigin",
+        option =>
+        {
+            option.WithOrigins(clientUrl)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthorization();
 

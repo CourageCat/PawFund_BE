@@ -2,8 +2,8 @@
 
 public abstract class AuthorizeException : DomainException
 {
-    protected AuthorizeException(string message)
-        : base("Unauthorized", message)
+    protected AuthorizeException(string message, string? errorCode = null)
+        : base("Unauthorized", message, errorCode)
     {
     }
 }

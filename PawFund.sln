@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawFund.Infrastructure", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawFund.Application", "src\PawFund.Application\PawFund.Application.csproj", "{77265B0C-3B73-4803-A189-FA1564C1807E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawFund.Infrastructure.Dapper", "src\PawFund.Infrastructure.Dapper\PawFund.Infrastructure.Dapper.csproj", "{BBFC70C0-2612-4039-8065-AAB8B592906C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawFund.Infrastructure.Dapper", "src\PawFund.Infrastructure.Dapper\PawFund.Infrastructure.Dapper.csproj", "{BBFC70C0-2612-4039-8065-AAB8B592906C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D8F7DEB3-25C7-432E-B94C-8E95A8540255}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
