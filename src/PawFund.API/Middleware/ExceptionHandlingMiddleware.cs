@@ -33,6 +33,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
             title = GetTitle(exception),
             status = statusCode,
             detail = exception.Message,
+            errorCode = GetErrorCode(exception),
             errors = GetErrors(exception),
         };
 
@@ -53,6 +54,13 @@ public class ExceptionHandlingMiddleware : IMiddleware
             FluentValidation.ValidationException => StatusCodes.Status400BadRequest,
             FormatException => StatusCodes.Status422UnprocessableEntity,
             _ => StatusCodes.Status500InternalServerError
+        };
+
+    private static string GetErrorCode(Exception exception) =>
+        exception switch
+        {
+            DomainException applicationException => applicationException.ErrorCode,
+            _ => "Server Error"
         };
 
     private static string GetTitle(Exception exception) =>
