@@ -1,4 +1,5 @@
-﻿using PawFund.Domain.Abstractions.Entities;
+﻿using PawFund.Contract.Enumarations.Event;
+using PawFund.Domain.Abstractions.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.NetworkInformation;
 
@@ -25,11 +26,13 @@ namespace PawFund.Domain.Entities
         public DateTime EndDate { get; set; }
         public string Description { get; set; } = string.Empty;
         public int MaxAttendees { get; set; } = 1;
+        public EventStatus Status { get; set; } = EventStatus.NotStarted;
 
         [ForeignKey("Event_Branch")]
         public Guid BranchId { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual ICollection<EventActivity> Activities { get; set; }
+        public virtual ICollection<EventNotification> EventNotifications { get; set; }
 
         public static Event CreateEvent(string name, DateTime startDate, DateTime endDate, string description, int maxAttendees, Guid branchId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
         {

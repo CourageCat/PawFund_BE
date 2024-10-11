@@ -43,6 +43,8 @@ public class Account : DomainEntity<Guid>
 
     public virtual ICollection<HistoryCat> HistoryCats { get; set; }
 
+    public virtual ICollection<EventNotification> EventNotifications { get; set; }
+
     public static Account CreateMemberAccount
         (string firstName, string lastName, string email, string phoneNumber, string password)
     {

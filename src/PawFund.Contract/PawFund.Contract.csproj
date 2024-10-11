@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Enumarations\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Services\VolunteerApplication\Validators\" />
   </ItemGroup>
 
   <ItemGroup>
