@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using PawFund.Contract.Abstractions;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.MessagesList;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using static PawFund.Domain.Exceptions.AuthenticationException;
@@ -39,6 +41,7 @@ public sealed class FogotPasswordOtpCommandHandler : ICommandHandler<Command.For
                 JsonConvert.SerializeObject(otp),
                 TimeSpan.FromMinutes(15));
 
-        return Result.Success(otp);
+        return Result.Success(new Success<string>(MessagesList.AuthForgotPasswordOtpSuccess.GetMessage().Code,
+            MessagesList.AuthForgotPasswordOtpSuccess.GetMessage().Message, otp));
     }
 }

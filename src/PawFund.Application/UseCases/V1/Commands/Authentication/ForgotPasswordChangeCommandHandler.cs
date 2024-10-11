@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using PawFund.Contract.Abstractions;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.MessagesList;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
@@ -66,6 +68,7 @@ public sealed class ForgotPasswordChangeCommandHandler : ICommandHandler<Command
 
         await _responseCacheService.DeleteCacheResponseAsync($"passwordchange_{request.Email}");
 
-        return Result.Success("Your account password has been changed successfully.");
+        return Result.Success(new Success(MessagesList.AuthForgotPasswordChangeSuccess.GetMessage().Code,
+            MessagesList.AuthForgotPasswordChangeSuccess.GetMessage().Message));
     }
 }

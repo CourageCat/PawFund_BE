@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using PawFund.Contract.Abstractions;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.MessagesList;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
@@ -54,7 +56,8 @@ public sealed class ForgotPasswordEmailCommandHandler : ICommandHandler<Command.
             _publisher.Publish(new DomainEvent.UserOtpChanged(Guid.NewGuid(), request.Email, otp), cancellationToken)
         );
         
-        return Result.Success("Please check your email to enter otp");
+        return Result.Success(new Success<string>(MessagesList.AuthForgotPasswordEmailSuccess.GetMessage().Code,
+            MessagesList.AuthForgotPasswordEmailSuccess.GetMessage().Message, request.Email));
     }
 
     private static string GenerateSecureOTP()

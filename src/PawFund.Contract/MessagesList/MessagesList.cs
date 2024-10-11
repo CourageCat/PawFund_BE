@@ -26,9 +26,18 @@ public enum MessagesList
     [Message("Cannot find user with Id: {0}", "auth06")]
     AuthUserNotFoundByIdException,
 
-    [Message("Your OTP does not match", "auth07")]
+    [Message("Your OTP does not match", "auth_otp_01")]
     AuthOtpForgotPasswordNotMatchException,
 
     [Message("An error occurred, please try again", "auth08")]
     AuthErrorChangePasswordException,
+
+    [Message("Please check your email to enter otp", "auth_noti_05")]
+    AuthForgotPasswordEmailSuccess,
+
+    [Message("Please fill new password to change", "auth_noti_06")]
+    AuthForgotPasswordOtpSuccess,
+
+    [Message("Your account password has been changed successfully.", "auth_noti_07")]
+    AuthForgotPasswordChangeSuccess,
 }
