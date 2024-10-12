@@ -1,4 +1,4 @@
-﻿using PawFund.Contract.Abstractions;
+﻿using PawFund.Contract.Abstractions.Services;
 
 namespace PawFund.Infrastructure.Services;
 

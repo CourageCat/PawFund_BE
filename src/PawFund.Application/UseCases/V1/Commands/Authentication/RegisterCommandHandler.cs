@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using PawFund.Contract.Abstractions;
+using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.MessagesList;
 using PawFund.Contract.Services.Authentications;

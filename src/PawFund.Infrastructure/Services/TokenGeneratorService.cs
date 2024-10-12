@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PawFund.Contract.Abstractions;
+using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

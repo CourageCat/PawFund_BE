@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using Newtonsoft.Json;
-using PawFund.Contract.Abstractions;
+using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Abstractions.Message;
-using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.MessagesList;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;

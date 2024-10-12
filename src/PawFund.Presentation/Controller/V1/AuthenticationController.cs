@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PawFund.Contract.DTOs.AuthenticationDTOs;
+using PawFund.Contract.MessagesList;
 using PawFund.Contract.Services.Authentications;
+using PawFund.Contract.Shared;
 using PawFund.Presentation.Abstractions;
+using System.Security.Claims;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 
 namespace PawFund.Presentation.Controller.V1;
@@ -145,11 +148,14 @@ public class AuthenticationController : ApiController
     }
 
     [Authorize]
-    [HttpGet("get", Name = "get")]
+    [HttpPost("logout", Name = "Logout")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Logout()
     {
-        return Ok("Hello world");
+        var userId = User.FindFirstValue("UserId");
+        Response.Cookies.Delete("refreshToken");
+        return Ok(Result.Success(new Success(MessagesList.AuthLogoutSuccess.GetMessage().Code,
+            MessagesList.AuthLogoutSuccess.GetMessage().Message)));
     }
 }

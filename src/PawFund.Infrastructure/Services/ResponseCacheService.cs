@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using PawFund.Contract.Abstractions;
+using PawFund.Contract.Abstractions.Services;
 using StackExchange.Redis;
 
 namespace PawFund.Infrastructure.Services;

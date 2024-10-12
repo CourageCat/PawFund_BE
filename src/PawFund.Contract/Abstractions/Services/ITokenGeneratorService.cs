@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace PawFund.Contract.Abstractions;
+namespace PawFund.Contract.Abstractions.Services;
 
 public interface ITokenGeneratorService
 {
