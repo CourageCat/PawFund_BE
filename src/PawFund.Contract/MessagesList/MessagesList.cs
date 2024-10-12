@@ -40,4 +40,7 @@ public enum MessagesList
 
     [Message("Your account password has been changed successfully.", "auth_noti_07")]
     AuthForgotPasswordChangeSuccess,
+
+    [Message("Logout successfully", "auth_noti_08")]
+    AuthLogoutSuccess,
 }

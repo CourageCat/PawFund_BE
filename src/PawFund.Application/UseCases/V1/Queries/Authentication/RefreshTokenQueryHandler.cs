@@ -1,4 +1,4 @@
-﻿using PawFund.Contract.Abstractions;
+﻿using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
