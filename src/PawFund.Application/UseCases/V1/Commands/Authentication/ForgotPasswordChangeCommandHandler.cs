@@ -56,13 +56,13 @@ public sealed class ForgotPasswordChangeCommandHandler : ICommandHandler<Command
         // Update account
         var account = await _dpUnitOfWork.AccountRepositories.GetByEmailAsync(request.Email);
         // If account haven't system => Exception
-        if (account != null) throw new EmailNotFoundException();
+        if (account == null) throw new EmailNotFoundException();
 
         var newPassword = _passwordHashService.HashPassword(request.Password);
         account.Password = newPassword;
         _accountRepository.Update(account);
-        await _efUnitOfWork.SaveChangesAsync();
-
+        await _efUnitOfWork.SaveChangesAsync(cancellationToken);
+        
         // Send email
         await Task.WhenAll(
            _publisher.Publish(new DomainEvent.UserPasswordChanged(Guid.NewGuid(), request.Email), cancellationToken)
