@@ -27,10 +27,13 @@ public class RefreshTokenQueryHandler : IQueryHandler<Query.RefreshTokenQuery, R
     public async Task<Result<Response.RefreshTokenResponse>> Handle
         (Query.RefreshTokenQuery request, CancellationToken cancellationToken)
     {
+        // Check refresh token and return userId get in refresh token decoded
         var userId = _tokenGeneratorService.ValidateAndGetUserIdFromRefreshToken(request.Token);
-        if (userId == null) throw new RefreshTokenNull();
+        // If return == null => Exception
+        if (userId == null) throw new RefreshTokenNullException();
         var account = await _accountRepository.GetByIdAsync(Guid.Parse(userId));
 
+        // Generate accesssToken and refreshToken
         var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, account.RoleId);
         var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, account.RoleId);
 

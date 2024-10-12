@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PawFund.Contract.DTOs.AuthenticationDTOs;
-using PawFund.Contract.MessagesList;
+using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Presentation.Abstractions;
@@ -15,7 +15,7 @@ namespace PawFund.Presentation.Controller.V1;
 public class AuthenticationController : ApiController
 {
     public AuthenticationController(ISender sender) : base(sender)
-    {}
+    { }
 
     [HttpPost("register", Name = "Register")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -87,7 +87,7 @@ public class AuthenticationController : ApiController
     public async Task<IActionResult> RefreshToken()
     {
         var refreshToken = Request.Cookies["refreshToken"];
-        if (refreshToken == null) throw new RefreshTokenNull();
+        if (refreshToken == null) throw new RefreshTokenNullException();
 
         var result = await Sender.Send(new Query.RefreshTokenQuery(refreshToken));
         if (result.IsFailure)
@@ -143,8 +143,48 @@ public class AuthenticationController : ApiController
         var result = await Sender.Send(ForgotPasswordChange);
         if (result.IsFailure)
             return HandlerFailure(result);
-        
+
         return Ok(result);
+    }
+
+    [HttpPost("login-google", Name = "LoginGoogleCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> LoginGoogle([FromBody] Command.LoginGoogleCommand LoginGoogle)
+    {
+        var result = await Sender.Send(LoginGoogle);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        var value = result.Value;
+
+        Response.Cookies.Append("refreshToken", value.RefreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            Path = "/",
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.Now.AddMinutes(131400),
+        });
+
+        var authProfileDTO = new AuthProfileDTO()
+        {
+            UserId = value.UserId,
+            FirstName = value.FirstName,
+            LastName = value.LastName,
+        };
+
+        var tokenDto = new TokenDTO()
+        {
+            AccessToken = value.AccessToken,
+            TokenType = "Bearer"
+        };
+
+        return Ok(new
+        {
+            AuthProfile = authProfileDTO,
+            Token = tokenDto,
+        });
     }
 
     [Authorize]
