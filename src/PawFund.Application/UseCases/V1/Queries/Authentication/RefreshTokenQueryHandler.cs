@@ -3,7 +3,6 @@ using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
-using PawFund.Domain.Entities;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 
 namespace PawFund.Application.UseCases.V1.Queries.Authentication;

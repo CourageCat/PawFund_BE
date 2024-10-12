@@ -61,8 +61,8 @@ public sealed class ForgotPasswordChangeCommandHandler : ICommandHandler<Command
         var newPassword = _passwordHashService.HashPassword(request.Password);
         account.Password = newPassword;
         _accountRepository.Update(account);
-        await _efUnitOfWork.SaveChangesAsync();
-
+        await _efUnitOfWork.SaveChangesAsync(cancellationToken);
+        
         // Send email
         await Task.WhenAll(
            _publisher.Publish(new DomainEvent.UserPasswordChanged(Guid.NewGuid(), request.Email), cancellationToken)
