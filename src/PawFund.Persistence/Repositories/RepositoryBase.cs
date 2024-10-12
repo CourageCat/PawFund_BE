@@ -56,7 +56,11 @@ public class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey>, IDi
     }
 
     public void Add(TEntity entity)
-        => _context.Add(entity);
+    {
+        entity.CreatedDate = DateTime.UtcNow;
+        entity.ModifiedDate = DateTime.UtcNow;
+        _context.Add(entity);
+    }
 
     public void Remove(TEntity entity)
         => _context.Set<TEntity>().Remove(entity);
@@ -65,5 +69,8 @@ public class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey>, IDi
         => _context.Set<TEntity>().RemoveRange(entities);
 
     public void Update(TEntity entity)
-        => _context.Set<TEntity>().Update(entity);
+    {
+        entity.ModifiedDate = DateTime.UtcNow;
+        _context.Set<TEntity>().Update(entity);
+    }
 }

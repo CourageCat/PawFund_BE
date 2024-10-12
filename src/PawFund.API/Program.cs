@@ -33,6 +33,8 @@ builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 
+builder.Services.AddHttpClient();
+
 // Configure Options and SQL
 builder.Services.ConfigureSqlServerRetryOptions(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
 builder.Services.AddSqlConfiguration();
