@@ -41,7 +41,7 @@ public sealed class ForgotPasswordEmailCommandHandler : ICommandHandler<Command.
         // Check email is in system
         var userInfo = await _dbUnitOfWork.AccountRepositories.GetByEmailAsync(request.Email);
         // If user haven't system => Exception
-        if (userInfo != null) throw new EmailNotFoundException();
+        if (userInfo == null) throw new EmailNotFoundException();
         // If user have type login != Local => Exception
         if (userInfo.LoginType != LoginType.Local)
             throw new EmailGoogleRegistedException();
