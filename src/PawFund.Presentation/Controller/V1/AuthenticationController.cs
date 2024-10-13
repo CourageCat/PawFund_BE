@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PawFund.Contract.DTOs.AuthenticationDTOs;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Presentation.Abstractions;
 using static PawFund.Domain.Exceptions.AuthenticationException;
@@ -57,13 +58,23 @@ public class AuthenticationController : ApiController
             Expires = DateTime.Now.AddMinutes(131400),
         });
 
+        var authProfileDTO = new AuthProfileDTO()
+        {
+            UserId = value.UserId,
+            FirstName = value.FirstName,
+            LastName = value.LastName,
+        };
+
+        var tokenDto = new TokenDTO()
+        {
+            AccessToken = value.AccessToken,
+            TokenType = "Bearer"
+        };
+
         return Ok(new
         {
-           UserId = value.Id,
-           value.FirstName,
-           value.LastName,
-           TokenType = "Bearer",
-           value.AccessToken,
+            AuthProfile = authProfileDTO,
+            Token = tokenDto,
         });
     }
 
@@ -129,7 +140,7 @@ public class AuthenticationController : ApiController
         var result = await Sender.Send(ForgotPasswordChange);
         if (result.IsFailure)
             return HandlerFailure(result);
-
+        
         return Ok(result);
     }
 

@@ -6,8 +6,19 @@ using System.Threading.Tasks;
 
 namespace PawFund.Contract.DTOs.Adopt
 {
-    public static class GetApplicationByIdDTO
+    public static class GetAllApplicationsDTO
     {
+        public class AdoptApplicationDTO
+        {
+            public Guid Id { get; set; }
+            public DateTime? MeetingDate { get; set; }
+            public int Status { get; set; }
+            public bool IsFinalized { get; set; }
+
+            public string Description { get; set; }
+            public AccountDto Account { get; set; }
+            public CatDto Cat { get; set; }
+        }
         public class AccountDto
         {
             public Guid Id { get; set; }
@@ -30,3 +41,4 @@ namespace PawFund.Contract.DTOs.Adopt
         }
     }
 }
+

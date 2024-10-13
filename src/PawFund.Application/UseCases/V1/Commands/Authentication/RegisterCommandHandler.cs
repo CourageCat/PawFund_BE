@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using PawFund.Contract.Abstractions;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.MessagesList;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
@@ -39,7 +40,8 @@ public sealed class RegisterCommandHandler : ICommandHandler<Command.RegisterCom
         await Task.WhenAll(
             _publisher.Publish(new DomainEvent.UserCreated(Guid.NewGuid(), request.Email), cancellationToken)
         );
-
-        return Result.Success("Registration successful, please check email for confirmation");
+        
+        return Result.Success(new Success(MessagesList.AuthRegisterSuccess.GetMessage().Code,
+            MessagesList.AuthRegisterSuccess.GetMessage().Message));
     }
 }

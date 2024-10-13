@@ -3,7 +3,7 @@
 public static class Response
 {
     public record LoginResponse
-        (Guid Id,
+        (Guid UserId,
         string FirstName,
         string LastName,
         string AccessToken,

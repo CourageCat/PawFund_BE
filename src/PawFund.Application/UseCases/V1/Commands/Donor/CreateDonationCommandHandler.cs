@@ -35,7 +35,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Donor
                
                 Amount = request.amount,
                 Description = request.description,
-                AccountId = 
+                AccountId = request.PaymentMethodId,
                 PaymentMethodId = request.PaymentMethodId,
                 Status = false
 
