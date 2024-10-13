@@ -1,12 +1,15 @@
 ﻿using MediatR;
-using PawFund.Contract.Abstractions;
+using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
 using System.Security.Cryptography;
 using System.Text.Json;
 using static PawFund.Domain.Exceptions.AuthenticationException;
+using PawFund.Contract.Enumarations.MessagesList;
+using PawFund.Contract.Enumarations.Authentication;
 
 namespace PawFund.Application.UseCases.V1.Commands.Authentication;
 
@@ -36,11 +39,14 @@ public sealed class ForgotPasswordEmailCommandHandler : ICommandHandler<Command.
     public async Task<Result> Handle(Command.ForgotPasswordEmailCommand request, CancellationToken cancellationToken)
     {
         // Check email is in system
-        var isCheckEmail = await _dbUnitOfWork.AccountRepositories.EmailExistSystem(request.Email);
-        // If email is not in the system, return error
-        if (!isCheckEmail) throw new EmailNotFoundException();
+        var userInfo = await _dbUnitOfWork.AccountRepositories.GetByEmailAsync(request.Email);
+        // If user haven't system => Exception
+        if (userInfo == null) throw new EmailNotFoundException();
+        // If user have type login != Local => Exception
+        if (userInfo.LoginType != LoginType.Local)
+            throw new EmailGoogleRegistedException();
 
-        // Random OTP 
+        // Random OTP
         string otp = GenerateSecureOTP();
 
         // Save memory
@@ -49,12 +55,13 @@ public sealed class ForgotPasswordEmailCommandHandler : ICommandHandler<Command.
             JsonSerializer.Serialize(otp),
             TimeSpan.FromMinutes(15));
 
-        // Send mail
+        // Send mail notification send otp
         await Task.WhenAll(
             _publisher.Publish(new DomainEvent.UserOtpChanged(Guid.NewGuid(), request.Email, otp), cancellationToken)
         );
         
-        return Result.Success("Please check your email to enter otp");
+        return Result.Success(new Success<string>(MessagesList.AuthForgotPasswordEmailSuccess.GetMessage().Code,
+            MessagesList.AuthForgotPasswordEmailSuccess.GetMessage().Message, request.Email));
     }
 
     private static string GenerateSecureOTP()

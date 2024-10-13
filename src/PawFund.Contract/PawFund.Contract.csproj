@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Enumarations\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
 

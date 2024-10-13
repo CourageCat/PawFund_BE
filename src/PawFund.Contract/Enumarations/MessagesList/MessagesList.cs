@@ -1,4 +1,4 @@
-﻿namespace PawFund.Contract.MessagesList;
+﻿namespace PawFund.Contract.Enumarations.MessagesList;
 
 public enum MessagesList
 {
@@ -26,9 +26,33 @@ public enum MessagesList
     [Message("Cannot find user with Id: {0}", "auth06")]
     AuthUserNotFoundByIdException,
 
-    [Message("Your OTP does not match", "auth07")]
+    [Message("Your OTP does not match", "auth_otp_01")]
     AuthOtpForgotPasswordNotMatchException,
 
     [Message("An error occurred, please try again", "auth08")]
     AuthErrorChangePasswordException,
+
+    [Message("Please check your email to enter otp", "auth_noti_05")]
+    AuthForgotPasswordEmailSuccess,
+
+    [Message("Please fill new password to change", "auth_noti_06")]
+    AuthForgotPasswordOtpSuccess,
+
+    [Message("Your account password has been changed successfully.", "auth_noti_07")]
+    AuthForgotPasswordChangeSuccess,
+
+    [Message("This email is already registered with Google", "auth_email_03")]
+    AuthGoogleEmailRegisted,
+
+    [Message("Logout successfully", "auth_noti_08")]
+    AuthLogoutSuccess,
+
+    [Message("Login Google fail, please try again", "auth_noti_09")]
+    AuthLoginGoogleFail,
+
+    [Message("This account was registered using another method", "auth_noti_11")]
+    AuthAccountRegisteredAnotherMethod,
+
+    [Message("Please go to profile to add missing information", "auth_noti_10")]
+    AuthRegisterGoogleSuccess,
 }

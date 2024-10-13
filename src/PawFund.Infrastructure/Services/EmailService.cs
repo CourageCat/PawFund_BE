@@ -1,6 +1,6 @@
 ﻿using MailKit.Security;
 using MailKit.Net.Smtp;
-using PawFund.Contract.Abstractions;
+using PawFund.Contract.Abstractions.Services;
 using MimeKit;
 using PawFund.Contract.Settings;
 using Microsoft.Extensions.Options;

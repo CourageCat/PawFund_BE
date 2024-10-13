@@ -1,9 +1,8 @@
-﻿using PawFund.Contract.Abstractions;
+﻿using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
-using PawFund.Domain.Entities;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 
 namespace PawFund.Application.UseCases.V1.Queries.Authentication;
@@ -27,10 +26,13 @@ public class RefreshTokenQueryHandler : IQueryHandler<Query.RefreshTokenQuery, R
     public async Task<Result<Response.RefreshTokenResponse>> Handle
         (Query.RefreshTokenQuery request, CancellationToken cancellationToken)
     {
+        // Check refresh token and return userId get in refresh token decoded
         var userId = _tokenGeneratorService.ValidateAndGetUserIdFromRefreshToken(request.Token);
-        if (userId == null) throw new RefreshTokenNull();
+        // If return == null => Exception
+        if (userId == null) throw new RefreshTokenNullException();
         var account = await _accountRepository.GetByIdAsync(Guid.Parse(userId));
 
+        // Generate accesssToken and refreshToken
         var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, account.RoleId);
         var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, account.RoleId);
 

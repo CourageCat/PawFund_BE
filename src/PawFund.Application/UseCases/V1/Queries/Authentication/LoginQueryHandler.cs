@@ -1,8 +1,9 @@
-﻿using PawFund.Contract.Abstractions;
+﻿using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
+using PawFund.Contract.Enumarations.Authentication;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 
 namespace PawFund.Application.UseCases.V1.Queries.Authentication;
@@ -27,11 +28,18 @@ public sealed class LoginQueryHandler : IQueryHandler<Query.LoginQuery, Response
         Handle(Query.LoginQuery request, CancellationToken cancellationToken)
     {
         var account = await _dpUnitOfWork.AccountRepositories.GetByEmailAsync(request.Email);
+        // If account == null => Exception
         if (account == null) throw new EmailNotFoundException();
+        // If account have login type != Local => Exception
+        if(account.LoginType != LoginType.Local)
+            throw new AccountRegisteredAnotherMethodException();
         
+        // Check password have equal with password hashed
         var isVerifyPassword = _passwordHashService.VerifyPassword(request.Password, account.Password);
+        // If password not equal
         if (isVerifyPassword == false) throw new PasswordNotMatchException();
-
+        
+        // Generate accessToken and refreshToken
         var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, account.RoleId);
         var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, account.RoleId);
 

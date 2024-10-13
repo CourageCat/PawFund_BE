@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
-using PawFund.Contract.Abstractions;
+using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using static PawFund.Domain.Exceptions.AuthenticationException;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Commands.Authentication;
 
@@ -21,7 +23,7 @@ public sealed class FogotPasswordOtpCommandHandler : ICommandHandler<Command.For
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    /// <exception cref="OtpForgotPasswordNotMatch"></exception>
+    /// <exception cref="OtpForgotPasswordNotMatchException"></exception>
     public async Task<Result> Handle(Command.ForgotPasswordOtpCommand request, CancellationToken cancellationToken)
     {
         // Get value from memory
@@ -30,8 +32,9 @@ public sealed class FogotPasswordOtpCommandHandler : ICommandHandler<Command.For
         var otp = JsonConvert.DeserializeObject<string>(unescapedJson);
 
         // Check if the otp created from the previous step matches the otp sent by the client
-        if (request.Otp != otp) throw new OtpForgotPasswordNotMatch();
+        if (request.Otp != otp) throw new OtpForgotPasswordNotMatchException();
 
+        // Delete forgot password memory
         await _responseCacheService.DeleteCacheResponseAsync($"forgotpassword_{request.Email}");
         // Save memory
         await _responseCacheService.SetCacheResponseAsync
@@ -39,6 +42,7 @@ public sealed class FogotPasswordOtpCommandHandler : ICommandHandler<Command.For
                 JsonConvert.SerializeObject(otp),
                 TimeSpan.FromMinutes(15));
 
-        return Result.Success(otp);
+        return Result.Success(new Success<string>(MessagesList.AuthForgotPasswordOtpSuccess.GetMessage().Code,
+            MessagesList.AuthForgotPasswordOtpSuccess.GetMessage().Message, otp));
     }
 }
