@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PawFund.Contract.Enumarations.Authentication;
 using PawFund.Domain.Entities;
 
 namespace PawFund.Persistence.Configuration;
@@ -15,17 +16,17 @@ public class RoleUserConfiguration : IEntityTypeConfiguration<RoleUser>
         builder.HasData(
             new RoleUser
             {
-                Id = 1,
+                Id = RoleType.Admin,
                 RoleName = "Admin",
             },
             new RoleUser
             {
-                Id = 2,
+                Id = RoleType.Staff,
                 RoleName = "Staff",
             },
             new RoleUser
             {
-                Id = 3,
+                Id = RoleType.Member,
                 RoleName = "Member"
             }
         );
