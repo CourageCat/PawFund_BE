@@ -12,6 +12,6 @@ namespace PawFund.Contract.Services.Accounts
     {
         public record GetUserByIdQuery(Guid Id) : IQuery<UserResponse>;
 
-        public record GetListUserQuery() : IQuery<GetListUser>;
+        public record GetListUserQuery() : IQuery<GetListUserResponse>;
     }
 }

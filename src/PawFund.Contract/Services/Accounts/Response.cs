@@ -12,6 +12,6 @@ namespace PawFund.Contract.Services.Accounts
 
         public record UserResponse(Guid Id, string FirstName, string LastName, string Email, string PhoneNum, bool Status);
 
-        public record GetListUser(List<GetUserAccount.AccountDto> listAccountDto);
+        public record GetListUserResponse(List<GetUserAccount.AccountDto> listAccountDto);
     }
 }

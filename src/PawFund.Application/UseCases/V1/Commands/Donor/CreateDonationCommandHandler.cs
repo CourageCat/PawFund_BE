@@ -32,10 +32,10 @@ namespace PawFund.Application.UseCases.V1.Commands.Donor
         {
             var donation = new Donation()
             {
-                Id = Guid.NewGuid(), // Tạo Id mới
+               
                 Amount = request.amount,
-                Description = request.description, // Mô tả donation
-                AccountId = request.id,     // Id tài khoản
+                Description = request.description,
+                AccountId = 
                 PaymentMethodId = request.PaymentMethodId,
                 Status = false
 

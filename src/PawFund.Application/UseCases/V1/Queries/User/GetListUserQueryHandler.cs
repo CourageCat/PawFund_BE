@@ -13,7 +13,7 @@ using PawFund.Contract.DTOs.Account;
 
 namespace PawFund.Application.UseCases.V1.Queries.User
 {
-    public sealed class GetListUserQueryHandler : IQueryHandler<Query.GetListUserQuery, Response.GetListUser>
+    public sealed class GetListUserQueryHandler : IQueryHandler<Query.GetListUserQuery, Response.GetListUserResponse>
     {
         private readonly IDPUnitOfWork _dPUnitOfWork;
 
@@ -22,7 +22,7 @@ namespace PawFund.Application.UseCases.V1.Queries.User
             _dPUnitOfWork = dPUnitOfWork;
         }
 
-        public async Task<Result<Response.GetListUser>> Handle(Query.GetListUserQuery request, CancellationToken cancellationToken)
+        public async Task<Result<Response.GetListUserResponse>> Handle(Query.GetListUserQuery request, CancellationToken cancellationToken)
         {
             List<GetUserAccount.AccountDto> listAccountDto = new List<GetUserAccount.AccountDto>();
             var listUser = await _dPUnitOfWork.AccountRepositories.GetListUser() ?? throw new UserException.ListUserNotFoundException();
@@ -42,7 +42,7 @@ namespace PawFund.Application.UseCases.V1.Queries.User
                 }
             }
 
-            var result = new Response.GetListUser(listAccountDto);
+            var result = new Response.GetListUserResponse(listAccountDto);
             return Result.Success(result);
         }
     }
