@@ -63,8 +63,8 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
 
             // Generate accessToken and refreshToken
 
-            var accessToken = _tokenGeneratorService.GenerateAccessToken(accountMember.Id, accountMember.RoleId);
-            var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(accountMember.Id, accountMember.RoleId);
+            var accessToken = _tokenGeneratorService.GenerateAccessToken(accountMember.Id, (int)accountMember.RoleId);
+            var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(accountMember.Id, (int)accountMember.RoleId);
 
             return Result.Success
                 (new Response.LoginResponse
@@ -80,8 +80,8 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
             if (account.LoginType != LoginType.Google) throw new AccountRegisteredAnotherMethodException();
 
             // Generate accessToken and refreshToken
-            var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, account.RoleId);
-            var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, account.RoleId);
+            var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, (int)account.RoleId);
+            var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, (int)account.RoleId);
 
             return Result.Success
                 (new Response.LoginResponse

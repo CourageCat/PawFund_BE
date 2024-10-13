@@ -198,4 +198,15 @@ public class AuthenticationController : ApiController
         return Ok(Result.Success(new Success(MessagesList.AuthLogoutSuccess.GetMessage().Code,
             MessagesList.AuthLogoutSuccess.GetMessage().Message)));
     }
+
+
+    [Authorize(Policy = "MemberPolicy")]
+    [HttpGet("get", Name = "Get")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Get()
+    {
+        var userId = User.FindFirstValue("UserId");
+        return Ok(userId);
+    }
 }

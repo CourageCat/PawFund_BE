@@ -408,10 +408,7 @@ namespace PawFund.Persistence.Migrations
             modelBuilder.Entity("PawFund.Domain.Entities.RoleUser", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("RoleName")
                         .IsRequired()

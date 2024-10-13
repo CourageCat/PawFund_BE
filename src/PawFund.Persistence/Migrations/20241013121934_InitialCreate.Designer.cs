@@ -12,7 +12,7 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241012183618_InitialCreate")]
+    [Migration("20241013121934_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -411,10 +411,7 @@ namespace PawFund.Persistence.Migrations
             modelBuilder.Entity("PawFund.Domain.Entities.RoleUser", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("RoleName")
                         .IsRequired()

@@ -33,8 +33,8 @@ public class RefreshTokenQueryHandler : IQueryHandler<Query.RefreshTokenQuery, R
         var account = await _accountRepository.GetByIdAsync(Guid.Parse(userId));
 
         // Generate accesssToken and refreshToken
-        var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, account.RoleId);
-        var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, account.RoleId);
+        var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, (int)account.RoleId);
+        var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, (int)account.RoleId);
 
         return Result.Success(
             new Response.RefreshTokenResponse

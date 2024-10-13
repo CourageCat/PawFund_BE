@@ -40,8 +40,8 @@ public sealed class LoginQueryHandler : IQueryHandler<Query.LoginQuery, Response
         if (isVerifyPassword == false) throw new PasswordNotMatchException();
         
         // Generate accessToken and refreshToken
-        var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, account.RoleId);
-        var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, account.RoleId);
+        var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, (int)account.RoleId);
+        var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, (int)account.RoleId);
 
         return Result.Success
             (new Response.LoginResponse

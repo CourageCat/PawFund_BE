@@ -18,7 +18,7 @@ public class Account : DomainEntity<Guid>
         bool status,
         string password,
         LoginType loginType,
-        int roleId)
+        RoleType roleId)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -37,7 +37,7 @@ public class Account : DomainEntity<Guid>
     public bool Status { get; set; } = false;
     public LoginType LoginType { get; set; }
     public string Password { get; set; } = string.Empty;
-    public int RoleId { get; set; }
+    public RoleType RoleId { get; set; }
     [ForeignKey("RoleId")]
     public virtual RoleUser RoleUser { get; set; }
 
@@ -49,12 +49,12 @@ public class Account : DomainEntity<Guid>
     public static Account CreateMemberAccountLocal
         (string firstName, string lastName, string email, string phoneNumber, string password)
     {
-        return new Account(firstName, lastName, email, phoneNumber, false, password, LoginType.Local, 3);
+        return new Account(firstName, lastName, email, phoneNumber, false, password, LoginType.Local, RoleType.Member);
     }
 
     public static Account CreateMemberAccountGoogle
         (string firstName, string lastName, string email)
     {
-        return new Account(firstName, lastName, email, "", false, "", LoginType.Google, 3);
+        return new Account(firstName, lastName, email, "", false, "", LoginType.Google, RoleType.Member);
     }
 }
