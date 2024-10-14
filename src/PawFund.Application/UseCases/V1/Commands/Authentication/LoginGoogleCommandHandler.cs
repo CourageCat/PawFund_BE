@@ -71,6 +71,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
                 (accountMember.Id,
                 accountMember.FirstName,
                 accountMember.LastName,
+                accountMember.AvatarUrl,
                 accessToken,
                 refrehsToken));
         }
@@ -88,6 +89,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
                 (account.Id,
                 account.FirstName,
                 account.LastName,
+                account.AvatarUrl,
                 accessToken,
                 refrehsToken));
         }

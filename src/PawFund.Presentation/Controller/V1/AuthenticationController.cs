@@ -66,6 +66,7 @@ public class AuthenticationController : ApiController
             UserId = value.UserId,
             FirstName = value.FirstName,
             LastName = value.LastName,
+            AvatarLink = value.AvatarLink,
         };
 
         var tokenDto = new TokenDTO()
@@ -172,6 +173,7 @@ public class AuthenticationController : ApiController
             UserId = value.UserId,
             FirstName = value.FirstName,
             LastName = value.LastName,
+            AvatarLink = value.AvatarLink,
         };
 
         var tokenDto = new TokenDTO()

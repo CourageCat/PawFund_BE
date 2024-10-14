@@ -51,18 +51,18 @@ public class Account : DomainEntity<Guid>
     public virtual ICollection<AdoptPetApplication> AdoptPetApplication { get; set; }
 
     public virtual ICollection<HistoryCat> HistoryCats { get; set; }
-
+    
     public static Account CreateMemberAccountLocal
         (string firstName, string lastName, string email, string phoneNumber, string password)
     {
-        string avatarUrl = "";
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
         return new Account(firstName, lastName, email, phoneNumber, false, password, avatarUrl, null, LoginType.Local, RoleType.Member);
     }
 
     public static Account CreateMemberAccountGoogle
         (string firstName, string lastName, string email)
     {
-        string avatarUrl = "";
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
         return new Account(firstName, lastName, email, "", false, "", avatarUrl, null, LoginType.Google, RoleType.Member);
     }
 }

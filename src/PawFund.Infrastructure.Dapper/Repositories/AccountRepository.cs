@@ -43,7 +43,7 @@ public class AccountRepository : IAccountRepository
 
     public async Task<Account> GetByEmailAsync(string email)
     {
-        var sql = "SELECT Id, FirstName, LastName, Email, PhoneNumber, Password, RoleId, LoginType, IsDeleted FROM Accounts WHERE Email = @Email";
+        var sql = "SELECT Id, FirstName, LastName, Email, PhoneNumber, Password, RoleId, LoginType, AvatarUrl, IsDeleted FROM Accounts WHERE Email = @Email";
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();
@@ -54,7 +54,7 @@ public class AccountRepository : IAccountRepository
 
     public async Task<Account> GetByIdAsync(Guid id)
     {
-        var sql = "SELECT Id, FirstName, LastName, Email, PhoneNumber, Password, RoleId, IsDeleted FROM Accounts WHERE Id = @id";
+        var sql = "SELECT Id, FirstName, LastName, Email, PhoneNumber, Password, RoleId, LoginType, AvatarUrl, IsDeleted FROM Accounts WHERE Id = @id";
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();
