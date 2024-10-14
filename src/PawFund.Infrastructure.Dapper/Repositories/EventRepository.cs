@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using PawFund.Contract.Enumarations.Event;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
 using System;
@@ -15,6 +18,7 @@ public class EventRepository : IEventRepository
     {
         _configuration = configuration;
     }
+
     public Task<int> AddAsync(Event entity)
     {
         throw new NotImplementedException();
@@ -25,17 +29,97 @@ public class EventRepository : IEventRepository
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyCollection<Event>> GetAllAsync()
+    public async Task<IEnumerable<Event>> GetAll()
     {
-        throw new NotImplementedException();
+        var sql = @"
+SELECT 
+    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, e.IsDeleted, e.Status as IsEventDelete,
+    b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, b.Province, b.PostalCode, b.IsDeleted as IsBranchDeleted
+FROM Events e
+JOIN Branchs b ON b.Id = e.BranchId";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.QueryAsync<Event, Branch, Event>(
+                sql,
+                (Event, Branch) =>
+                {
+                    Event.Branch = Branch;
+                    return Event;
+                },
+                splitOn: "IsEventDelete"
+            );
+
+            return result;
+        }
     }
 
-    public Task<Event>? GetByIdAsync(Guid Id)
+    public async Task<IEnumerable<Event>> GetAllNotApproved()
     {
-        throw new NotImplementedException();
+        var sql = @"
+SELECT 
+    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, e.IsDeleted as IsEventDelete,
+    b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, b.Province, b.PostalCode, b.IsDeleted as IsBranchDeleted
+FROM Events e
+JOIN Branchs b ON b.Id = e.BranchId
+WHERE e.Status = @NotApprovedStatus";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.QueryAsync<Event, Branch, Event>(
+                sql,
+                (Event, Branch) =>
+                {
+                    Event.Branch = Branch;
+                    return Event;
+                },
+                new { NotApprovedStatus = (int)EventStatus.NotApproved },  // Truyền giá trị enum vào tham số
+                splitOn: "IsEventDelete"
+            );
+
+            return result;
+        }
+    }
+
+    public async Task<Event>? GetByIdAsync(Guid Id)
+    {
+        var sql = @"
+SELECT 
+    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, e.IsDeleted, e.Status as IsEventDelete,
+    b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, b.Province, b.PostalCode, b.IsDeleted as IsBranchDeleted
+FROM Events e
+JOIN Branchs b ON b.Id = e.BranchId
+WHERE e.Id = @Id";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.QueryAsync<Event, Branch, Event>(
+                sql,
+                (Event, Branch) =>
+                {
+                    Event.Branch = Branch;
+                    return Event;
+                },
+                new { Id = Id },
+                splitOn: "IsEventDelete"
+            );
+
+            return result.FirstOrDefault();
+        }
     }
 
     public Task<int> UpdateAsync(Event entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<IReadOnlyCollection<Event>> IGenericRepository<Event>.GetAllAsync()
     {
         throw new NotImplementedException();
     }
