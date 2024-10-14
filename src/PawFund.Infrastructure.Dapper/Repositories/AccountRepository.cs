@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
 
@@ -61,6 +62,11 @@ public class AccountRepository : IAccountRepository
             var result = await connection.QuerySingleOrDefaultAsync<Account>(sql, new { Id = id });
             return result;
         }
+    }
+
+    public Task<PagedResult<Account>> GetPagedAsync()
+    {
+        throw new NotImplementedException();
     }
 
     public Task<int> UpdateAsync(Account entity)

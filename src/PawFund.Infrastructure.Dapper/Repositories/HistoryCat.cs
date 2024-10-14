@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,11 @@ public class HistoryCat : IHistoryCat
     }
 
     public Task<IHistoryCat>? GetByIdAsync(Guid Id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<PagedResult<IHistoryCat>> GetPagedAsync()
     {
         throw new NotImplementedException();
     }

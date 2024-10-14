@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
 using System;
@@ -32,6 +33,11 @@ public class BranchRepository : IBranchRepository
     }
 
     public Task<Branch>? GetByIdAsync(Guid Id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<PagedResult<Branch>> GetPagedAsync()
     {
         throw new NotImplementedException();
     }
