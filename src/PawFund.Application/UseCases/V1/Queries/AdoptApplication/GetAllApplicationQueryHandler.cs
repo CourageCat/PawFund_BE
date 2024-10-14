@@ -19,8 +19,9 @@ public sealed class GetAllApplicationQueryHandler : IQueryHandler<Query.GetAllAp
 
     public async Task<Result<Response.GetAllApplicationResponse>> Handle(Query.GetAllApplicationQuery request, CancellationToken cancellationToken)
     {
+        //Find List Adopt Application
         var listAdoptApplicationFound = await _dpUnitOfWork.AdoptRepositories.GetAllApplicationsAsync();
-        if(listAdoptApplicationFound.Count == 0)
+        if (listAdoptApplicationFound.Count == 0)
         {
             throw new AdoptApplicationException.AdoptApplicationEmptyException();
         }
@@ -33,7 +34,8 @@ public sealed class GetAllApplicationQueryHandler : IQueryHandler<Query.GetAllAp
             {
                 Id = adoptApplication.Id,
                 MeetingDate = adoptApplication.MeetingDate,
-                Status = adoptApplication.Status,
+                ReasonReject = adoptApplication.ReasonReject,
+                Status = adoptApplication.Status.ToString(),
                 IsFinalized = adoptApplication.IsFinalized,
                 Description = adoptApplication.Description,
                 Account = new GetAllApplicationsDTO.AccountDto()
@@ -58,6 +60,8 @@ public sealed class GetAllApplicationQueryHandler : IQueryHandler<Query.GetAllAp
             });
         });
         var result = new Response.GetAllApplicationResponse(listAdoptApplicationFoundDTO);
+
+        //Return result
         return Result.Success(result);
     }
 }
