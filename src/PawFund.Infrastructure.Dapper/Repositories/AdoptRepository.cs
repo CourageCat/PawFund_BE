@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.DTOs.Adopt;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
@@ -120,6 +121,9 @@ public class AdoptRepository : IAdoptRepository
         }
     }
 
-
+    public Task<PagedResult<AdoptPetApplication>> GetPagedAsync()
+    {
+        throw new NotImplementedException();
+    }
 }
 
