@@ -20,15 +20,7 @@ public class GetProductsPaginQueryHandler : IQueryHandler<Query.GetProductsPagin
     public async Task<Result<PagedResult<ProductResponse>>> Handle(Query.GetProductsPaginQueryHandler request, CancellationToken cancellationToken)
     {
         var productPagedResult = await _productRepository.GetPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
-
-        var items = productPagedResult.Items.Select(product => new ProductResponse(
-           product.Id,
-           product.Name,
-           product.Price,
-           product.Description
-       )).ToList();
-        //var result = _mapper.Map<PagedResult<ProductResponse>>(productPagedResult);
-        var result = new PagedResult<ProductResponse>(items, productPagedResult.PageIndex, productPagedResult.PageSize, productPagedResult.TotalCount);
+        var result = _mapper.Map<PagedResult<ProductResponse>>(productPagedResult);
         return Result.Success(result);
     }
 }
