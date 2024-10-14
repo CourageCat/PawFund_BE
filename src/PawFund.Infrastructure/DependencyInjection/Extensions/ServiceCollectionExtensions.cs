@@ -30,6 +30,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IPasswordHashService, PasswordHashService>();
         services.AddTransient<ITokenGeneratorService, TokenGeneratorService>();
         services.AddTransient<IGoogleOAuthService, GoogleOAuthService>();
+        services.AddTransient<IMediaService, MediaService>();
     }
 
     public static void AddConfigurationAppSetting
@@ -37,5 +38,6 @@ public static class ServiceCollectionExtensions
     {
         services.Configure<AuthenticationSetting>(configuration.GetSection(AuthenticationSetting.SectionName));
         services.Configure<EmailSetting>(configuration.GetSection(EmailSetting.SectionName));
+        services.Configure<CloudinarySetting>(configuration.GetSection(CloudinarySetting.SectionName));
     }
 }
