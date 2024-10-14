@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.Enumarations.Event;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
@@ -112,6 +113,11 @@ WHERE e.Id = @Id";
 
             return result.FirstOrDefault();
         }
+    }
+
+    public Task<PagedResult<Event>> GetPagedAsync()
+    {
+        throw new NotImplementedException();
     }
 
     public Task<int> UpdateAsync(Event entity)
