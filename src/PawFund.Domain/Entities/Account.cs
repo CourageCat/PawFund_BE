@@ -17,6 +17,8 @@ public class Account : DomainEntity<Guid>
         string phoneNumber,
         bool status,
         string password,
+        string avatarUrl,
+        string avatarId,
         LoginType loginType,
         RoleType roleId)
     {
@@ -26,6 +28,8 @@ public class Account : DomainEntity<Guid>
         PhoneNumber = phoneNumber;
         Status = status;
         Password = password;
+        AvatarUrl = avatarUrl;
+        AvatarId = avatarId;
         LoginType = loginType;
         RoleId = roleId;
     }
@@ -37,6 +41,8 @@ public class Account : DomainEntity<Guid>
     public bool Status { get; set; } = false;
     public LoginType LoginType { get; set; }
     public string Password { get; set; } = string.Empty;
+    public string? AvatarUrl { get; set; }
+    public string? AvatarId { get; set; }
     public RoleType RoleId { get; set; }
     [ForeignKey("RoleId")]
     public virtual RoleUser RoleUser { get; set; }
@@ -45,16 +51,18 @@ public class Account : DomainEntity<Guid>
     public virtual ICollection<AdoptPetApplication> AdoptPetApplication { get; set; }
 
     public virtual ICollection<HistoryCat> HistoryCats { get; set; }
-
+    
     public static Account CreateMemberAccountLocal
         (string firstName, string lastName, string email, string phoneNumber, string password)
     {
-        return new Account(firstName, lastName, email, phoneNumber, false, password, LoginType.Local, RoleType.Member);
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        return new Account(firstName, lastName, email, phoneNumber, false, password, avatarUrl, null, LoginType.Local, RoleType.Member);
     }
 
     public static Account CreateMemberAccountGoogle
         (string firstName, string lastName, string email)
     {
-        return new Account(firstName, lastName, email, "", false, "", LoginType.Google, RoleType.Member);
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        return new Account(firstName, lastName, email, "", false, "", avatarUrl, null, LoginType.Google, RoleType.Member);
     }
 }
