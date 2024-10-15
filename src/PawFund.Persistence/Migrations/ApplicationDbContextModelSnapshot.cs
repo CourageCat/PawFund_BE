@@ -445,7 +445,7 @@ namespace PawFund.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PawFund.Domain.Entities.VolunteerApplication", b =>
+            modelBuilder.Entity("PawFund.Domain.Entities.VolunteerApplicationDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -457,51 +457,35 @@ namespace PawFund.Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid>("EventActivityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<string>("ReasonReject")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("VolunteerApplications", (string)null);
-                });
-
-            modelBuilder.Entity("PawFund.Domain.Entities.VolunteerApplicationDetail", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("EventActivityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("VolunteerApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("EventActivityId");
-
-                    b.HasIndex("VolunteerApplicationId");
 
                     b.ToTable("VolunteerApplicationDetails", (string)null);
                 });
@@ -599,34 +583,23 @@ namespace PawFund.Persistence.Migrations
                     b.Navigation("Cat");
                 });
 
-            modelBuilder.Entity("PawFund.Domain.Entities.VolunteerApplication", b =>
-                {
-                    b.HasOne("PawFund.Domain.Entities.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("PawFund.Domain.Entities.VolunteerApplicationDetail", b =>
                 {
+                    b.HasOne("PawFund.Domain.Entities.Account", "Account")
+                        .WithMany("VolunteerApplicationDetails")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("PawFund.Domain.Entities.EventActivity", "EventActivity")
                         .WithMany("VolunteerApplicationDetails")
                         .HasForeignKey("EventActivityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("PawFund.Domain.Entities.VolunteerApplication", "VolunteerApplication")
-                        .WithMany("ApplicationDetails")
-                        .HasForeignKey("VolunteerApplicationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("Account");
 
                     b.Navigation("EventActivity");
-
-                    b.Navigation("VolunteerApplication");
                 });
 
             modelBuilder.Entity("PawFund.Domain.Entities.Account", b =>
@@ -636,6 +609,8 @@ namespace PawFund.Persistence.Migrations
                     b.Navigation("Branches");
 
                     b.Navigation("HistoryCats");
+
+                    b.Navigation("VolunteerApplicationDetails");
                 });
 
             modelBuilder.Entity("PawFund.Domain.Entities.Branch", b =>
@@ -665,11 +640,6 @@ namespace PawFund.Persistence.Migrations
             modelBuilder.Entity("PawFund.Domain.Entities.RoleUser", b =>
                 {
                     b.Navigation("Accounts");
-                });
-
-            modelBuilder.Entity("PawFund.Domain.Entities.VolunteerApplication", b =>
-                {
-                    b.Navigation("ApplicationDetails");
                 });
 #pragma warning restore 612, 618
         }

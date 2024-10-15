@@ -14,12 +14,12 @@ namespace PawFund.Application.UseCases.V1.Commands.Event
 {
     public sealed class UpdateEventByIdCommandHandler : ICommandHandler<Command.UpdateEventCommand>
     {
-        private readonly IRepositoryBase<PawFund.Domain.Entities.VolunteerApplicationDetail, Guid> _branchRepository;
+        private readonly IRepositoryBase<Domain.Entities.Branch, Guid> _branchRepository;
         private readonly IRepositoryBase<PawFund.Domain.Entities.Event, Guid> _eventRepository;
         private readonly IEFUnitOfWork _efUnitOfWork;
         private readonly IDPUnitOfWork _dPUnitOfWork;
 
-        public UpdateEventByIdCommandHandler(IRepositoryBase<VolunteerApplicationDetail, Guid> branchRepository, IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dPUnitOfWork)
+        public UpdateEventByIdCommandHandler(IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository, IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dPUnitOfWork)
         {
             _branchRepository = branchRepository;
             _eventRepository = eventRepository;
