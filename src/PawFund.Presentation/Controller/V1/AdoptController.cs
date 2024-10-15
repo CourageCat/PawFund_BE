@@ -1,11 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PawFund.Contract.DTOs.Adopt.Request;
 using PawFund.Contract.Services.AdoptApplications;
 using PawFund.Presentation.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,12 +20,15 @@ public class AdoptController : ApiController
     {
     }
 
+    //[Authorize]
     [HttpPost("create_adopt_application", Name = "CreateAdoptApplication")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateAdoptApplication([FromBody] Command.CreateAdoptApplicationCommand CreateAdoptApplication)
+    public async Task<IActionResult> CreateAdoptApplication([FromBody] CreateAdoptApplicationRequestDTO CreateAdoptApplication)
     {
-        var result = await Sender.Send(CreateAdoptApplication);
+        //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
+        var accountId = Guid.Parse("3F2A04BD-EAB9-4058-8C8A-242DFAAA1082");
+        var result = await Sender.Send(new Command.CreateAdoptApplicationCommand(CreateAdoptApplication.Description, accountId, CreateAdoptApplication.CatId));
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -100,5 +106,113 @@ public class AdoptController : ApiController
 
         return Ok(result);
     }
+
+    [HttpPut("update_meeting_time", Name = "UpdateMeetingTime")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateMeetingTime([FromBody] Command.UpdateMeetingTimeCommand UpdateMeetingTime)
+    {
+        var result = await Sender.Send(UpdateMeetingTime);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPut("apply_adopt_application", Name = "ApplyAdoptApplication")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ApplyAdoptApplication([FromQuery] Guid Id)
+    {
+        var result = await Sender.Send(new Command.ApplyAdoptApplicationCommand(Id));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPut("reject_adopt_application", Name = "RejectAdoptApplication")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RejectAdoptApplication([FromBody] Command.RejectAdoptApplicationCommand RejectAdoptApplication)
+    {
+        var result = await Sender.Send(RejectAdoptApplication);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    //[HttpPut("get_meeting_time_by_adopter", Name = "GetMeetingTimeByAdopter")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
+    //public async Task<IActionResult> GetMeetingTimeByAdopter([FromQuery] Guid Id)
+    //{
+    //    var result = await Sender.Send(new Command.GetMeetingTimeByAdopterQuery(Id));
+    //    if (result.IsFailure)
+    //        return HandlerFailure(result);
+
+    //    return Ok(result);
+    //}
+
+    //[HttpPut("get_meeting_time_by_staff", Name = "GetMeetingTimeByStaff")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
+    //public async Task<IActionResult> GetMeetingTimeByStaff()
+    //{
+    //    var result = await Sender.Send(new Command.GetMeetingTimeByStaffQuery(Id));
+    //    if (result.IsFailure)
+    //        return HandlerFailure(result);
+
+    //    return Ok(result);
+    //}
+
+    //[HttpPut("choose_meeting_time", Name = "ChooseMeetingTime")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
+    //public async Task<IActionResult> ChooseMeetingTime()
+    //{
+    //    var result = await Sender.Send(new Command.ChooseMeetingTimeCommand(Id));
+    //    if (result.IsFailure)
+    //        return HandlerFailure(result);
+
+    //    return Ok(result);
+    //}
+
+    //[HttpPut("complete_adoption", Name = "CompleteAdoption")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
+    //public async Task<IActionResult> CompleteAdoption()
+    //{
+    //    var result = await Sender.Send(new Command.CompleteAdoptionCommand(Id));
+    //    if (result.IsFailure)
+    //        return HandlerFailure(result);
+
+    //    return Ok(result);
+    //}
+
+    //[HttpPut("reject_outside", Name = "RejectOutside")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
+    //public async Task<IActionResult> RejectOutside()
+    //{
+    //    var result = await Sender.Send(new Command.RejectOutsideCommand(Id));
+    //    if (result.IsFailure)
+    //        return HandlerFailure(result);
+
+    //    return Ok(result);
+    //}
+
+    //[HttpPost("update_data_from_google_sheet", Name = "UpdateDataFromGoogleSheet")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
+    //public async Task<IActionResult> UpdateDataFromGoogleSheet([FromBody] Command.UpdateDataFromGoogleSheetCommand UpdateDataFromGoogleSheet)
+    //{
+    //    var result = await Sender.Send(UpdateDataFromGoogleSheet);
+    //    if (result.IsFailure)
+    //        return HandlerFailure(result);
+
+    //    return Ok(result);
+    //}
 }
 
