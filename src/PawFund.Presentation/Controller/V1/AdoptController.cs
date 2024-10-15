@@ -1,11 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PawFund.Contract.DTOs.Adopt.Request;
 using PawFund.Contract.Services.AdoptApplications;
 using PawFund.Presentation.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,12 +20,15 @@ public class AdoptController : ApiController
     {
     }
 
+    //[Authorize]
     [HttpPost("create_adopt_application", Name = "CreateAdoptApplication")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateAdoptApplication([FromBody] Command.CreateAdoptApplicationCommand CreateAdoptApplication)
+    public async Task<IActionResult> CreateAdoptApplication([FromBody] CreateAdoptApplicationRequestDTO CreateAdoptApplication)
     {
-        var result = await Sender.Send(CreateAdoptApplication);
+        //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
+        var accountId = Guid.Parse("3F2A04BD-EAB9-4058-8C8A-242DFAAA1082");
+        var result = await Sender.Send(new Command.CreateAdoptApplicationCommand(CreateAdoptApplication.Description, accountId, CreateAdoptApplication.CatId));
         if (result.IsFailure)
             return HandlerFailure(result);
 

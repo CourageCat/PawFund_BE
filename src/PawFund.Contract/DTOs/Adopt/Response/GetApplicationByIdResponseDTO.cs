@@ -1,26 +1,13 @@
-﻿using PawFund.Contract.Enumarations.AdoptPetApplication;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PawFund.Contract.DTOs.Adopt
+namespace PawFund.Contract.DTOs.Adopt.Response
 {
-    public static class GetAllApplicationsDTO
+    public static class GetApplicationByIdResponseDTO
     {
-        public class AdoptApplicationDTO
-        {
-            public Guid Id { get; set; }
-            public DateTime? MeetingDate { get; set; }
-            public string? ReasonReject { get; set; }
-            public string Status { get; set; }
-            public bool IsFinalized { get; set; }
-
-            public string Description { get; set; }
-            public AccountDto Account { get; set; }
-            public CatDto Cat { get; set; }
-        }
         public class AccountDto
         {
             public Guid Id { get; set; }
@@ -43,4 +30,3 @@ namespace PawFund.Contract.DTOs.Adopt
         }
     }
 }
-

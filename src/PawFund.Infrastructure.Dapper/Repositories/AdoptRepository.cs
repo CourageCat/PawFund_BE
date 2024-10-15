@@ -35,7 +35,7 @@ public class AdoptRepository : IAdoptRepository
 
     public async Task<bool> HasAccountRegisterdWithPet(Guid accountId, Guid catId)
     {
-        var sql = "SELECT CASE WHEN EXISTS (SELECT 1 FROM AdoptPetApplications WHERE AccountId = @AccountId AND CatId = @CatId AND IsDeleted = 0) THEN 1 ELSE 0 END";
+        var sql = "SELECT CASE WHEN EXISTS (SELECT 1 FROM AdoptPetApplications WHERE AccountId = @AccountId AND CatId = @CatId AND IsDeleted = 0 AND Status != -1) THEN 1 ELSE 0 END";
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();

@@ -6,7 +6,7 @@ using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Entities;
 using PawFund.Domain.Exceptions;
-using PawFund.Contract.DTOs.Adopt;
+using PawFund.Contract.DTOs.Adopt.Response;
 
 
 namespace PawFund.Application.UseCases.V1.Commands.Adopt;
@@ -32,7 +32,7 @@ public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetAppl
 
         //Convert Entity to DTO
         var result = new Response.GetApplicationByIdResponse(applicationById.Id, applicationById.MeetingDate, applicationById.ReasonReject, applicationById.Status.ToString(), applicationById.Description, applicationById.IsFinalized,
-            new GetApplicationByIdDTO.AccountDto
+            new GetApplicationByIdResponseDTO.AccountDto
             {
                 Id = applicationById.Account.Id,
                 FirstName = applicationById.Account.FirstName,
@@ -40,7 +40,7 @@ public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetAppl
                 Email = applicationById.Account.Email,
                 PhoneNumber = applicationById.Account.PhoneNumber,
             },
-            new GetApplicationByIdDTO.CatDto
+            new GetApplicationByIdResponseDTO.CatDto
             {
                 Id = applicationById.Cat.Id,
                 Sex = applicationById.Cat.Sex,
