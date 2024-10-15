@@ -51,6 +51,8 @@ public class Account : DomainEntity<Guid>
     public virtual ICollection<AdoptPetApplication> AdoptPetApplication { get; set; }
 
     public virtual ICollection<HistoryCat> HistoryCats { get; set; }
+
+    public virtual ICollection<VolunteerApplicationDetail> VolunteerApplicationDetails { get; set; }
     
     public static Account CreateMemberAccountLocal
         (string firstName, string lastName, string email, string phoneNumber, string password)

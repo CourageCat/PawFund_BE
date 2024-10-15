@@ -104,28 +104,6 @@ namespace PawFund.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "VolunteerApplications",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
-                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_VolunteerApplications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_VolunteerApplications_Accounts_AccountId",
-                        column: x => x.AccountId,
-                        principalTable: "Accounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Cats",
                 columns: table => new
                 {
@@ -272,9 +250,12 @@ namespace PawFund.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
-                    VolunteerApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    ReasonReject = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EventActivityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
@@ -283,15 +264,15 @@ namespace PawFund.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_VolunteerApplicationDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VolunteerApplicationDetails_EventActivities_EventActivityId",
-                        column: x => x.EventActivityId,
-                        principalTable: "EventActivities",
+                        name: "FK_VolunteerApplicationDetails_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_VolunteerApplicationDetails_VolunteerApplications_VolunteerApplicationId",
-                        column: x => x.VolunteerApplicationId,
-                        principalTable: "VolunteerApplications",
+                        name: "FK_VolunteerApplicationDetails_EventActivities_EventActivityId",
+                        column: x => x.EventActivityId,
+                        principalTable: "EventActivities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -352,19 +333,14 @@ namespace PawFund.Persistence.Migrations
                 column: "CatId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_VolunteerApplicationDetails_AccountId",
+                table: "VolunteerApplicationDetails",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_VolunteerApplicationDetails_EventActivityId",
                 table: "VolunteerApplicationDetails",
                 column: "EventActivityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_VolunteerApplicationDetails_VolunteerApplicationId",
-                table: "VolunteerApplicationDetails",
-                column: "VolunteerApplicationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_VolunteerApplications_AccountId",
-                table: "VolunteerApplications",
-                column: "AccountId");
         }
 
         /// <inheritdoc />
@@ -387,9 +363,6 @@ namespace PawFund.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "EventActivities");
-
-            migrationBuilder.DropTable(
-                name: "VolunteerApplications");
 
             migrationBuilder.DropTable(
                 name: "Events");
