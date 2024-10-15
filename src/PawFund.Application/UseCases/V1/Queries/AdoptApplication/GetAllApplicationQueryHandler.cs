@@ -47,7 +47,7 @@ public sealed class GetAllApplicationQueryHandler : IQueryHandler<Query.GetAllAp
                 Cat = new GetAllApplicationsDTO.CatDto()
                 {
                     Id = adoptApplication.Cat.Id,
-                    Sex = adoptApplication.Cat.Sex,
+                    Sex = adoptApplication.Cat.Sex.ToString(),
                     Name = adoptApplication.Cat.Name,
                     Age = adoptApplication.Cat.Age,
                     Breed = adoptApplication.Cat.Breed,

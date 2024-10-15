@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
@@ -32,9 +34,24 @@ public class BranchRepository : IBranchRepository
         throw new NotImplementedException();
     }
 
-    public Task<Branch>? GetByIdAsync(Guid Id)
+    public async Task<Branch>? GetByIdAsync(Guid Id)
     {
-        throw new NotImplementedException();
+        var sql = @"
+        SELECT b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, b.Province, b.PostalCode, b.AccountId
+        FROM Branchs b
+        WHERE b.Id = @Id";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.QueryAsync<Branch>(
+                sql,
+                new { Id = Id }
+                );
+
+            return result.FirstOrDefault();
+        }
     }
 
     public Task<PagedResult<Branch>> GetPagedAsync()

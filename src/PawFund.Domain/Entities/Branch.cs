@@ -8,7 +8,7 @@ public class Branch : DomainEntity<Guid>
 {
     public Branch() { }
 
-    public Branch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, DateTime createdDate, DateTime modifiedDate, bool isDeleted )
+    public Branch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, Guid accountId, DateTime createdDate, DateTime modifiedDate, bool isDeleted )
     {
         Name = name;
         PhoneNumberOfBranch = phoneNumberOfBranch;
@@ -20,6 +20,7 @@ public class Branch : DomainEntity<Guid>
         District = district;
         Province = province;
         PostalCode = postalCode;
+        AccountId = accountId;
         CreatedDate = createdDate;
         ModifiedDate = modifiedDate;
         IsDeleted = isDeleted;
@@ -41,23 +42,24 @@ public class Branch : DomainEntity<Guid>
     public virtual ICollection<Event> Events { get; set; }
     public virtual ICollection<Cat> Cats { get; set; }
 
-    public static Branch CreateBranch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
+    public static Branch CreateBranch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, Guid accountId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
     {
-        return new Branch(name, phoneNumberOfBranch, emailOfBranch, description, numberHome, streetName, ward, district, province, postalCode, createdDate, modifiedDate, isDeleted);
+        return new Branch(name, phoneNumberOfBranch, emailOfBranch, description, numberHome, streetName, ward, district, province, postalCode, accountId, createdDate, modifiedDate, isDeleted);
     }
 
-    public void UpdateBranch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
+    public void UpdateBranch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, Guid accountId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
     {
         Name = name;
         PhoneNumberOfBranch = phoneNumberOfBranch;
         EmailOfBranch = emailOfBranch;
         Description = description;
-        NumberHome = numberHome;
+        NumberHome = numberHome;    
         StreetName = streetName;
         Ward = ward;
         District = district;
         Province = province;
         PostalCode = postalCode;
+        AccountId = accountId;
         CreatedDate = createdDate;
         ModifiedDate = modifiedDate;
         IsDeleted = isDeleted;

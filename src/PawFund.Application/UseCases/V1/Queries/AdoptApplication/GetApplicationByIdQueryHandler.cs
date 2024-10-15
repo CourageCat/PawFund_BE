@@ -42,7 +42,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt;
                 new GetApplicationByIdDTO.CatDto
                 {
                     Id = applicationById.Cat.Id,
-                    Sex = applicationById.Cat.Sex,
+                    Sex = applicationById.Cat.Sex.ToString(),
                     Name = applicationById.Cat.Name,
                     Age = applicationById.Cat.Age,
                     Breed = applicationById.Cat.Breed,

@@ -30,7 +30,7 @@ public sealed class UpdateBranchCommandHandler : ICommandHandler<Command.UpdateB
         {
             throw new BranchException.BranchNotFoundException(request.Id);
         }
-        branchFound.UpdateBranch(request.Name, request.PhoneNumberOfBranch, request.EmailOfBranch, request.Description, request.NumberHome, request.StreetName, request.Ward, request.District, request.Province, request.PostalCode, DateTime.Now, DateTime.Now, false);
+        branchFound.UpdateBranch(request.Name, request.PhoneNumberOfBranch, request.EmailOfBranch, request.Description, request.NumberHome, request.StreetName, request.Ward, request.District, request.Province, request.PostalCode, branchFound.AccountId, DateTime.Now, DateTime.Now, false);
         _branchRepository.Update(branchFound);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success("Update Branch successfully.");
