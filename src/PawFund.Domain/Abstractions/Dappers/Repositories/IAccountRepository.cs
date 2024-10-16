@@ -1,4 +1,6 @@
 ﻿
+using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.Services.Products;
 using PawFund.Domain.Entities;
 
 namespace PawFund.Domain.Abstractions.Dappers.Repositories;
