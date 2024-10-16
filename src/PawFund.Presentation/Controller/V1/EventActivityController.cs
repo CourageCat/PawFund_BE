@@ -41,7 +41,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpPut(Name = "UpdateEventActivityById")]
+        [HttpPut("update_event_activity_by_id",Name = "UpdateEventActivityById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateEventById([FromBody] Command.UpdateEventActivityCommand updateEventActivityCommand)
@@ -53,7 +53,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpDelete(Name = "DeleteEventActivityById")]
+        [HttpDelete("delete_event_activity_by_id",Name = "DeleteEventActivityById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteEventById([FromBody] Command.DeleteEventActivityCommand Id)
@@ -65,7 +65,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet(Name = "GetAllEventActivity")]
+        [HttpGet("get_all_event_activity_by_eventId",Name = "GetAllEventActivity")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllEvent([FromQuery] Guid id)

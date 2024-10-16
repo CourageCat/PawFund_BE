@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PawFund.Contract.Services.Event;
@@ -36,7 +37,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpPut(Name = "UpdateEventById")]
+        [HttpPut("update_event_by_id",Name = "UpdateEventById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateEventById([FromBody] Command.UpdateEventCommand updateEvent)
@@ -48,7 +49,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpDelete(Name = "DeleteEventById")]
+        [HttpDelete("delete_event_by_id",Name = "DeleteEventById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteEventById([FromBody] Command.DeleteEventCommand Id)
@@ -60,7 +61,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet(Name = "GetAllEvent")]
+        [HttpGet("get_all_event",Name = "GetAllEvent")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllEvent()
@@ -72,7 +73,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet("GetAllEventNotApproved", Name = "GetAllEventNotApproved")]
+        [HttpGet("get_all_event_not_approve", Name = "GetAllEventNotApproved")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllEventNotApproved()
@@ -84,6 +85,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
+        [Authorize(Policy ="Admin")]
         [HttpPut("approved_by_admin", Name = "ApprovedEventByAdmin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
