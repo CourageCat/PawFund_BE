@@ -67,8 +67,21 @@ public enum MessagesList
 
     [Message("Approve Adopt Application Successfully", "adopt_noti_success_04")]
     AdoptApproveApplicationSuccess,
+
     [Message("Reject Adopt Application Successfully", "adopt_noti_success_05")]
     AdoptRejectApplicationSuccess,
+
+    [Message("All Meeting Times", "adopt_noti_success_06")]
+    AdoptGetAllMeetingTimeSuccess,
+
+    [Message("Update meeting time successfully", "adopt_noti_exception_07")]
+    AdoptUpdateMeetingTimeSuccess,
+
+    [Message("All Adopt Applications", "adopt_noti_success_09")]
+    AdoptGetAdoptApplicationsSuccess,
+
+    [Message("Adopt Application Found", "adopt_noti_success_10")]
+    AdoptGetAdoptApplicationSuccess,
 
     [Message("Can not found application with ID: {0}", "adopt_noti_exception_01")]
     AdoptApplicationNotFoundException,
@@ -87,4 +100,8 @@ public enum MessagesList
 
     [Message("This application has already rejected", "adopt_noti_exception_06")]
     AdoptApplicationHasAlreadyRejectedException,
+
+    [Message("Can not find any meeting time", "adopt_noti_exception_07")]
+    AdoptNotFoundAnyMeetingTimeException,
+
 }

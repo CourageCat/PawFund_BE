@@ -11,19 +11,19 @@ using PawFund.Domain.Exceptions;
 using static PawFund.Contract.Services.AdoptApplications.Response;
 
 namespace PawFund.Application.UseCases.V1.Queries.Adopt;
-public sealed class GetAllApplicationQueryHandler : IQueryHandler<Query.GetAllApplicationQuery, Success<PagedResult<ApplicationResponse>>>
+public sealed class GetAllApplicationQueryByAdopterHandler : IQueryHandler<Query.GetAllApplicationByAdopterQuery, Success<PagedResult<ApplicationResponse>>>
 {
     private readonly IDPUnitOfWork _dpUnitOfWork;
 
-    public GetAllApplicationQueryHandler(IDPUnitOfWork dpUnitOfWork)
+    public GetAllApplicationQueryByAdopterHandler(IDPUnitOfWork dpUnitOfWork)
     {
         _dpUnitOfWork = dpUnitOfWork;
     }
 
-    public async Task<Result<Success<PagedResult<ApplicationResponse>>>> Handle(Query.GetAllApplicationQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Success<PagedResult<ApplicationResponse>>>> Handle(Query.GetAllApplicationByAdopterQuery request, CancellationToken cancellationToken)
     {
         //Find List Adopt Application
-        var listAdoptApplicationFoundPaging = await _dpUnitOfWork.AdoptRepositories.GetAllApplicationsAsync(request.PageIndex, request.PageSize, request.IsAscCreatedDate, request.SelectedColumns);
+        var listAdoptApplicationFoundPaging = await _dpUnitOfWork.AdoptRepositories.GetAllApplicationsByAdopterAsync(request.AccountId,request.PageIndex, request.PageSize, request.IsAscCreatedDate, request.SelectedColumns);
         var listAdoptApplicationFoundDTO = new List<ApplicationResponse>();
         listAdoptApplicationFoundPaging.Items.ForEach(adoptApplication =>
         {
@@ -99,16 +99,14 @@ public sealed class GetAllApplicationQueryHandler : IQueryHandler<Query.GetAllAp
         //        });
         //});
         //var result = new Response.GetAllApplicationResponse(listAdoptApplicationFoundDTO);
-
         //Check if list empty then return empty message
-        if (result.Items.Count == 0)
+        if(result.Items.Count == 0)
         {
             return Result.Success(new Success<PagedResult<ApplicationResponse>>(MessagesList.AdoptApplicationEmptyException.GetMessage().Code, MessagesList.AdoptApplicationEmptyException.GetMessage().Message, result));
         }
 
         //Return result
         return Result.Success(new Success<PagedResult<ApplicationResponse>>(MessagesList.AdoptGetAdoptApplicationsSuccess.GetMessage().Code, MessagesList.AdoptGetAdoptApplicationsSuccess.GetMessage().Message, result));
-  
     }
 }
 

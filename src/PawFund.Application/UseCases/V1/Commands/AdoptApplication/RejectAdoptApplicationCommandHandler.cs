@@ -14,16 +14,12 @@ namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication
     public class RejectAdoptApplicationCommandHandler : ICommandHandler<Command.RejectAdoptApplicationCommand>
     {
         public readonly IRepositoryBase<AdoptPetApplication, Guid> _adoptPetApplicationRepository;
-        public readonly IRepositoryBase<Account, Guid> _accountRepository;
-        public readonly IRepositoryBase<Domain.Entities.Cat, Guid> _catRepository;
         public readonly IEFUnitOfWork _efUnitOfWork;
         private readonly IPublisher _publisher;
 
-        public RejectAdoptApplicationCommandHandler(IRepositoryBase<AdoptPetApplication, Guid> adoptPetApplicationRepository, IRepositoryBase<Account, Guid> accountRepository, IRepositoryBase<Domain.Entities.Cat, Guid> catRepository, IEFUnitOfWork efUnitOfWork, IPublisher publisher)
+        public RejectAdoptApplicationCommandHandler(IRepositoryBase<AdoptPetApplication, Guid> adoptPetApplicationRepository, IEFUnitOfWork efUnitOfWork, IPublisher publisher)
         {
             _adoptPetApplicationRepository = adoptPetApplicationRepository;
-            _accountRepository = accountRepository;
-            _catRepository = catRepository;
             _efUnitOfWork = efUnitOfWork;
             _publisher = publisher;
         }
@@ -41,18 +37,6 @@ namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication
             {
                 throw new AdoptApplicationException.AdoptApplicationHasAlreadyRejectedException();
             }
-            //Find Adopter
-            var adopterFound = await _accountRepository.FindByIdAsync(applicationFound.AccountId);
-            if (adopterFound == null)
-            {
-                throw new AuthenticationException.UserNotFoundByIdException(applicationFound.AccountId);
-            }
-            //Find Cat
-            var catFound = await _catRepository.FindByIdAsync(applicationFound.CatId);
-            if (catFound == null)
-            {
-                throw new CatException.CatNotFoundException(applicationFound.CatId);
-            }
             //Update Status for Application
             applicationFound.Status = AdoptPetApplicationStatus.Rejected;
             applicationFound.ReasonReject = request.ReasonReject;
@@ -60,7 +44,7 @@ namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
             //Send email
             await Task.WhenAll(
-               _publisher.Publish(new DomainEvent.AdopterHasBeenRejected(request.AdoptId, adopterFound.Email, catFound.Name, request.ReasonReject), cancellationToken)
+               _publisher.Publish(new DomainEvent.AdopterHasBeenRejected(request.AdoptId, applicationFound.Account.Email, applicationFound.Cat.Name, request.ReasonReject), cancellationToken)
            );
 
             //Return result

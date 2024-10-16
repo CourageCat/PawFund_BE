@@ -50,7 +50,7 @@ public sealed class UpdateAdoptApplicationCommandHandler : ICommandHandler<Comma
                 throw new CatException.CatNotFoundException((Guid)request.CatId);
             }
             //Check Account has already register with Cat
-            var hasAccountRegisteredWithCat = await _dbUnitOfWork.AdoptRepositories.HasAccountRegisterdWithPet(adoptApplicationFound.AccountId, (Guid)request.CatId);
+            var hasAccountRegisteredWithCat = await _dbUnitOfWork.AdoptRepositories.HasAccountRegisterdWithPetAsync(adoptApplicationFound.AccountId, (Guid)request.CatId);
             if (hasAccountRegisteredWithCat)
             {
                 throw new AdoptApplicationException.AdopterHasAlreadyRegisteredWithCatException();

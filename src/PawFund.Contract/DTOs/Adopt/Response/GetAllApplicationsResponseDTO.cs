@@ -18,6 +18,7 @@ namespace PawFund.Contract.DTOs.Adopt.Response
             public bool IsFinalized { get; set; }
 
             public string Description { get; set; }
+            public DateTime CreatedDate { get; set; }
             public AccountDto Account { get; set; }
             public CatDto Cat { get; set; }
         }
