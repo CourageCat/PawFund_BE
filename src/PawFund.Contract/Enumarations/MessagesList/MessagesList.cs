@@ -87,4 +87,10 @@ public enum MessagesList
 
     [Message("This application has already rejected", "adopt_noti_exception_06")]
     AdoptApplicationHasAlreadyRejectedException,
+
+    [Message("This user has already banned", "change_status_noti_exception_01")]
+    UserHasAlreadyBannedException,
+
+    [Message("This user has already unbanned", "change_status_noti_exception_02")]
+    UserHasAlreadyUnbannedException,
 }
