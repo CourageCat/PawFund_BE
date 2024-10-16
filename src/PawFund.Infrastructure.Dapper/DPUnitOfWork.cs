@@ -6,7 +6,7 @@ namespace PawFund.Infrastructure.Dapper;
 
 public class DPUnitOfWork : IDPUnitOfWork
 {
-    public DPUnitOfWork(IAccountRepository accountRepositories, IAdoptRepository adoptRepositories, ICatRepository catRepositories, IBranchRepository branchRepositories, IEventActivityRepository eventActivityRepositories, IEventRepository eventRepository, IHistoryCat historyCatRepository, IRoleUser roleUserRepository, IVolunteerApplication volunteerApplicationRepository, IVolunteerApplicationDetail volunteerApplicationDetailRepository)
+    public DPUnitOfWork(IAccountRepository accountRepositories, IAdoptRepository adoptRepositories, ICatRepository catRepositories, IBranchRepository branchRepositories, IEventActivityRepository eventActivityRepositories, IEventRepository eventRepository, IHistoryCat historyCatRepository, IRoleUser roleUserRepository, IVolunteerApplicationDetail volunteerApplicationDetailRepository)
     {
         AccountRepositories = accountRepositories;
         AdoptRepositories = adoptRepositories;
@@ -16,7 +16,6 @@ public class DPUnitOfWork : IDPUnitOfWork
         EventRepository = eventRepository;
         HistoryCatRepository = historyCatRepository;
         RoleUserRepository = roleUserRepository;
-        VolunteerApplicationRepository = volunteerApplicationRepository;
         VolunteerApplicationDetailRepository = volunteerApplicationDetailRepository;
     }
 
@@ -33,8 +32,6 @@ public class DPUnitOfWork : IDPUnitOfWork
     public IHistoryCat HistoryCatRepository { get; }
 
     public IRoleUser RoleUserRepository { get; }
-
-    public IVolunteerApplication VolunteerApplicationRepository { get; }
 
     public IVolunteerApplicationDetail VolunteerApplicationDetailRepository { get; }
 }

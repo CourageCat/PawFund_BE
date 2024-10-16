@@ -12,6 +12,5 @@ public interface IDPUnitOfWork
     IEventRepository EventRepository { get; }
     IHistoryCat HistoryCatRepository { get; }
     IRoleUser RoleUserRepository { get; }
-    IVolunteerApplication VolunteerApplicationRepository { get; }
     IVolunteerApplicationDetail VolunteerApplicationDetailRepository { get; }
 }
