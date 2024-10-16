@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PawFund.Contract.Enumarations.MessagesList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,18 @@ namespace PawFund.Domain.Exceptions
         {
             public ListUserNotFoundException()
                 : base($"Do not have any user in list !") { }
+        }
+
+        public class UserHasAlreadyBannedException : BadRequestException
+        {
+            public UserHasAlreadyBannedException() : base(string.Format(MessagesList.UserHasAlreadyBannedException.GetMessage().Message), MessagesList.UserHasAlreadyBannedException.GetMessage().Code)
+            { }
+        }
+
+        public class UserHasAlreadyUnbannedException : BadRequestException
+        {
+            public UserHasAlreadyUnbannedException() : base(string.Format(MessagesList.UserHasAlreadyUnbannedException.GetMessage().Message), MessagesList.UserHasAlreadyUnbannedException.GetMessage().Code)
+            { }
         }
     }
 }

@@ -6,6 +6,9 @@ namespace PawFund.Contract.Services.Admins
 {
     public static class Command
     {
-       public record ChangeUserStatusCommand(Guid Id) : Abstractions.Message.ICommand;
+       public record BanUserCommand(Guid Id, string? Reason) : Abstractions.Message.ICommand;
+
+       public record UnBanUserCommand(Guid Id) : Abstractions.Message.ICommand;
+
     }
 }

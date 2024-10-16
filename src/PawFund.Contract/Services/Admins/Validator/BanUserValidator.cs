@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PawFund.Contract.Services.Admins.Validator
 {
-    public class BanUserValidator : AbstractValidator<Command.ChangeUserStatusCommand>
+    public class BanUserValidator : AbstractValidator<Command.BanUserCommand>
     {
         public BanUserValidator()
         {

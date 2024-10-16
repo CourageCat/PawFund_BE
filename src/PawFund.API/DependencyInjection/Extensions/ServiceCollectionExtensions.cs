@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using PawFund.Contract.Enumarations.Authentication;
 using PawFund.Contract.Settings;
+using System.Security.Claims;
 using System.Text;
 
 namespace PawFund.API.DependencyInjection.Extensions;
@@ -52,17 +54,20 @@ public static class ServiceCollectionExtensions
            };
        });
 
-        //services.AddAuthorization(options =>
-        //{
-        //    options.AddPolicy(IdentityData.AdminUserPolicyName,
-        //        p => p.RequireClaim(ClaimTypes.Role, "admin"));
+        services.AddAuthorization(options =>
+        {
+            // Admin Policy
+            options.AddPolicy("AdminPolicy", policy =>
+                policy.RequireClaim(ClaimTypes.Role, ((int)RoleType.Admin).ToString()));
+            
+            // Staff Policy
+            options.AddPolicy("StaffPolicy", policy =>
+                policy.RequireClaim(ClaimTypes.Role, ((int)RoleType.Staff).ToString()));
 
-        //    options.AddPolicy(IdentityData.InstructorPolicyName,
-        //        p => p.RequireClaim(ClaimTypes.Role, "instructor"));
-
-        //    options.AddPolicy(IdentityData.UserPolicyName,
-        //        p => p.RequireClaim(ClaimTypes.Role, "user"));
-        //});
+            // Member Policy
+            options.AddPolicy("MemberPolicy", policy =>
+                policy.RequireClaim(ClaimTypes.Role, ((int)RoleType.Member).ToString()));
+        });
 
         return services;
     }

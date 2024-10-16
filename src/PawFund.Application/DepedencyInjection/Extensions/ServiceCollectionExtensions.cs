@@ -16,5 +16,9 @@ public static class ServiceCollectionExtensions
 
 
     public static IServiceCollection AddConfigurationAutoMapper(this IServiceCollection services)
-        => services.AddAutoMapper(typeof(UserProfile));
+    {
+        services.AddAutoMapper(typeof(UserProfile));
+        services.AddAutoMapper(typeof(ProductProfile));
+        return services;
+    }
 }

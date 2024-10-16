@@ -9,9 +9,9 @@ namespace PawFund.Contract.Services.Accounts
 
     public static class Response
     {
+        public record UserResponse(Guid Id, string FirstName, string LastName, string Email, string PhoneNumber, bool Status);
 
-        public record UserResponse(Guid Id, string FirstName, string LastName, string Email, string PhoneNum, bool Status);
+        public record UsersResponse(Guid Id, string FirstName, bool Status);
 
-        public record GetListUserResponse(List<GetUserAccount.AccountDto> listAccountDto);
     }
 }

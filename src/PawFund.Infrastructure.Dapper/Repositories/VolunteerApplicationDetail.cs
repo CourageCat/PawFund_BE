@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,11 @@ public class VolunteerApplicationDetail : IVolunteerApplicationDetail
     }
 
     public Task<Domain.Entities.VolunteerApplicationDetail>? GetByIdAsync(Guid Id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<PagedResult<Domain.Entities.VolunteerApplicationDetail>> GetPagedAsync()
     {
         throw new NotImplementedException();
     }

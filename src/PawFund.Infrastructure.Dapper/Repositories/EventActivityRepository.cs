@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
 using System;
@@ -31,7 +34,65 @@ public class EventActivityRepository : IEventActivityRepository
         throw new NotImplementedException();
     }
 
-    public Task<EventActivity>? GetByIdAsync(Guid Id)
+    public async Task<IEnumerable<EventActivity>> GetAllByEventId(Guid id)
+    {
+        var sql = @"
+SELECT 
+    ea.Id, ea.Name, ea.Quantity, ea.StartDate, ea.Description, ea.Status, ea.IsDeleted as IsEvenActivitytDelete,
+    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, e.IsDeleted as IsEventDeleted
+FROM EventActivities ea
+JOIN Events e ON e.Id = ea.EventId
+WHERE ea.EventId = @Id";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.QueryAsync<EventActivity, Event, EventActivity>(
+                sql,
+                (EventActivity, Event) =>
+                {
+                    EventActivity.Event = Event;
+                    return EventActivity;
+                },
+                new { Id = id },
+                splitOn: "IsEvenActivitytDelete"
+            );
+
+            return result;
+        }
+    }
+
+    public async Task<EventActivity>? GetByIdAsync(Guid Id)
+    {
+        var sql = @"
+SELECT 
+    ea.Id, ea.Name, ea.Quantity, ea.StartDate, ea.Description, ea.Status, ea.IsDeleted as IsEvenActivitytDelete,
+    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, e.IsDeleted as IsEventDeleted
+FROM EventActivities ea
+JOIN Events e ON e.Id = ea.EventId
+WHERE ea.Id = @Id";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.QueryAsync<EventActivity, Event, EventActivity>(
+                sql,
+                (EventActivity, Event) =>
+                {
+                    EventActivity.Event = Event;
+                    return EventActivity;
+                },
+                new { Id = Id },
+                splitOn: "IsEvenActivitytDelete"
+            );
+
+            return result.FirstOrDefault();
+        }
+    }
+
+    public Task<PagedResult<EventActivity>> GetPagedAsync()
     {
         throw new NotImplementedException();
     }

@@ -1,4 +1,5 @@
-﻿using PawFund.Domain.Abstractions.Entities;
+﻿using PawFund.Contract.Enumarations.AdoptPetApplication;
+using PawFund.Domain.Abstractions.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 
@@ -10,9 +11,10 @@ namespace PawFund.Domain.Entities
         {
         }
 
-        public AdoptPetApplication(DateTime? meetingDate, int status, bool isFinalized, string description, Guid accountId, Guid catId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
+        public AdoptPetApplication(DateTime? meetingDate, string reasonReject, AdoptPetApplicationStatus status, bool isFinalized, string description, Guid accountId, Guid catId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
         {
             MeetingDate = meetingDate;
+            ReasonReject = reasonReject;
             Status = status;
             IsFinalized = isFinalized;
             Description = description;
@@ -24,7 +26,8 @@ namespace PawFund.Domain.Entities
         }
 
         public DateTime? MeetingDate { get; set; }
-        public int Status { get; set; } = 0;
+        public string? ReasonReject { get; set; }
+        public AdoptPetApplicationStatus Status { get; set; } = AdoptPetApplicationStatus.Pending;
         public bool IsFinalized { get; set; } = false;
         public string Description { get; set; } = string.Empty;
         [ForeignKey("AdoptPetApplication_Account")]
@@ -34,14 +37,15 @@ namespace PawFund.Domain.Entities
         public Guid CatId { get; set; }
         public virtual Cat Cat { get; set; }
         public static AdoptPetApplication CreateAdoptPetApplication
-        (DateTime? meetingDate, int status, bool isFinalized, string description, Guid accountId, Guid catId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
+        (DateTime? meetingDate, string? reasonReject, AdoptPetApplicationStatus status, bool isFinalized, string description, Guid accountId, Guid catId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
         {
-            return new AdoptPetApplication(meetingDate, status, isFinalized, description, accountId, catId, createdDate, modifiedDate, isDeleted);
+            return new AdoptPetApplication(meetingDate, reasonReject, status, isFinalized, description, accountId, catId, createdDate, modifiedDate, isDeleted);
         }
 
-        public void UpdateAdoptPetApplication(DateTime? meetingDate, int status, bool isFinalized, string description, Guid accountId, Guid catId, DateTime? createdDate, DateTime? modifiedDate, bool? isDeleted)
+        public void UpdateAdoptPetApplication(DateTime? meetingDate, string? reasonReject, AdoptPetApplicationStatus status, bool isFinalized, string description, Guid accountId, Guid catId, DateTime? createdDate, DateTime? modifiedDate, bool? isDeleted)
         {
             MeetingDate = meetingDate;
+            ReasonReject = reasonReject;
             Status = status;
             IsFinalized = isFinalized;
             Description = description;

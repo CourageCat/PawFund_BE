@@ -1,4 +1,4 @@
-﻿using PawFund.Contract.MessagesList;
+﻿using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Domain.Exceptions;
 
@@ -36,9 +36,9 @@ public static class AuthenticationException
         { }
     }
 
-    public sealed class RefreshTokenNull : AuthorizeException
+    public sealed class RefreshTokenNullException : AuthorizeException
     {
-        public RefreshTokenNull()
+        public RefreshTokenNullException()
            : base(MessagesList.AuthRefreshTokenNull.GetMessage().Message,
                   MessagesList.AuthRefreshTokenNull.GetMessage().Code)
         { }
@@ -52,19 +52,42 @@ public static class AuthenticationException
         { }
     }
 
-    public sealed class OtpForgotPasswordNotMatch : NotFoundException
+    public sealed class OtpForgotPasswordNotMatchException : NotFoundException
     {
-        public OtpForgotPasswordNotMatch()
+        public OtpForgotPasswordNotMatchException()
             : base(MessagesList.AuthOtpForgotPasswordNotMatchException.GetMessage().Message,
                    MessagesList.AuthOtpForgotPasswordNotMatchException.GetMessage().Code)
         { }
     }
 
-    public sealed class ErrorChangePassword : BadRequestException
+    public sealed class ErrorChangePasswordException : BadRequestException
     {
-        public ErrorChangePassword()
+        public ErrorChangePasswordException()
            : base(MessagesList.AuthErrorChangePasswordException.GetMessage().Message,
                   MessagesList.AuthErrorChangePasswordException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class EmailGoogleRegistedException : BadRequestException
+    {
+        public EmailGoogleRegistedException()
+           : base(MessagesList.AuthGoogleEmailRegisted.GetMessage().Message,
+                  MessagesList.AuthGoogleEmailRegisted.GetMessage().Code)
+        { }
+    }
+
+    public sealed class LoginGoogleFailException : BadRequestException
+    {
+        public LoginGoogleFailException()
+           : base(MessagesList.AuthLoginGoogleFail.GetMessage().Message,
+                  MessagesList.AuthLoginGoogleFail.GetMessage().Code)
+        { }
+    }
+    public sealed class AccountRegisteredAnotherMethodException : BadRequestException
+    {
+        public AccountRegisteredAnotherMethodException()
+           : base(MessagesList.AuthAccountRegisteredAnotherMethod.GetMessage().Message,
+                  MessagesList.AuthAccountRegisteredAnotherMethod.GetMessage().Code)
         { }
     }
 }

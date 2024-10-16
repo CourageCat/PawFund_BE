@@ -23,7 +23,7 @@ namespace PawFund.Application.UseCases.V1.Queries.User
         {
             var user = await _dPUnitOfWork.AccountRepositories.GetByIdAsync(request.Id) ?? throw new UserException.UserNotFoundException(request.Id);
 
-            var result = new Response.UserResponse(user.Id, user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.Status);
+            var result = new Response.UserResponse(user.Id, user.FirstName, user.LastName , user.Email, user.PhoneNumber, user.Status );
             return Result.Success(result);
         }
     }

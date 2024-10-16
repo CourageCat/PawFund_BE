@@ -1,5 +1,5 @@
 ﻿using PawFund.Contract.Abstractions.Message;
-using PawFund.Contract.DTOs.Adopt;
+using PawFund.Contract.DTOs.Adopt.Response;
 using PawFund.Contract.Services.AdoptApplications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
@@ -19,24 +19,26 @@ public sealed class GetAllApplicationQueryHandler : IQueryHandler<Query.GetAllAp
 
     public async Task<Result<Response.GetAllApplicationResponse>> Handle(Query.GetAllApplicationQuery request, CancellationToken cancellationToken)
     {
+        //Find List Adopt Application
         var listAdoptApplicationFound = await _dpUnitOfWork.AdoptRepositories.GetAllApplicationsAsync();
-        if(listAdoptApplicationFound.Count == 0)
+        if (listAdoptApplicationFound.Count == 0)
         {
             throw new AdoptApplicationException.AdoptApplicationEmptyException();
         }
 
         //Convert Entity to DTO
-        var listAdoptApplicationFoundDTO = new List<GetAllApplicationsDTO.AdoptApplicationDTO>();
+        var listAdoptApplicationFoundDTO = new List<GetAllApplicationsResponseDTO.AdoptApplicationDTO>();
         listAdoptApplicationFound.ForEach(adoptApplication =>
         {
-            listAdoptApplicationFoundDTO.Add(new GetAllApplicationsDTO.AdoptApplicationDTO()
+            listAdoptApplicationFoundDTO.Add(new GetAllApplicationsResponseDTO.AdoptApplicationDTO()
             {
                 Id = adoptApplication.Id,
                 MeetingDate = adoptApplication.MeetingDate,
-                Status = adoptApplication.Status,
+                ReasonReject = adoptApplication.ReasonReject,
+                Status = adoptApplication.Status.ToString(),
                 IsFinalized = adoptApplication.IsFinalized,
                 Description = adoptApplication.Description,
-                Account = new GetAllApplicationsDTO.AccountDto()
+                Account = new GetAllApplicationsResponseDTO.AccountDto()
                 {
                     Id = adoptApplication.Account.Id,
                     FirstName = adoptApplication.Account.FirstName,
@@ -44,7 +46,7 @@ public sealed class GetAllApplicationQueryHandler : IQueryHandler<Query.GetAllAp
                     Email = adoptApplication.Account.Email,
                     PhoneNumber = adoptApplication.Account.PhoneNumber,
                 },
-                Cat = new GetAllApplicationsDTO.CatDto()
+                Cat = new GetAllApplicationsResponseDTO.CatDto()
                 {
                     Id = adoptApplication.Cat.Id,
                     Sex = adoptApplication.Cat.Sex,
@@ -58,6 +60,8 @@ public sealed class GetAllApplicationQueryHandler : IQueryHandler<Query.GetAllAp
             });
         });
         var result = new Response.GetAllApplicationResponse(listAdoptApplicationFoundDTO);
+
+        //Return result
         return Result.Success(result);
     }
 }
