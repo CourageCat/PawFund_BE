@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Exceptions;
+using PawFund.Contract.Enumarations.MessagesList;
 
-namespace PawFund.Application.UseCases.V1.Commands.Adopt
+namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication
 {
     public sealed class DeleteAdoptApplicationByAdopterCommandHandler : ICommandHandler<Command.DeleteAdoptApplicationByAdopterCommand>
     {
@@ -29,14 +30,17 @@ namespace PawFund.Application.UseCases.V1.Commands.Adopt
 
         public async Task<Result> Handle(Command.DeleteAdoptApplicationByAdopterCommand request, CancellationToken cancellationToken)
         {
+            //Check Adopt Application found
             var adoptApplicationFound = await _adoptApplicationRepository.FindByIdAsync(request.AdoptId);
-            if(adoptApplicationFound == null)
+            if (adoptApplicationFound == null)
             {
                 throw new AdoptApplicationException.AdoptApplicationNotFoundException(request.AdoptId);
             }
+            //Remove Adopt Application
             _adoptApplicationRepository.Remove(adoptApplicationFound);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Success("Delete Adopt Pet Application Successfully.");
+            //Return result
+            return Result.Success(new Success(MessagesList.AdoptDeleteApplicationSuccess.GetMessage().Code, MessagesList.AdoptDeleteApplicationSuccess.GetMessage().Message));
         }
     }
 }

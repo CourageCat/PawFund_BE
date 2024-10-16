@@ -1,31 +1,40 @@
-﻿namespace PawFund.Domain.Exceptions
+﻿using PawFund.Contract.Enumarations.MessagesList;
+
+namespace PawFund.Domain.Exceptions
 {
     public static class AdoptApplicationException
     {
         public class AdoptApplicationNotFoundException : NotFoundException
         {
-            public AdoptApplicationNotFoundException(Guid Id) : base($"Can not found application with ID: {Id}")
-            {
-            }
+            public AdoptApplicationNotFoundException(Guid Id) : base(string.Format(MessagesList.AdoptApplicationNotFoundException.GetMessage().Message, Id), MessagesList.AdoptApplicationNotFoundException.GetMessage().Code)
+            { }
         }
         public class AdoptApplicationNotBelongToAdopterException : BadRequestException
         {
-            public AdoptApplicationNotBelongToAdopterException() : base($"This adopt application does not belong to this adopter!")
-            {
-            }
+            public AdoptApplicationNotBelongToAdopterException() : base(MessagesList.AdoptApplicationNotBelongToAdopterException.GetMessage().Message, MessagesList.AdoptApplicationNotBelongToAdopterException.GetMessage().Code)
+            { }
         }
         public class AdopterHasAlreadyRegisteredWithCatException : BadRequestException
         {
-            public AdopterHasAlreadyRegisteredWithCatException() : base($"This adopter has already registered adopt application with this cat!")
-            {
-            }
+            public AdopterHasAlreadyRegisteredWithCatException() : base(MessagesList.AdoptAdopterHasAlreadyRegisteredWithCatException.GetMessage().Message, MessagesList.AdoptAdopterHasAlreadyRegisteredWithCatException.GetMessage().Code)
+            { }
         }
         public class AdoptApplicationEmptyException : NotFoundException
         {
-            public AdoptApplicationEmptyException() : base("Can not found any adopt applications!")
-            {
+            public AdoptApplicationEmptyException() : base(MessagesList.AdoptApplicationEmptyException.GetMessage().Message, MessagesList.AdoptApplicationEmptyException.GetMessage().Code)
+            { }
+        }
 
-            }
+        public class AdoptApplicationHasAlreadyApprovedException : NotFoundException
+        {
+            public AdoptApplicationHasAlreadyApprovedException() : base(MessagesList.AdoptApplicationHasAlreadyApprovedException.GetMessage().Message, MessagesList.AdoptApplicationHasAlreadyApprovedException.GetMessage().Code)
+            { }
+        }
+
+        public class AdoptApplicationHasAlreadyRejectedException : NotFoundException
+        {
+            public AdoptApplicationHasAlreadyRejectedException() : base(MessagesList.AdoptApplicationHasAlreadyRejectedException.GetMessage().Message, MessagesList.AdoptApplicationHasAlreadyRejectedException.GetMessage().Code)
+            { }
         }
     }
 }
