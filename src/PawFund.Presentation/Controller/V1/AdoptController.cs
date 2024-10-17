@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static PawFund.Contract.Services.AdoptApplications.Filter;
 using static PawFund.Contract.Services.Products.Filter;
 
 namespace PawFund.Presentation.Controller.V1;
@@ -91,14 +92,14 @@ public class AdoptController : ApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllApplicationByAdopter(
+    [FromQuery] AdoptApplicationFilter filterParams,
     [FromQuery] int pageIndex = 1,
     [FromQuery] int pageSize = 10,
-    [FromQuery] bool isAscCreatedDate = false,
     [FromQuery] string[] selectedColumns = null)
     {
         //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
         var accountId = Guid.Parse("3F2A04BD-EAB9-4058-8C8A-242DFAAA1082");
-        var result = await Sender.Send(new Query.GetAllApplicationByAdopterQuery(accountId, pageIndex, pageSize, isAscCreatedDate, selectedColumns));
+        var result = await Sender.Send(new Query.GetAllApplicationByAdopterQuery(accountId, pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -108,12 +109,15 @@ public class AdoptController : ApiController
     [HttpGet("get_all_application_by_staff", Name = "GetAllApplicationByStaff")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllApplicationOnCat()
+    public async Task<IActionResult> GetAllApplicationByStaff(
+    [FromQuery] AdoptApplicationFilter filterParams,
+    [FromQuery] int pageIndex = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string[] selectedColumns = null)
     {
         //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
         var accountId = Guid.Parse("F78FDAE8-6955-4404-9803-FC3EDF96D029");
-        var result = await Sender.Send(new Query.GetApplicationByIdQuery(accountId));
-        if (result.IsFailure)
+        var result = await Sender.Send(new Query.GetAllApplicationByStaffQuery(accountId, pageIndex, pageSize, filterParams, selectedColumns)); if (result.IsFailure)
             return HandlerFailure(result);
 
         return Ok(result);
