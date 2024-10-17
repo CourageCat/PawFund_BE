@@ -17,7 +17,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
     private readonly IGoogleOAuthService _googleOAuthService;
     private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IEFUnitOfWork _efUnitOfWork;
-    private readonly IRepositoryBase<Account, Guid> _accountRepository;
+    private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
     private readonly IPublisher _publisher;
     private readonly ITokenGeneratorService _tokenGeneratorService;
 
@@ -25,7 +25,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
         (IGoogleOAuthService googleOAuthService,
         IDPUnitOfWork dPUnitOfWork,
         IEFUnitOfWork efUnitOfWork,
-        IRepositoryBase<Account, Guid> accountRepository,
+        IRepositoryBase<Domain.Entities.Account, Guid> accountRepository,
         IPublisher publisher,
         ITokenGeneratorService tokenGeneratorService)
     {
@@ -49,7 +49,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
         if (account == null)
         {
             // Create object account member
-            var accountMember = Account.CreateMemberAccountGoogle
+            var accountMember = Domain.Entities.Account.CreateMemberAccountGoogle
                 (googleUserInfo.Name, googleUserInfo.Name, googleUserInfo.Email);
             _accountRepository.Add(accountMember);
 
