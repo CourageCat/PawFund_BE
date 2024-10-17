@@ -24,6 +24,8 @@ public sealed class GetAllApplicationQueryByStaffHandler : IQueryHandler<Query.G
     {
         //Find List Adopt Application
         var listAdoptApplicationFoundPaging = await _dpUnitOfWork.AdoptRepositories.GetAllApplicationByStaffAsync(request.AccountId, request.PageIndex, request.PageSize, request.filterParams, request.SelectedColumns);
+
+        //Mapping Entities to DTO
         var listAdoptApplicationFoundDTO = new List<ApplicationResponse>();
         listAdoptApplicationFoundPaging.Items.ForEach(adoptApplication =>
         {
@@ -58,7 +60,8 @@ public sealed class GetAllApplicationQueryByStaffHandler : IQueryHandler<Query.G
                 }
             }));
         });
-        var result = new PagedResult<ApplicationResponse>(listAdoptApplicationFoundDTO, listAdoptApplicationFoundPaging.PageIndex, listAdoptApplicationFoundPaging.PageSize, listAdoptApplicationFoundPaging.TotalCount);
+        var result = new PagedResult<ApplicationResponse>(listAdoptApplicationFoundDTO, listAdoptApplicationFoundPaging.PageIndex, listAdoptApplicationFoundPaging.PageSize, listAdoptApplicationFoundPaging.TotalCount, 
+            listAdoptApplicationFoundPaging.TotalPages);
 
         //if (listAdoptApplicationFound.Count == 0)
         //{

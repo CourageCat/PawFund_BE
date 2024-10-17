@@ -23,8 +23,13 @@ public sealed class GetAllApplicationQueryByAdopterHandler : IQueryHandler<Query
     public async Task<Result<Success<PagedResult<ApplicationResponse>>>> Handle(Query.GetAllApplicationByAdopterQuery request, CancellationToken cancellationToken)
     {
         //Find List Adopt Application
-        var listAdoptApplicationFoundPaging = await _dpUnitOfWork.AdoptRepositories.GetAllApplicationsByAdopterAsync(request.AccountId,request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
+        var listAdoptApplicationFoundPaging = await _dpUnitOfWork.AdoptRepositories.GetAllApplicationsByAdopterAsync(request.AccountId, request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
         var listAdoptApplicationFoundDTO = new List<ApplicationResponse>();
+
+        //Count TotalPages
+        decimal totalPages = Math.Ceiling((decimal)(listAdoptApplicationFoundPaging.Items.Count / request.PageSize));
+
+        //Mapping Entities to DTO
         listAdoptApplicationFoundPaging.Items.ForEach(adoptApplication =>
         {
 
@@ -58,7 +63,8 @@ public sealed class GetAllApplicationQueryByAdopterHandler : IQueryHandler<Query
                 }
             }));
         });
-        var result = new PagedResult<ApplicationResponse>(listAdoptApplicationFoundDTO, listAdoptApplicationFoundPaging.PageIndex, listAdoptApplicationFoundPaging.PageSize, listAdoptApplicationFoundPaging.TotalCount);
+        var result = new PagedResult<ApplicationResponse>(listAdoptApplicationFoundDTO, listAdoptApplicationFoundPaging.PageIndex, listAdoptApplicationFoundPaging.PageSize, listAdoptApplicationFoundPaging.TotalCount,
+            listAdoptApplicationFoundPaging.TotalPages);
 
         //if (listAdoptApplicationFound.Count == 0)
         //{
@@ -100,7 +106,7 @@ public sealed class GetAllApplicationQueryByAdopterHandler : IQueryHandler<Query
         //});
         //var result = new Response.GetAllApplicationResponse(listAdoptApplicationFoundDTO);
         //Check if list empty then return empty message
-        if(result.Items.Count == 0)
+        if (result.Items.Count == 0)
         {
             return Result.Success(new Success<PagedResult<ApplicationResponse>>(MessagesList.AdoptApplicationEmptyException.GetMessage().Code, MessagesList.AdoptApplicationEmptyException.GetMessage().Message, result));
         }
