@@ -9,18 +9,20 @@ public sealed class PagedResult<T>
     public const int DefaultPageSize = 10;
     public const int DefaultPageIndex = 1;
 
-    public PagedResult(List<T> items, int pageIndex, int pageSize, int totalCount)
+    public PagedResult(List<T> items, int pageIndex, int pageSize, int totalCount, double totalPages)
     {
         Items = items;
         PageIndex = pageIndex;
         PageSize = pageSize;
         TotalCount = totalCount;
+        TotalPages = totalPages;
     }
 
     public List<T> Items { get; }
     public int PageIndex { get; }
     public int PageSize { get; }
     public int TotalCount { get; }
+    public double TotalPages { get; }
     public bool HasNextPage => PageIndex * PageSize < TotalCount;
     public bool HasPreviousPage => PageIndex > 1;
 
@@ -41,6 +43,8 @@ public sealed class PagedResult<T>
 
         var items = (await dbConnection.QueryAsync<T>(paginatedQuery, paginatedParameters)).ToList();
 
-        return new PagedResult<T>(items, pageIndex, pageSize, totalCount);
+        var totalPages = 0;
+
+        return new PagedResult<T>(items, pageIndex, pageSize, totalCount, totalPages);
     }
 }

@@ -17,7 +17,7 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
         private readonly IEFUnitOfWork _efUnitOfWork;
         private readonly IPublisher _publisher;
 
-        public ApproveVolunteerApplicationCommandHandler(IRepositoryBase<Domain.Entities.VolunteerApplicationDetail, Guid> volunteerApplicationDetailRepository, IRepositoryBase<Account, Guid> accountRepository, IEFUnitOfWork efUnitOfWork, IPublisher publisher)
+        public ApproveVolunteerApplicationCommandHandler(IRepositoryBase<Domain.Entities.VolunteerApplicationDetail, Guid> volunteerApplicationDetailRepository, IRepositoryBase<Domain.Entities.Account, Guid> accountRepository, IEFUnitOfWork efUnitOfWork, IPublisher publisher)
         {
             _volunteerApplicationDetailRepository = volunteerApplicationDetailRepository;
             _accountRepository = accountRepository;

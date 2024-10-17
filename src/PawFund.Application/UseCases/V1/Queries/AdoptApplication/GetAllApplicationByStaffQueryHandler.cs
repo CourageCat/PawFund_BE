@@ -11,25 +11,22 @@ using PawFund.Domain.Exceptions;
 using static PawFund.Contract.Services.AdoptApplications.Response;
 
 namespace PawFund.Application.UseCases.V1.Queries.Adopt;
-public sealed class GetAllApplicationQueryByAdopterHandler : IQueryHandler<Query.GetAllApplicationByAdopterQuery, Success<PagedResult<ApplicationResponse>>>
+public sealed class GetAllApplicationQueryByStaffHandler : IQueryHandler<Query.GetAllApplicationByStaffQuery, Success<PagedResult<ApplicationResponse>>>
 {
     private readonly IDPUnitOfWork _dpUnitOfWork;
 
-    public GetAllApplicationQueryByAdopterHandler(IDPUnitOfWork dpUnitOfWork)
+    public GetAllApplicationQueryByStaffHandler(IDPUnitOfWork dpUnitOfWork)
     {
         _dpUnitOfWork = dpUnitOfWork;
     }
 
-    public async Task<Result<Success<PagedResult<ApplicationResponse>>>> Handle(Query.GetAllApplicationByAdopterQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Success<PagedResult<ApplicationResponse>>>> Handle(Query.GetAllApplicationByStaffQuery request, CancellationToken cancellationToken)
     {
         //Find List Adopt Application
-        var listAdoptApplicationFoundPaging = await _dpUnitOfWork.AdoptRepositories.GetAllApplicationsByAdopterAsync(request.AccountId, request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
-        var listAdoptApplicationFoundDTO = new List<ApplicationResponse>();
-
-        //Count TotalPages
-        decimal totalPages = Math.Ceiling((decimal)(listAdoptApplicationFoundPaging.Items.Count / request.PageSize));
+        var listAdoptApplicationFoundPaging = await _dpUnitOfWork.AdoptRepositories.GetAllApplicationByStaffAsync(request.AccountId, request.PageIndex, request.PageSize, request.filterParams, request.SelectedColumns);
 
         //Mapping Entities to DTO
+        var listAdoptApplicationFoundDTO = new List<ApplicationResponse>();
         listAdoptApplicationFoundPaging.Items.ForEach(adoptApplication =>
         {
 
@@ -63,7 +60,7 @@ public sealed class GetAllApplicationQueryByAdopterHandler : IQueryHandler<Query
                 }
             }));
         });
-        var result = new PagedResult<ApplicationResponse>(listAdoptApplicationFoundDTO, listAdoptApplicationFoundPaging.PageIndex, listAdoptApplicationFoundPaging.PageSize, listAdoptApplicationFoundPaging.TotalCount,
+        var result = new PagedResult<ApplicationResponse>(listAdoptApplicationFoundDTO, listAdoptApplicationFoundPaging.PageIndex, listAdoptApplicationFoundPaging.PageSize, listAdoptApplicationFoundPaging.TotalCount, 
             listAdoptApplicationFoundPaging.TotalPages);
 
         //if (listAdoptApplicationFound.Count == 0)

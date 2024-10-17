@@ -32,5 +32,6 @@ namespace PawFund.Domain.Exceptions
             public UserHasAlreadyUnbannedException() : base(string.Format(MessagesList.UserHasAlreadyUnbannedException.GetMessage().Message), MessagesList.UserHasAlreadyUnbannedException.GetMessage().Code)
             { }
         }
+
     }
 }

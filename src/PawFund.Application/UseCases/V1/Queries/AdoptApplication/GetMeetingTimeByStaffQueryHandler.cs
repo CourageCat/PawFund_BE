@@ -32,11 +32,18 @@ public sealed class GetMeetingTimeByStaffQueryHandler : IQueryHandler<Query.GetM
         //Get branch name based on Staff Account
         var branchName = staffFound.Branches.FirstOrDefault().Name;
         var listMeetingTime = await _responseCacheService.GetListAsync<GetMeetingTimeByStaffResponseDTO.MeetingTimeDTO>(branchName);
+        //Check if list empty then return empty message
         if (listMeetingTime == null)
         {
+            //Create a new empty list meeting time
             listMeetingTime = new List<GetMeetingTimeByStaffResponseDTO.MeetingTimeDTO>();
+            var resultNotFound = new Response.GetMeetingTimeByStaffResponse(listMeetingTime);
+            //Return Empty Result
+            return Result.Success(new Success<Response.GetMeetingTimeByStaffResponse>(MessagesList.AdoptNotFoundAnyMeetingTimeException.GetMessage().Code, MessagesList.AdoptNotFoundAnyMeetingTimeException.GetMessage().Message, resultNotFound));
         }
-        var result = new Response.GetMeetingTimeByStaffResponse(listMeetingTime);
-        return Result.Success(new Success<Response.GetMeetingTimeByStaffResponse>(MessagesList.AdoptGetAdoptApplicationSuccess.GetMessage().Code, MessagesList.AdoptGetAdoptApplicationSuccess.GetMessage().Message, result));
+
+        //Return List Result
+        var result = new Response.GetMeetingTimeByStaffResponse(listMeetingTime.Where(x => x.MeetingTime > DateTime.Now).ToList()); 
+        return Result.Success(new Success<Response.GetMeetingTimeByStaffResponse>(MessagesList.AdoptGetAllMeetingTimeSuccess.GetMessage().Code, MessagesList.AdoptGetAllMeetingTimeSuccess.GetMessage().Message, result));
     }
 }

@@ -100,14 +100,18 @@ public enum MessagesList
 
     [Message("This application has already rejected", "adopt_noti_exception_06")]
     AdoptApplicationHasAlreadyRejectedException,
-    [Message("This user has already banned", "change_status_noti_exception_01")]
-    UserHasAlreadyBannedException,
-
-    [Message("This user has already unbanned", "change_status_noti_exception_02")]
-    UserHasAlreadyUnbannedException,
 
     [Message("Can not find any meeting time", "adopt_noti_exception_07")]
     AdoptNotFoundAnyMeetingTimeException,
+
+    [Message("This user has already banned.", "change_status_noti_exception_01")]
+    UserHasAlreadyBannedException,
+
+    [Message("This user has already unbanned.", "change_status_noti_exception_02")]
+    UserHasAlreadyUnbannedException,
+
+    [Message("User update profile successfully.", "account_noti_01")]
+    UserUpdateProfileSuccess,
 
     [Message("The payment bank has been created successfully.", "payment_noti_01")]
     PaymentSucccess,

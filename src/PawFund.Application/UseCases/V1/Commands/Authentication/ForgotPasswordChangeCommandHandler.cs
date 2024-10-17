@@ -17,14 +17,14 @@ public sealed class ForgotPasswordChangeCommandHandler : ICommandHandler<Command
 {
     private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IEFUnitOfWork _efUnitOfWork;
-    private readonly IRepositoryBase<Account, Guid> _accountRepository;
+    private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
     private readonly IPasswordHashService _passwordHashService;
     private readonly IPublisher _publisher;
     private readonly IResponseCacheService _responseCacheService;
     public ForgotPasswordChangeCommandHandler
         (IDPUnitOfWork dpUnitOfWork,
         IEFUnitOfWork efUnitOfWork,
-        IRepositoryBase<Account, Guid> accountRepository,
+        IRepositoryBase<Domain.Entities.Account, Guid> accountRepository,
         IPasswordHashService passwordHashService,
         IPublisher publisher,
         IResponseCacheService responseCacheService)
