@@ -11,7 +11,7 @@ namespace PawFund.Contract.Services.Accounts
 {
     public static class Command
     {
-        public record UpdateUserCommand(Guid ID, string FirstName, string LastName, IFormFile? AvatarFile, string Password) : Abstractions.Message.ICommand;
+        public record UpdateUserCommand(Guid ID, string FirstName, string LastName, IFormFile? AvatarFile) : Abstractions.Message.ICommand;
 
     }
 }
