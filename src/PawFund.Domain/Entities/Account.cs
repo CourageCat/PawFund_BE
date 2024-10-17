@@ -1,6 +1,7 @@
 ﻿using PawFund.Contract.Enumarations.Authentication;
 using PawFund.Domain.Abstractions.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Linq;
 
 namespace PawFund.Domain.Entities;
 
@@ -69,5 +70,14 @@ public class Account : DomainEntity<Guid>
     {
         string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
         return new Account(firstName, lastName, email, "", false, "", avatarUrl, null, LoginType.Google, RoleType.Member);
+    }
+
+    public void UpdateProfileUser (string firstName, string lastName, string? avatarUrl, bool isDeleted)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        AvatarUrl = avatarUrl;
+        ModifiedDate = DateTime.Now;
+        IsDeleted = isDeleted;
     }
 }

@@ -12,9 +12,9 @@ namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication;
 public class UpdateMeetingTimeCommandHandler : ICommandHandler<Command.UpdateMeetingTimeCommand>
 {
     private readonly IResponseCacheService _responseCacheService;
-    private readonly IRepositoryBase<Account, Guid> _accountRepository;
+    private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
 
-    public UpdateMeetingTimeCommandHandler(IResponseCacheService responseCacheService, IRepositoryBase<Account, Guid> accountRepository)
+    public UpdateMeetingTimeCommandHandler(IResponseCacheService responseCacheService, IRepositoryBase<Domain.Entities.Account, Guid> accountRepository)
     {
         _responseCacheService = responseCacheService;
         _accountRepository = accountRepository;
