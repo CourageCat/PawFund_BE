@@ -35,13 +35,13 @@ public sealed class GetMeetingTimeByAdopterQueryHandler : IQueryHandler<Query.Ge
         //Check if list empty then return empty message
         if (listMeetingTime == null)
         {
+            //Create a new empty list meeting time
             var listMeetingTimeNotFound = new List<DateTime>();
             var resultNotFound = new Response.GetMeetingTimeByAdopterResponse(listMeetingTimeNotFound);
             //Return Empty Result
             return Result.Success(new Success<Response.GetMeetingTimeByAdopterResponse>(MessagesList.AdoptNotFoundAnyMeetingTimeException.GetMessage().Code, MessagesList.AdoptNotFoundAnyMeetingTimeException.GetMessage().Message, resultNotFound));
         }
-        listMeetingTime.Where(x => x.NumberOfStaffsFree > 0);
-        var result = new Response.GetMeetingTimeByAdopterResponse(listMeetingTime.Where(x => x.NumberOfStaffsFree > 0).Select(x => x.MeetingTime).ToList());
+        var result = new Response.GetMeetingTimeByAdopterResponse(listMeetingTime.Where(x => x.NumberOfStaffsFree > 0 && x.MeetingTime > DateTime.Now).Select(x => x.MeetingTime).ToList());
         return Result.Success(new Success<Response.GetMeetingTimeByAdopterResponse>(MessagesList.AdoptGetAllMeetingTimeSuccess.GetMessage().Code, MessagesList.AdoptGetAllMeetingTimeSuccess.GetMessage().Message, result));
     }
 }

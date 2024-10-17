@@ -29,7 +29,7 @@ public class AdoptController : ApiController
     public async Task<IActionResult> CreateAdoptApplication([FromBody] CreateAdoptApplicationRequestDTO CreateAdoptApplication)
     {
         //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var accountId = Guid.Parse("3F2A04BD-EAB9-4058-8C8A-242DFAAA1082");
+        var accountId = Guid.Parse("C246952C-780A-4E1A-9E3B-C69E7D628830");
         var result = await Sender.Send(new Command.CreateAdoptApplicationCommand(CreateAdoptApplication.Description, accountId, CreateAdoptApplication.CatId));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -98,7 +98,7 @@ public class AdoptController : ApiController
     [FromQuery] string[] selectedColumns = null)
     {
         //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var accountId = Guid.Parse("3F2A04BD-EAB9-4058-8C8A-242DFAAA1082");
+        var accountId = Guid.Parse("C246952C-780A-4E1A-9E3B-C69E7D628830");
         var result = await Sender.Send(new Query.GetAllApplicationByAdopterQuery(accountId, pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -116,7 +116,7 @@ public class AdoptController : ApiController
     [FromQuery] string[] selectedColumns = null)
     {
         //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var accountId = Guid.Parse("F78FDAE8-6955-4404-9803-FC3EDF96D029");
+        var accountId = Guid.Parse("CCDA0DA8-6EBE-401A-9611-F055D43AF2F1");
         var result = await Sender.Send(new Query.GetAllApplicationByStaffQuery(accountId, pageIndex, pageSize, filterParams, selectedColumns)); if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -130,7 +130,7 @@ public class AdoptController : ApiController
     public async Task<IActionResult> UpdateMeetingTime([FromBody] List<UpdateMeetingTimeRequestDTO.MeetingTimeDTO> listMeetingTime)
     {
         //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var accountId = Guid.Parse("F78FDAE8-6955-4404-9803-FC3EDF96D029");
+        var accountId = Guid.Parse("CCDA0DA8-6EBE-401A-9611-F055D43AF2F1");
         var result = await Sender.Send(new Command.UpdateMeetingTimeCommand(accountId, listMeetingTime));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -180,7 +180,7 @@ public class AdoptController : ApiController
     public async Task<IActionResult> GetMeetingTimeByStaff()
     {
         //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var accountId = Guid.Parse("F78FDAE8-6955-4404-9803-FC3EDF96D029");
+        var accountId = Guid.Parse("CCDA0DA8-6EBE-401A-9611-F055D43AF2F1");
         var result = await Sender.Send(new Query.GetMeetingTimeByStaffQuery(accountId));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -188,17 +188,17 @@ public class AdoptController : ApiController
         return Ok(result);
     }
 
-    //[HttpPut("choose_meeting_time", Name = "ChooseMeetingTime")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> ChooseMeetingTime()
-    //{
-    //    var result = await Sender.Send(new Command.ChooseMeetingTimeCommand(Id));
-    //    if (result.IsFailure)
-    //        return HandlerFailure(result);
+    [HttpPut("choose_meeting_time", Name = "ChooseMeetingTime")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ChooseMeetingTime(Command.ChooseMeetingTimeCommand ChooseMeetingTime)
+    {
+        var result = await Sender.Send(ChooseMeetingTime);
+        if (result.IsFailure)
+            return HandlerFailure(result);
 
-    //    return Ok(result);
-    //}
+        return Ok(result);
+    }
 
     //[HttpPut("complete_adoption", Name = "CompleteAdoption")]
     //[ProducesResponseType(StatusCodes.Status200OK)]

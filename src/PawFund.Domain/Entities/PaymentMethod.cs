@@ -12,7 +12,6 @@ namespace PawFund.Domain.Entities
         public string MethodName { get; set; } = string.Empty;
         public string MethodDescription { get; set; } = string.Empty;
         public virtual ICollection<Donation> Donations { get; set; }
-        public virtual ICollection<DonationEvent> DonationEvents { get; set; }
 
     }
 }
