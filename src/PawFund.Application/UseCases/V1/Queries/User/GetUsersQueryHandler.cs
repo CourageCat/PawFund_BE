@@ -37,25 +37,6 @@ namespace PawFund.Application.UseCases.V1.Queries.User
             List<GetUserAccount.AccountDto> listAccountDto = new List<GetUserAccount.AccountDto>();
             var listUser = await _dPUnitOfWork.AccountRepositories.GetListUser() ?? throw new UserException.ListUserNotFoundException();
 
-            //if(listUser != null)
-            //{
-            //    foreach (var account in listUser)
-            //    {
-            //        listAccountDto.Add(new GetUserAccount.AccountDto
-            //        {
-            //            Id = account.Id,
-            //            FirstName = account.FirstName,
-            //            LastName = account.LastName,
-            //            Email = account.Email,
-            //            PhoneNumber = account.PhoneNumber,
-            //        });
-            //    }
-            //}
-
-            //var result = new Response.GetListUserResponse(listAccountDto);
-            //var result = new PagedResult<GetListUserResponse> { listAccountDto };
-            //return Result.Success(result);
-
             var accountPagedResult = await _accountRepository.GetPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
             var result = _mapper.Map<PagedResult<UsersResponse>>(accountPagedResult);
             return Result.Success(result);

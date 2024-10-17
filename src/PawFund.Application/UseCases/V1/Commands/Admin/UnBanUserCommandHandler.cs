@@ -21,7 +21,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Admin
         private readonly IEFUnitOfWork _unitOfWork;
         private readonly IPublisher _publisher;
 
-        public UnBanUserCommandHandler(IRepositoryBase<Account, Guid> adminRepository, IEFUnitOfWork unitOfWork, IPublisher publisher)
+        public UnBanUserCommandHandler(IRepositoryBase<Domain.Entities.Account, Guid> adminRepository, IEFUnitOfWork unitOfWork, IPublisher publisher)
         {
             _adminRepository = adminRepository;
             _unitOfWork = unitOfWork;
