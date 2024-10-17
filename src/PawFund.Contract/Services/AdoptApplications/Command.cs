@@ -20,7 +20,7 @@ public static class Command
         (Guid AdoptId)
         : ICommand;
 
-    public record UpdateMeetingTimeCommand(Guid AdoptId, List<UpdateMeetingTimeRequestDTO.MeetingTimeDTO> ListTime) : ICommand;
+    public record UpdateMeetingTimeCommand(Guid AccountId, List<UpdateMeetingTimeRequestDTO.MeetingTimeDTO> ListTime) : ICommand;
 
     public record ApplyAdoptApplicationCommand(Guid AdoptId) : ICommand;
     public record RejectAdoptApplicationCommand(Guid AdoptId, string ReasonReject) : ICommand;

@@ -25,13 +25,13 @@ namespace PawFund.Domain.Exceptions
             { }
         }
 
-        public class AdoptApplicationHasAlreadyApprovedException : NotFoundException
+        public class AdoptApplicationHasAlreadyApprovedException : BadRequestException
         {
             public AdoptApplicationHasAlreadyApprovedException() : base(MessagesList.AdoptApplicationHasAlreadyApprovedException.GetMessage().Message, MessagesList.AdoptApplicationHasAlreadyApprovedException.GetMessage().Code)
             { }
         }
 
-        public class AdoptApplicationHasAlreadyRejectedException : NotFoundException
+        public class AdoptApplicationHasAlreadyRejectedException : BadRequestException
         {
             public AdoptApplicationHasAlreadyRejectedException() : base(MessagesList.AdoptApplicationHasAlreadyRejectedException.GetMessage().Message, MessagesList.AdoptApplicationHasAlreadyRejectedException.GetMessage().Code)
             { }

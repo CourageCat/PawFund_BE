@@ -51,6 +51,10 @@ public class Account : DomainEntity<Guid>
     public virtual ICollection<AdoptPetApplication> AdoptPetApplication { get; set; }
 
     public virtual ICollection<HistoryCat> HistoryCats { get; set; }
+    public virtual ICollection<Donation> Donations { get; set; }
+    public virtual ICollection<DonationEvent> DonationEvents { get; set; }
+
+
 
     public virtual ICollection<VolunteerApplicationDetail> VolunteerApplicationDetails { get; set; }
     

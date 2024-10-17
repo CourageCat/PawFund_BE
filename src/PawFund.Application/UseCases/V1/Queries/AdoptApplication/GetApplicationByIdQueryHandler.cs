@@ -7,21 +7,23 @@ using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Entities;
 using PawFund.Domain.Exceptions;
 using PawFund.Contract.DTOs.Adopt.Response;
+using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.Enumarations.MessagesList;
 
 
 namespace PawFund.Application.UseCases.V1.Commands.Adopt;
-public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetApplicationByIdQuery, Response.GetApplicationByIdResponse>
+public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetApplicationByIdQuery, Success<Response.GetApplicationByIdResponse>>
 {
     private readonly IRepositoryBase<AdoptPetApplication, Guid> _adoptRepository;
     private readonly IDPUnitOfWork _dpUnitOfWork;
 
     public GetApplicationByIdQueryHandler(IRepositoryBase<AdoptPetApplication, Guid> adoptRepository, IDPUnitOfWork dPUnitOfWork)
-    {
+    {    
         _adoptRepository = adoptRepository;
         _dpUnitOfWork = dPUnitOfWork;
     }
 
-    public async Task<Result<Response.GetApplicationByIdResponse>> Handle(Query.GetApplicationByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Success<Response.GetApplicationByIdResponse>>> Handle(Query.GetApplicationByIdQuery request, CancellationToken cancellationToken)
     {
         //Check Application found
         var applicationById = await _dpUnitOfWork.AdoptRepositories.GetByIdAsync(request.Id);
@@ -43,7 +45,7 @@ public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetAppl
             new GetApplicationByIdResponseDTO.CatDto
             {
                 Id = applicationById.Cat.Id,
-                Sex = applicationById.Cat.Sex,
+                //Sex = applicationById.Cat.Sex,
                 Name = applicationById.Cat.Name,
                 Age = applicationById.Cat.Age,
                 Breed = applicationById.Cat.Breed,
@@ -53,7 +55,7 @@ public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetAppl
             });
 
         //Return result
-        return Result.Success(result);
+        return Result.Success(new Success<Response.GetApplicationByIdResponse>(MessagesList.AdoptGetAdoptApplicationSuccess.GetMessage().Code, MessagesList.AdoptGetAdoptApplicationSuccess.GetMessage().Message, result));
     }
 
 

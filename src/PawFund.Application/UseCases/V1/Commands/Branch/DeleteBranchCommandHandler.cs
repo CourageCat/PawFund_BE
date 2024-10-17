@@ -29,7 +29,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Branch;
             {
                 throw new BranchException.BranchNotFoundException(request.Id);
             }
-            branchFound.UpdateBranch(branchFound.Name, branchFound.PhoneNumberOfBranch, branchFound.EmailOfBranch, branchFound.Description, branchFound.NumberHome, branchFound.StreetName, branchFound.Ward, branchFound.District, branchFound.Province, branchFound.PostalCode, (DateTime)branchFound.CreatedDate, DateTime.Now, true);
+            branchFound.UpdateBranch(branchFound.Name, branchFound.PhoneNumberOfBranch, branchFound.EmailOfBranch, branchFound.Description, branchFound.NumberHome, branchFound.StreetName, branchFound.Ward, branchFound.District, branchFound.Province, branchFound.PostalCode, branchFound.AccountId, (DateTime)branchFound.CreatedDate, DateTime.Now, false);
             _branchRepository.Update(branchFound);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
             return Result.Success("Delete Branch successfully.");

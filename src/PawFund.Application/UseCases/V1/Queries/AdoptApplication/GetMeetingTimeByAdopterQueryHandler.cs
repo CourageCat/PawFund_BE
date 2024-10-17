@@ -1,0 +1,41 @@
+﻿using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Abstractions.Services;
+using PawFund.Contract.DTOs.Adopt.Response;
+using PawFund.Contract.Services.AdoptApplications;
+using PawFund.Contract.Shared;
+using PawFund.Domain.Abstractions.Repositories;
+using PawFund.Domain.Entities;
+using PawFund.Domain.Exceptions;
+
+namespace PawFund.Application.UseCases.V1.Queries.AdoptApplication;
+public sealed class GetMeetingTimeByAdopterQueryHandler : IQueryHandler<Query.GetMeetingTimeByAdopterQuery, Response.GetMeetingTimeByAdopterResponse>
+{
+    private readonly IResponseCacheService _responseCacheService;
+    private readonly IRepositoryBase<AdoptPetApplication, Guid> _adoptRepository;
+
+    public GetMeetingTimeByAdopterQueryHandler(IResponseCacheService responseCacheService, IRepositoryBase<AdoptPetApplication, Guid> adoptrepository)
+    {
+        _responseCacheService = responseCacheService;
+        _adoptRepository = adoptrepository;
+    }
+
+    public async Task<Result<Response.GetMeetingTimeByAdopterResponse>> Handle(Query.GetMeetingTimeByAdopterQuery request, CancellationToken cancellationToken)
+    {
+        //Find Adopt Application
+        var applicationFound = await _adoptRepository.FindByIdAsync(request.AdoptId);
+        if (applicationFound == null)
+        {
+            throw new AdoptApplicationException.AdoptApplicationNotFoundException(request.AdoptId);
+        }
+        //Get branch name based on adopt application
+        var branchName = applicationFound.Cat.Branch.Name;
+        var listMeetingTime = await _responseCacheService.GetListAsync<GetMeetingTimeByAdopterResponseDTO.MeetingTimeDTO>(branchName);
+        if (listMeetingTime == null)
+        {
+            listMeetingTime = new List<GetMeetingTimeByAdopterResponseDTO.MeetingTimeDTO>();
+        }
+        listMeetingTime.Where(x => x.NumberOfStaffsFree > 0);
+        var result = new Response.GetMeetingTimeByAdopterResponse(listMeetingTime.Where(x => x.NumberOfStaffsFree > 0).Select(x => x.MeetingTime).ToList());
+        return Result.Success(result);
+    }
+}

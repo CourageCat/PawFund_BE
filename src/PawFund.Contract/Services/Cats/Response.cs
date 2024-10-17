@@ -1,4 +1,6 @@
-﻿namespace PawFund.Contract.Services.Cats;
+﻿using PawFund.Contract.Enumarations.Cat;
+
+namespace PawFund.Contract.Services.Cats;
 
 public static class Response
 {

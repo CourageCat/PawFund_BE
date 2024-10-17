@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PawFund.Presentation.Controller.V1
+namespace PawFund.Contract.Services.Donors
 {
-    internal class PetController
+    public class Response
     {
     }
 }
