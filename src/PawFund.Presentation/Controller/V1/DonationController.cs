@@ -1,33 +1,55 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PawFund.Contract.DTOs.PaymentDTOs;
+using PawFund.Contract.Services.Donate;
 using PawFund.Presentation.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+namespace PawFund.Presentation.Controller.V1;
 
-namespace PawFund.Presentation.Controller.V1
+public class DonationController : ApiController
 {
-    public class DonationController : ApiController
+    public DonationController(ISender sender) : base(sender)
     {
-        public DonationController(ISender sender) : base(sender)
-        {
-        }
+    }
 
-        //[HttpPost("create_donation", Name = "CreateDonation")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //public async Task<IActionResult> CreateDonation([FromForm] decimal amount, string description, Guid paymentMethodId)
-        //{
-        //    var userId = User.FindFirstValue("UserId");
-        //    var result = await Sender.Send(new(Contract.Services.Donors.Command.CreateDonationCommand(amount, description, paymentMethodId, Guid.Parse(userId));
-        //    if (result.IsFailure)
-        //        return HandlerFailure(result);
+    [Authorize(Policy = "MemberPolicy")]
+    [HttpPost("donate-banking", Name = "DonateBanking")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DonateBanking([FromBody] CreatePaymentRequestDTO request)
+    {
+        var userId = User.FindFirstValue("UserId");
 
-        //    return Ok(result);
-        //}
+        var result = await Sender.Send(new Command.CreateDonationBankingCommand(Guid.Parse(userId), request.Amount, request.Description));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpGet("success-donate-banking", Name = "SuccessDonateBanking")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SuccessDonateBanking([FromQuery] long orderId)
+    {
+        var result = await Sender.Send(new Query.SuccessDonateBankingQuery(orderId));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Redirect(result.Value.SuccessUrl);
+    }
+
+    [HttpGet("fail-donate-banking", Name = "FailDonateBanking")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> FailDonateBanking([FromQuery] long orderId)
+    {
+        var result = await Sender.Send(new Query.FailDonateBankingQuery(orderId));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Redirect(result.Value.FailUrl);
     }
 }

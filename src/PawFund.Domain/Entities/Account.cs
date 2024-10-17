@@ -1,7 +1,6 @@
 ﻿using PawFund.Contract.Enumarations.Authentication;
 using PawFund.Domain.Abstractions.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Xml.Linq;
 
 namespace PawFund.Domain.Entities;
 
@@ -53,8 +52,6 @@ public class Account : DomainEntity<Guid>
 
     public virtual ICollection<HistoryCat> HistoryCats { get; set; }
     public virtual ICollection<Donation> Donations { get; set; }
-
-
 
     public virtual ICollection<VolunteerApplicationDetail> VolunteerApplicationDetails { get; set; }
     

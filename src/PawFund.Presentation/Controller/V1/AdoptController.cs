@@ -5,14 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using PawFund.Contract.DTOs.Adopt.Request;
 using PawFund.Contract.Services.AdoptApplications;
 using PawFund.Presentation.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using static PawFund.Contract.Services.AdoptApplications.Filter;
-using static PawFund.Contract.Services.Products.Filter;
 
 namespace PawFund.Presentation.Controller.V1;
 
@@ -22,14 +16,13 @@ public class AdoptController : ApiController
     {
     }
 
-    //[Authorize]
+    [Authorize(Policy = "MemberPolicy")]
     [HttpPost("create_adopt_application", Name = "CreateAdoptApplication")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateAdoptApplication([FromBody] CreateAdoptApplicationRequestDTO CreateAdoptApplication)
     {
-        //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var accountId = Guid.Parse("C246952C-780A-4E1A-9E3B-C69E7D628830");
+        var accountId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Command.CreateAdoptApplicationCommand(CreateAdoptApplication.Description, accountId, CreateAdoptApplication.CatId));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -88,6 +81,8 @@ public class AdoptController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Policy = "MemberPolicy")]
+
     [HttpGet("get_all_application_by_adopter", Name = "GetAllApplicationByAdopter")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -97,8 +92,7 @@ public class AdoptController : ApiController
     [FromQuery] int pageSize = 10,
     [FromQuery] string[] selectedColumns = null)
     {
-        //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var accountId = Guid.Parse("C246952C-780A-4E1A-9E3B-C69E7D628830");
+        var accountId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Query.GetAllApplicationByAdopterQuery(accountId, pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -115,22 +109,20 @@ public class AdoptController : ApiController
     [FromQuery] int pageSize = 10,
     [FromQuery] string[] selectedColumns = null)
     {
-        //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var accountId = Guid.Parse("CCDA0DA8-6EBE-401A-9611-F055D43AF2F1");
+        var accountId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Query.GetAllApplicationByStaffQuery(accountId, pageIndex, pageSize, filterParams, selectedColumns)); if (result.IsFailure)
             return HandlerFailure(result);
 
         return Ok(result);
     }
 
-    //[Authorize]
+    [Authorize(Policy = "StaffPolicy")]
     [HttpPut("update_meeting_time", Name = "UpdateMeetingTime")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateMeetingTime([FromBody] List<UpdateMeetingTimeRequestDTO.MeetingTimeDTO> listMeetingTime)
     {
-        //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var accountId = Guid.Parse("CCDA0DA8-6EBE-401A-9611-F055D43AF2F1");
+        var accountId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Command.UpdateMeetingTimeCommand(accountId, listMeetingTime));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -173,14 +165,14 @@ public class AdoptController : ApiController
 
         return Ok(result);
     }
-    //[Authorize]
+
+    [Authorize(Policy = "StaffPolicy")]
     [HttpGet("get_meeting_time_by_staff", Name = "GetMeetingTimeByStaff")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetMeetingTimeByStaff()
     {
-        //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var accountId = Guid.Parse("CCDA0DA8-6EBE-401A-9611-F055D43AF2F1");
+        var accountId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Query.GetMeetingTimeByStaffQuery(accountId));
         if (result.IsFailure)
             return HandlerFailure(result);

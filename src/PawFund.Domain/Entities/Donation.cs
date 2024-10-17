@@ -1,26 +1,36 @@
-﻿using PawFund.Domain.Abstractions.Entities;
-using System;
-using System.Collections.Generic;
+﻿using PawFund.Contract.Enumarations.PaymentMethod;
+using PawFund.Domain.Abstractions.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PawFund.Domain.Entities
 {
     public class Donation : DomainEntity<Guid>
     {
-        public decimal Amount { get; set; } = 0;
-        public string Description { get; set; } = string.Empty;
+        public Donation() { }
+        public Donation(int amount, string description, long orderId, Guid accountId, PaymentMethodType paymentMethodId)
+        {
+            Amount = amount;
+            Description = description;
+            OrderId = orderId;
+            AccountId = accountId;
+            PaymentMethodId = paymentMethodId;
+        }
 
-        public bool Status { get; set; } = false;
+        public int Amount { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public long OrderId { get; set; }
 
         [ForeignKey("Donation_Account")]
         public Guid AccountId { get; set; }
         public virtual Account Account { get; set; }
 
         [ForeignKey("Donation_PaymentMethod")]
-        public Guid PaymentMethodId { get; set; }
+        public PaymentMethodType PaymentMethodId { get; set; }
         public virtual PaymentMethod PaymentMethod { get; set; }
+       
+        public static Donation CreateDonationBanking(int amount, string description, long orderId, Guid accountId)
+        {
+            return new Donation(amount, description, orderId, accountId, PaymentMethodType.Banking);
+        }
     }
 }

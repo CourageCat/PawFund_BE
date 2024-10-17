@@ -2,8 +2,10 @@
 
 public class ClientSetting
 {
-    public const string SectionName = "RedisConfiguration";
-    public bool Enabled { get; set; }
-    public string ConnectionString { get; set; }
+    public const string SectionName = "ClientConfiguration";
+    public string Url { get; set; }
+    public string VerifyEmail { get; set; }
+    public string DonateSuccess { get; set; }
+    public string DonateFail { get; set; }
 }
 

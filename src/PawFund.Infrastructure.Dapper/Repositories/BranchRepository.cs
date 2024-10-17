@@ -4,11 +4,6 @@ using Microsoft.Extensions.Configuration;
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PawFund.Infrastructure.Dapper.Repositories;
 
