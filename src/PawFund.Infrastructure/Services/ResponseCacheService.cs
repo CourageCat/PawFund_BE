@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PawFund.Contract.Abstractions.Services;
 using StackExchange.Redis;
+using System.Threading;
 
 namespace PawFund.Infrastructure.Services;
 
@@ -30,6 +31,17 @@ public class ResponseCacheService : IResponseCacheService
         return string.IsNullOrEmpty(cacheResponse) ? null : cacheResponse;
     }
 
+    public async Task<List<T>> GetListAsync<T>(string cacheKey)
+    {
+        var database = _connectionMultiplexer.GetDatabase();
+        var serializedList = await database.StringGetAsync(cacheKey);
+
+        if (serializedList.IsNullOrEmpty)
+            return null;
+
+        return JsonConvert.DeserializeObject<List<T>>(serializedList);
+    }
+
     public async Task SetCacheResponseAsync(string cacheKey, object response, TimeSpan timeOut)
     {
         if (response == null) return;
@@ -41,5 +53,19 @@ public class ResponseCacheService : IResponseCacheService
         {
             AbsoluteExpirationRelativeToNow = timeOut,
         });
+    }
+
+    public async Task SetListAsync<T>(string cacheKey, List<T> list, TimeSpan timeOut)
+    {
+        if (list == null || !list.Any()) return;
+
+        var database = _connectionMultiplexer.GetDatabase();
+        var serializedList = JsonConvert.SerializeObject(list, new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        });
+
+        // Store the serialized list as a string in Redis
+        await database.StringSetAsync(cacheKey, serializedList, timeOut);
     }
 }

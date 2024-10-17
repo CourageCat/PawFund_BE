@@ -13,12 +13,12 @@ namespace PawFund.Application.UseCases.V1.Commands.Event;
 
 public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEventCommand>
 {
-    private readonly IRepositoryBase<PawFund.Domain.Entities.VolunteerApplicationDetail, Guid> _branchRepository;
+    private readonly IRepositoryBase<PawFund.Domain.Entities.Branch, Guid> _branchRepository;
     private readonly IRepositoryBase<PawFund.Domain.Entities.Event, Guid> _eventRepository;
     private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IDPUnitOfWork _dPUnitOfWork;
 
-    public CreateEventCommandHandler(IRepositoryBase<VolunteerApplicationDetail, Guid> branchRepository, IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dPUnitOfWork)
+    public CreateEventCommandHandler(IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository, IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dPUnitOfWork)
     {
         _branchRepository = branchRepository;
         _eventRepository = eventRepository;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.AdoptApplications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
@@ -29,28 +30,31 @@ public sealed class CreateAdoptApplicationCommandHandler : ICommandHandler<Comma
 
     public async Task<Result> Handle(Command.CreateAdoptApplicationCommand request, CancellationToken cancellationToken)
     {
+        //Check User found
         var userFound = await _accountRepository.FindByIdAsync(request.AccountId);
         if (userFound == null)
         {
             throw new AuthenticationException.UserNotFoundByIdException(request.AccountId);
         }
+        //Check Cat found
         var catFound = await _catRepository.FindByIdAsync(request.CatId);
-        if(catFound == null)
+        if (catFound == null)
         {
             throw new CatException.CatNotFoundException(request.CatId);
         }
-        var hasAccountRegisteredWithCat = await _dbUnitOfWork.AdoptRepositories.HasAccountRegisterdWithPet(request.AccountId, request.CatId);
+        //Check Account has already register with Cat
+        var hasAccountRegisteredWithCat = await _dbUnitOfWork.AdoptRepositories.HasAccountRegisterdWithPetAsync(request.AccountId, request.CatId);
         if (hasAccountRegisteredWithCat)
         {
             throw new AdoptApplicationException.AdopterHasAlreadyRegisteredWithCatException();
         }
-
-        var adoptApplication = AdoptPetApplication.CreateAdoptPetApplication(null, 0, false, request.Description, request.AccountId, request.CatId, DateTime.Now, DateTime.Now, false);
+        //Create Adopt Pet Application
+        var adoptApplication = AdoptPetApplication.CreateAdoptPetApplication(null, null, 0, false, request.Description, request.AccountId, request.CatId, DateTime.Now, DateTime.Now, false);
 
         _adoptApplicationRepository.Add(adoptApplication);
-
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-        return Result.Success("Create Adopt Pet Application Successfully.");
+        //Return result
+        return Result.Success(new Success(MessagesList.AdoptCreateAdoptApplicationSuccess.GetMessage().Code, MessagesList.AdoptCreateAdoptApplicationSuccess.GetMessage().Message));
     }
 }
 

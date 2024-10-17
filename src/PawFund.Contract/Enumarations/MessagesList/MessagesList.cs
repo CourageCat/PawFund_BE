@@ -55,4 +55,57 @@ public enum MessagesList
 
     [Message("Please go to profile to add missing information", "auth_noti_10")]
     AuthRegisterGoogleSuccess,
+
+    [Message("Create Adopt Application Successfully", "adopt_noti_success_01")]
+    AdoptCreateAdoptApplicationSuccess,
+
+    [Message("Update Adopt Application Successfully", "adopt_noti_success_02")]
+    AdoptUpdateApplicationSuccess,
+
+    [Message("Delete Adopt Application Successfully", "adopt_noti_success_03")]
+    AdoptDeleteApplicationSuccess,
+
+    [Message("Approve Adopt Application Successfully", "adopt_noti_success_04")]
+    AdoptApproveApplicationSuccess,
+
+    [Message("Reject Adopt Application Successfully", "adopt_noti_success_05")]
+    AdoptRejectApplicationSuccess,
+
+    [Message("All Meeting Times", "adopt_noti_success_06")]
+    AdoptGetAllMeetingTimeSuccess,
+
+    [Message("Update meeting time successfully", "adopt_noti_exception_07")]
+    AdoptUpdateMeetingTimeSuccess,
+
+    [Message("All Adopt Applications", "adopt_noti_success_09")]
+    AdoptGetAdoptApplicationsSuccess,
+
+    [Message("Adopt Application Found", "adopt_noti_success_10")]
+    AdoptGetAdoptApplicationSuccess,
+
+    [Message("Can not found application with ID: {0}", "adopt_noti_exception_01")]
+    AdoptApplicationNotFoundException,
+
+    [Message("This adopt application does not belong to this adopter!", "adopt_noti_exception_02")]
+    AdoptApplicationNotBelongToAdopterException,
+
+    [Message("This adopter has already registered adopt application with this cat!", "adopt_noti_exception_03")]
+    AdoptAdopterHasAlreadyRegisteredWithCatException,
+
+    [Message("Can not found any adopt applications!", "adopt_noti_exception_04")]
+    AdoptApplicationEmptyException,
+
+    [Message("This application has already approved", "adopt_noti_exception_05")]
+    AdoptApplicationHasAlreadyApprovedException,
+
+    [Message("This application has already rejected", "adopt_noti_exception_06")]
+    AdoptApplicationHasAlreadyRejectedException,
+    [Message("This user has already banned", "change_status_noti_exception_01")]
+    UserHasAlreadyBannedException,
+
+    [Message("This user has already unbanned", "change_status_noti_exception_02")]
+    UserHasAlreadyUnbannedException,
+    [Message("Can not find any meeting time", "adopt_noti_exception_07")]
+    AdoptNotFoundAnyMeetingTimeException,
+
 }
