@@ -18,5 +18,6 @@ public static class ServiceCollectionExtensions
         .AddTransient<IHistoryCatRepository, HistoryCatRepository>()
         .AddTransient<IRoleUser, RoleUser>()
         .AddTransient<IVolunteerApplicationDetail, VolunteerApplicationDetail>()
-        .AddTransient<IProductRepository, ProductRepository>();
+        .AddTransient<IProductRepository, ProductRepository>()
+        .AddTransient<IDonationRepository, DonationRepository>();
 }

@@ -122,4 +122,7 @@ public enum MessagesList
 
     [Message("User update profile successfully.", "account_noti_01")]
     UserUpdateProfileSuccess,
+
+    [Message("The payment bank has been created successfully.", "payment_noti_01")]
+    PaymentSucccess,
 }

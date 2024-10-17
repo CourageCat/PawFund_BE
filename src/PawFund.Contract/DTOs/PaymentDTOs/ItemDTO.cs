@@ -1,6 +1,6 @@
 ﻿namespace PawFund.Contract.DTOs.PaymentDTOs;
 
-public class ItemDTO
+public sealed class ItemDTO
 {
     public string ItemName { get; set; }
     public int Quantity { get; set; }

@@ -14,4 +14,5 @@ public interface IDPUnitOfWork
     IHistoryCatRepository HistoryCatRepository { get; }
     IRoleUser RoleUserRepository { get; }
     IVolunteerApplicationDetail VolunteerApplicationDetailRepository { get; }
+    IDonationRepository DonationRepository { get; }
 }

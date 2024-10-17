@@ -1,6 +1,6 @@
 ﻿namespace PawFund.Contract.DTOs.PaymentDTOs;
 
-public class CreatePaymentResponseDTO
+public sealed class CreatePaymentResponseDTO
 {
     public bool Success { get; set; }
     public string PaymentUrl { get; set; }
