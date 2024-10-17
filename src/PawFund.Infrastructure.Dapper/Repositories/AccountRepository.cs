@@ -73,11 +73,6 @@ public class AccountRepository : IAccountRepository
         }
     }
 
-    public Task<PagedResult<Account>> GetPagedAsync()
-    {
-        throw new NotImplementedException();
-    }
-
     public Task<int> UpdateAsync(Account entity)
     {
         throw new NotImplementedException();

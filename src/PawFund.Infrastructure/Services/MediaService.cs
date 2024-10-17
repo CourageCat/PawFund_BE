@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Settings;
 using Microsoft.AspNetCore.Http;
-using PawFund.Contract.DTOs.MediaDTOS;
+using PawFund.Contract.DTOs.MediaDTOs;
 
 namespace PawFund.Infrastructure.Services;
 

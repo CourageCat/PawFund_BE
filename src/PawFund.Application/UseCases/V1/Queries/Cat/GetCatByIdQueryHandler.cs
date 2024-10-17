@@ -21,7 +21,7 @@ public sealed class GetCatByIdQueryHandler : IQueryHandler<Query.GetCatByIdQuery
         {
             throw new CatException.CatNotFoundException(request.Id);
         }
-        var result = new Response.CatResponse(catFound.Id, catFound.Sex, catFound.Name, catFound.Age, catFound.Breed, catFound.Size, catFound.Color, catFound.Description);
+        var result = new Response.CatResponse(catFound.Id, catFound.Sex.ToString(), catFound.Name, catFound.Age, catFound.Breed, catFound.Size, catFound.Color, catFound.Description);
         return Result.Success(result);
     }
 }

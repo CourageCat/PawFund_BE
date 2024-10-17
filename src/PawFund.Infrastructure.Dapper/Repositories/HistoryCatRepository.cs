@@ -12,40 +12,36 @@ using System.Threading.Tasks;
 
 namespace PawFund.Infrastructure.Dapper.Repositories;
 
-public class BranchRepository : IBranchRepository
+public class HistoryCatRepository : IHistoryCatRepository
 {
     private readonly IConfiguration _configuration;
-    public BranchRepository(IConfiguration configuration)
+    public HistoryCatRepository(IConfiguration configuration)
     {
         _configuration = configuration;
     }
-    public Task<int> AddAsync(Branch entity)
+    public Task<int> AddAsync(HistoryCat entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task<int> DeleteAsync(Branch entity)
+    public Task<int> DeleteAsync(HistoryCat entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyCollection<Branch>> GetAllAsync()
+    public async Task<HistoryCat>? GetByIdAsync(Guid Id)
     {
-        throw new NotImplementedException();
-    }
 
-    public async Task<Branch>? GetByIdAsync(Guid Id)
-    {
         var sql = @"
-        SELECT b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, b.Province, b.PostalCode, b.AccountId
-        FROM Branchs b
-        WHERE b.Id = @Id";
+        SELECT c.Id, c.DateAdopt, c.CatId, c.AccountId
+        FROM HistoryCats c
+        WHERE c.Id = @Id";
 
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();
 
-            var result = await connection.QueryAsync<Branch>(
+            var result = await connection.QueryAsync<HistoryCat>(
                 sql,
                 new { Id = Id }
                 );
@@ -54,12 +50,17 @@ public class BranchRepository : IBranchRepository
         }
     }
 
-    public Task<PagedResult<Branch>> GetPagedAsync()
+    public Task<PagedResult<IHistoryCatRepository>> GetPagedAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<int> UpdateAsync(Branch entity)
+    public Task<int> UpdateAsync(HistoryCat entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<IReadOnlyCollection<HistoryCat>> IGenericRepository<HistoryCat>.GetAllAsync()
     {
         throw new NotImplementedException();
     }

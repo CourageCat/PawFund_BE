@@ -18,7 +18,7 @@ public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetAppl
     private readonly IDPUnitOfWork _dpUnitOfWork;
 
     public GetApplicationByIdQueryHandler(IRepositoryBase<AdoptPetApplication, Guid> adoptRepository, IDPUnitOfWork dPUnitOfWork)
-    {
+    {    
         _adoptRepository = adoptRepository;
         _dpUnitOfWork = dPUnitOfWork;
     }
@@ -45,7 +45,7 @@ public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetAppl
             new GetApplicationByIdResponseDTO.CatDto
             {
                 Id = applicationById.Cat.Id,
-                Sex = applicationById.Cat.Sex,
+                //Sex = applicationById.Cat.Sex,
                 Name = applicationById.Cat.Name,
                 Age = applicationById.Cat.Age,
                 Breed = applicationById.Cat.Breed,
