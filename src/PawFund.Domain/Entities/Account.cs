@@ -73,12 +73,11 @@ public class Account : DomainEntity<Guid>
         return new Account(firstName, lastName, email, "", false, "", avatarUrl, null, LoginType.Google, RoleType.Member);
     }
 
-    public void UpdateProfileUser (string firstName, string lastName, string? avatarUrl, string password, bool isDeleted)
+    public void UpdateProfileUser (string firstName, string lastName, string? avatarUrl, bool isDeleted)
     {
         FirstName = firstName;
         LastName = lastName;
         AvatarUrl = avatarUrl;
-        Password = password;
         ModifiedDate = DateTime.Now;
         IsDeleted = isDeleted;
     }

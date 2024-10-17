@@ -1,5 +1,6 @@
 ﻿using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Abstractions.Services;
+using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Accounts;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
@@ -38,10 +39,11 @@ namespace PawFund.Application.UseCases.V1.Commands.Account
             //Upload Avatar File to cloud
             var media = await _mediaService.UploadImage($"avatar_{request.ID}", request.AvatarFile);
 
-            user.UpdateProfileUser(request.FirstName, request.LastName, media.ImageUrl, request.Password, false);
+            user.UpdateProfileUser(request.FirstName, request.LastName, media.ImageUrl, false); 
             _accountRepository.Update(user);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Success("Update User Profile Success.");
+            //Return result
+            return Result.Success(new Success(MessagesList.UserUpdateProfileSuccess.GetMessage().Code, MessagesList.UserUpdateProfileSuccess.GetMessage().Message));
         }
 
     }
