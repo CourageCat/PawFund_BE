@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using PawFund.Contract.DTOs.MediaDTOS;
+using PawFund.Contract.DTOs.MediaDTOs;
 
 namespace PawFund.Contract.Abstractions.Services;
 

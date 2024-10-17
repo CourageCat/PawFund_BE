@@ -1,4 +1,4 @@
-﻿namespace PawFund.Contract.DTOs.MediaDTOS;
+﻿namespace PawFund.Contract.DTOs.MediaDTOs;
 
 public class ImageDTO
 {

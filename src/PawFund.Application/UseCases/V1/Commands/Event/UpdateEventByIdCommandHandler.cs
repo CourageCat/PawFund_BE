@@ -4,9 +4,7 @@ using PawFund.Contract.Shared;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Abstractions;
-using PawFund.Domain.Entities;
 using PawFund.Domain.Exceptions;
-using PawFund.Persistence;
 using PawFund.Contract.Services.Event;
 using PawFund.Domain.Abstractions.Dappers;
 
