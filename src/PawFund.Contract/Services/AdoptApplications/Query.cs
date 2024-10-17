@@ -20,11 +20,12 @@ public static class Query
         bool IsAscCreatedDate,
         string[] SelectedColumns) : IQuery<Success<PagedResult<ApplicationResponse>>>;
 
-    public record GetMeetingTimeByStaffQuery(Guid AccountId) : IQuery<Success<GetMeetingTimeByStaffResponse>>;
-    public record GetMeetingTimeByAdopterQuery(Guid AdoptId) : IQuery<GetMeetingTimeByAdopterResponse>;
     public record GetAllApplicationByStaffQuery(Guid AccountId, int PageIndex,
         int PageSize,
         bool IsAscCreatedDate,
         string[] SelectedColumns) : IQuery<Success<PagedResult<ApplicationResponse>>>;
+
+    public record GetMeetingTimeByStaffQuery(Guid AccountId) : IQuery<Success<GetMeetingTimeByStaffResponse>>;
+    public record GetMeetingTimeByAdopterQuery(Guid AdoptId) : IQuery<Success<GetMeetingTimeByAdopterResponse>>;
 
 }
