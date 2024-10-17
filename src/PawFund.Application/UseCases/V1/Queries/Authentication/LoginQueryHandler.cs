@@ -42,7 +42,7 @@ public sealed class LoginQueryHandler : IQueryHandler<Query.LoginQuery, Response
         // Generate accessToken and refreshToken
         var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, (int)account.RoleId);
         var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, (int)account.RoleId);
-
+        
         return Result.Success
             (new Response.LoginResponse
             (account.Id,

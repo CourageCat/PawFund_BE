@@ -1,15 +1,8 @@
 ﻿using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Cats;
 using PawFund.Contract.Shared;
-using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Abstractions;
-using PawFund.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PawFund.Domain.Exceptions;
 
 namespace PawFund.Application.UseCases.V1.Commands.Cat
