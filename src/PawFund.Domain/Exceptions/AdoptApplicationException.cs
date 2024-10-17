@@ -36,5 +36,18 @@ namespace PawFund.Domain.Exceptions
             public AdoptApplicationHasAlreadyRejectedException() : base(MessagesList.AdoptApplicationHasAlreadyRejectedException.GetMessage().Message, MessagesList.AdoptApplicationHasAlreadyRejectedException.GetMessage().Code)
             { }
         }
+
+        public class NoStaffFreesForTheMeetingTimeException : BadRequestException
+        {
+            public NoStaffFreesForTheMeetingTimeException() : base(MessagesList.AdoptNotStaffFreeForThisMeetingTimeException.GetMessage().Message, MessagesList.AdoptNotStaffFreeForThisMeetingTimeException.GetMessage().Code)
+            { }
+        }
+
+        public class NotFoundMeetingTimeException : NotFoundException
+        {
+            public NotFoundMeetingTimeException() : base(MessagesList.AdoptNotFoundMeetingTimeException.GetMessage().Message, MessagesList.AdoptNotFoundMeetingTimeException.GetMessage().Code)
+            { }
+        }
+
     }
 }

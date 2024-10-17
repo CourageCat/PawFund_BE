@@ -74,6 +74,9 @@ public enum MessagesList
     [Message("All Meeting Times", "adopt_noti_success_06")]
     AdoptGetAllMeetingTimeSuccess,
 
+    [Message("Choose Meeting Time Successfully", "adopt_noti_success_07")]
+    AdoptChooseMeetingTimeSuccess,
+
     [Message("Update meeting time successfully", "adopt_noti_exception_07")]
     AdoptUpdateMeetingTimeSuccess,
 
@@ -105,7 +108,15 @@ public enum MessagesList
 
     [Message("This user has already unbanned", "change_status_noti_exception_02")]
     UserHasAlreadyUnbannedException,
+
     [Message("Can not find any meeting time", "adopt_noti_exception_07")]
     AdoptNotFoundAnyMeetingTimeException,
+
+
+    [Message("This time is not exist, Please reload the page", "adopt_noti_exception_08")]
+    AdoptNotFoundMeetingTimeException,
+
+    [Message("This time is not available (Because no staff frees for this time)", "adopt_noti_exception_09")]
+    AdoptNotStaffFreeForThisMeetingTimeException,
 
 }
