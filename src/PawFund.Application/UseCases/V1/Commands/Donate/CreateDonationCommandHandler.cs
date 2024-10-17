@@ -22,18 +22,17 @@ public sealed class CreateDonationCommandHandler : ICommandHandler<Command.Creat
 
     public async Task<Result> Handle(Command.CreateDonationCommand request, CancellationToken cancellationToken)
     {
-        var donation = new Donation()
-        {
+        //var donation = new Donation()
+        //{
            
-            Amount = request.amount,
-            Description = request.description,
-            AccountId = request.PaymentMethodId,
-            PaymentMethodId = request.PaymentMethodId,
-            Status = false
+        //    Amount = request.amount,
+        //    Description = request.description,
+        //    AccountId = request.PaymentMethodId,
+        //    PaymentMethodId = request.PaymentMethodId,
+        //    Status = false
+        //};
 
-        };
-
-        _donationRepository.Add(donation); // Lưu donation vào repository
+        //_donationRepository.Add(donation); // Lưu donation vào repository
 
         await _efUnitOfWork.SaveChangesAsync(cancellationToken); // Lưu thay đổi vào DB
         return Result.Success("Donation created successfully.");

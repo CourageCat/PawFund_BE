@@ -5,13 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using PawFund.Contract.DTOs.Adopt.Request;
 using PawFund.Contract.Services.AdoptApplications;
 using PawFund.Presentation.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using static PawFund.Contract.Services.Products.Filter;
+
 
 namespace PawFund.Presentation.Controller.V1;
 

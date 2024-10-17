@@ -41,6 +41,7 @@ public static class ServiceCollectionExtensions
         services.Configure<EmailSetting>(configuration.GetSection(EmailSetting.SectionName));
         services.Configure<CloudinarySetting>(configuration.GetSection(CloudinarySetting.SectionName));
         services.Configure<PayOSSetting>(configuration.GetSection(PayOSSetting.SectionName));
+        services.Configure<ClientSetting>(configuration.GetSection(ClientSetting.SectionName));
 
     }
 }

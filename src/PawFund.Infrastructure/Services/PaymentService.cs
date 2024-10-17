@@ -14,7 +14,7 @@ public class PaymentService : IPaymentService
     {
         _payOS = new PayOS(payOSConfig.Value.ClientId, payOSConfig.Value.ApiKey, payOSConfig.Value.ChecksumKey);
     }
-
+    
     public async Task<CreatePaymentResponseDTO> CreatePaymentLink(CreatePaymentDTO paymentData)
     {
         try
@@ -39,4 +39,19 @@ public class PaymentService : IPaymentService
         }
 
     }
+
+    public async Task<bool> CancelOrder(long orderId)
+    {
+        try
+        {
+            PaymentLinkInformation paymentLinkInformation = await _payOS.cancelPaymentLink(orderId);
+            return true;
+        }
+        catch (System.Exception exception)
+        {
+            return false;
+        }
+
+    }
+
 }

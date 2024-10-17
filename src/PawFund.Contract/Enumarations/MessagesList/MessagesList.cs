@@ -105,7 +105,10 @@ public enum MessagesList
 
     [Message("This user has already unbanned", "change_status_noti_exception_02")]
     UserHasAlreadyUnbannedException,
+
     [Message("Can not find any meeting time", "adopt_noti_exception_07")]
     AdoptNotFoundAnyMeetingTimeException,
 
+    [Message("The payment bank has been created successfully.", "payment_noti_01")]
+    PaymentSucccess,
 }
