@@ -35,6 +35,7 @@ public sealed class GetMeetingTimeByStaffQueryHandler : IQueryHandler<Query.GetM
         //Check if list empty then return empty message
         if (listMeetingTime == null)
         {
+            //Create a new empty list meeting time
             listMeetingTime = new List<GetMeetingTimeByStaffResponseDTO.MeetingTimeDTO>();
             var resultNotFound = new Response.GetMeetingTimeByStaffResponse(listMeetingTime);
             //Return Empty Result
@@ -42,7 +43,7 @@ public sealed class GetMeetingTimeByStaffQueryHandler : IQueryHandler<Query.GetM
         }
 
         //Return List Result
-        var result = new Response.GetMeetingTimeByStaffResponse(listMeetingTime);
+        var result = new Response.GetMeetingTimeByStaffResponse(listMeetingTime.Where(x => x.MeetingTime > DateTime.Now).ToList()); 
         return Result.Success(new Success<Response.GetMeetingTimeByStaffResponse>(MessagesList.AdoptGetAllMeetingTimeSuccess.GetMessage().Code, MessagesList.AdoptGetAllMeetingTimeSuccess.GetMessage().Message, result));
     }
 }

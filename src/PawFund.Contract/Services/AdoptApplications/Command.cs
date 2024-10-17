@@ -25,5 +25,7 @@ public static class Command
     public record ApplyAdoptApplicationCommand(Guid AdoptId) : ICommand;
     public record RejectAdoptApplicationCommand(Guid AdoptId, string ReasonReject) : ICommand;
 
+    public record ChooseMeetingTimeCommand(Guid AdoptId, DateTime MeetingTime) : ICommand;
+
     public record UpdateDataFromGoogleSheetCommand(string Branch, string Time, int NumberOfStaffsFree) : ICommand;
 }
