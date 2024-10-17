@@ -6,7 +6,6 @@ namespace PawFund.Contract.Services.Cats.Validators
     {
         public CreateCatValidator()
         {
-            RuleFor(x => x.Sex).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Age).NotEmpty();
             RuleFor(x => x.Breed).NotEmpty();
