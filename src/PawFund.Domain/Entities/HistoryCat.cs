@@ -1,9 +1,5 @@
-﻿
-using PawFund.Contract.Enumarations.Cat;
-using PawFund.Domain.Abstractions.Entities;
+﻿using PawFund.Domain.Abstractions.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Drawing;
-using System.Xml.Linq;
 
 namespace PawFund.Domain.Entities
 {

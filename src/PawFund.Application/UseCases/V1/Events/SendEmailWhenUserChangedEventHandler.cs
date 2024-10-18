@@ -1,6 +1,8 @@
 ﻿using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Authentications;
+using PawFund.Contract.Settings;
+using Microsoft.Extensions.Options;
 
 namespace PawFund.Application.UseCases.V1.Events;
 
@@ -10,13 +12,15 @@ public class SendEmailWhenUserChangedEventHandler
     IDomainEventHandler<DomainEvent.UserOtpChanged>,
     IDomainEventHandler<DomainEvent.UserPasswordChanged>,
     IDomainEventHandler<DomainEvent.UserCreatedWithGoogle>
-
 {
     private readonly IEmailService _emailService;
+    private readonly ClientSetting _clientSetting;
 
-    public SendEmailWhenUserChangedEventHandler(IEmailService emailService)
+    public SendEmailWhenUserChangedEventHandler(IEmailService emailService,
+        IOptions<ClientSetting> clientConfig)
     {
         _emailService = emailService;
+        _clientSetting = clientConfig.Value;
     }
 
     public async Task Handle(DomainEvent.UserCreated notification, CancellationToken cancellationToken)
@@ -26,7 +30,7 @@ public class SendEmailWhenUserChangedEventHandler
             "Register PawFund",
             "EmailRegister.html", new Dictionary<string, string> {
             { "ToEmail", notification.Email},
-            {"Link", $"https://www.facebook.com"}
+            {"Link", $"{_clientSetting.Url}{_clientSetting.VerifyEmail}/{notification.Email}"}
         });
     }
 

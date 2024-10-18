@@ -6,7 +6,6 @@ using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
-using PawFund.Domain.Entities;
 using PawFund.Contract.Enumarations.Authentication;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 
@@ -62,7 +61,6 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
             );
 
             // Generate accessToken and refreshToken
-
             var accessToken = _tokenGeneratorService.GenerateAccessToken(accountMember.Id, (int)accountMember.RoleId);
             var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(accountMember.Id, (int)accountMember.RoleId);
 

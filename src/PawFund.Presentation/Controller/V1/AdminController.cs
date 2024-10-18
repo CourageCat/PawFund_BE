@@ -1,12 +1,8 @@
-﻿
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PawFund.Presentation.Abstractions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using PawFund.Contract.Services.Admins;
 using PawFund.Contract.Services.Accounts;
-using static PawFund.Contract.Services.Products.Filter;
 using static PawFund.Contract.Services.Accounts.Filter;
 
 namespace PawFund.Presentation.Controller.V1
