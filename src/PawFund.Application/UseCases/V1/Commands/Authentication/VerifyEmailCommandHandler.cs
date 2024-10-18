@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using MediatR;
 using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Authentications;
@@ -6,10 +7,8 @@ using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
-using PawFund.Domain.Entities;
-using static PawFund.Domain.Exceptions.AuthenticationException;
 using PawFund.Contract.Enumarations.MessagesList;
-using MediatR;
+using static PawFund.Domain.Exceptions.AuthenticationException;
 
 namespace PawFund.Application.UseCases.V1.Commands.Authentication;
 
