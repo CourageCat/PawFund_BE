@@ -37,7 +37,6 @@ namespace PawFund.Persistence.Configuration
             builder.Property(p => p.Description)
                 .IsRequired()
                 .HasMaxLength(1500);
-
         }
     }
 }
