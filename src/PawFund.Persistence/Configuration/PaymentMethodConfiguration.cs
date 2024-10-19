@@ -13,17 +13,6 @@ internal class PaymentMethodConfiguration : IEntityTypeConfiguration<PaymentMeth
 
         builder.HasKey(p => p.Id);
 
-        builder.HasData(
-            new PaymentMethod
-            {
-                Id = PaymentMethodType.Cash,
-                MethodName = "Cash",
-            },
-            new PaymentMethod
-            {
-                Id = PaymentMethodType.Banking,
-                MethodName = "Banking"
-            }
-        );
+
     }
 }

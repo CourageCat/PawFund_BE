@@ -12,8 +12,8 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241017232714_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241019124841_IntialCreate")]
+    partial class IntialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -468,18 +468,6 @@ namespace PawFund.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PaymentMethod", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            MethodName = "Cash"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            MethodName = "Banking"
-                        });
                 });
 
             modelBuilder.Entity("PawFund.Domain.Entities.Product", b =>
@@ -526,23 +514,6 @@ namespace PawFund.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RoleUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            RoleName = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            RoleName = "Staff"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            RoleName = "Member"
-                        });
                 });
 
             modelBuilder.Entity("PawFund.Domain.Entities.VolunteerApplicationDetail", b =>

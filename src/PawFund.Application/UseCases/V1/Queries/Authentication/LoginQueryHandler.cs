@@ -49,6 +49,7 @@ public sealed class LoginQueryHandler : IQueryHandler<Query.LoginQuery, Response
             account.FirstName,
             account.LastName,
             account.AvatarUrl,
+            (int)account.RoleId,
             accessToken,
             refrehsToken));
     }

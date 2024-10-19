@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace PawFund.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class IntialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -341,25 +339,6 @@ namespace PawFund.Persistence.Migrations
                         principalTable: "EventActivities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.InsertData(
-                table: "PaymentMethod",
-                columns: new[] { "Id", "MethodName" },
-                values: new object[,]
-                {
-                    { 1, "Cash" },
-                    { 2, "Banking" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "RoleUsers",
-                columns: new[] { "Id", "RoleName" },
-                values: new object[,]
-                {
-                    { 1, "Admin" },
-                    { 2, "Staff" },
-                    { 3, "Member" }
                 });
 
             migrationBuilder.CreateIndex(

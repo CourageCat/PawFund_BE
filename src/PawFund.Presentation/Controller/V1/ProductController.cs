@@ -13,7 +13,8 @@ namespace PawFund.Presentation.Controller.V1;
 public class ProductController : ApiController
 {
     public ProductController(ISender sender) : base(sender)
-    {}
+    {
+    }
 
     [HttpPost(Name = "CreateProducts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -52,15 +53,5 @@ public class ProductController : ApiController
             return HandlerFailure(result);
 
         return Ok(result);
-    }
-
-    [HttpGet("create", Name = "Payment123")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Payment1()
-    {
-        var redirectUrl = $"http://127.0.0.1:3000/payment-return?orderId={1}";
-        // Chuyển hướng đến URL
-        return Redirect(redirectUrl);
     }
 }

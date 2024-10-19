@@ -465,18 +465,6 @@ namespace PawFund.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PaymentMethod", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            MethodName = "Cash"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            MethodName = "Banking"
-                        });
                 });
 
             modelBuilder.Entity("PawFund.Domain.Entities.Product", b =>
@@ -523,23 +511,6 @@ namespace PawFund.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RoleUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            RoleName = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            RoleName = "Staff"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            RoleName = "Member"
-                        });
                 });
 
             modelBuilder.Entity("PawFund.Domain.Entities.VolunteerApplicationDetail", b =>

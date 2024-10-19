@@ -69,6 +69,13 @@ public class Account : DomainEntity<Guid>
         return new Account(firstName, lastName, email, "", false, "", avatarUrl, null, LoginType.Google, RoleType.Member);
     }
 
+    public static Account CreateAdminAccount
+       (string email, string password)
+    {
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        return new Account("", "", email, "", false, password, avatarUrl, null, LoginType.Local, RoleType.Admin);
+    }
+
     public void UpdateProfileUser (string firstName, string lastName, string? avatarUrl, bool isDeleted)
     {
         FirstName = firstName;
