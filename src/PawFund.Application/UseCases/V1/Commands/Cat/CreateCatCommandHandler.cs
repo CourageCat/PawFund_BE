@@ -28,12 +28,11 @@ namespace PawFund.Application.UseCases.V1.Commands.Cat
             var branchFound = await _branchRepository.FindByIdAsync(request.BranchId);
             if (branchFound == null)
                 throw new BranchException.BranchNotFoundException(request.BranchId);
-
             //_mediaService.UploadImage()
 
-            var catCreated = Domain.Entities.Cat.CreateCat(request.Sex, request.Name, request.Age, request.Breed, request.Size, request.Color, request.Description, request.BranchId, DateTime.Now, DateTime.Now, false);
-            _catRepository.Add(catCreated);
-            await _efUnitOfWork.SaveChangesAsync(cancellationToken);
+            //var catCreated = Domain.Entities.Cat.CreateCat(request.Sex, request.Name, request.Age, request.Breed, request.Weight, request.Color, request.Description, request.BranchId);
+            //_catRepository.Add(catCreated);
+            //await _efUnitOfWork.SaveChangesAsync(cancellationToken);
             return Result.Success("Create Cat Successfully.");
 
         }

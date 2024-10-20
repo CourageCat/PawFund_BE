@@ -49,7 +49,7 @@ public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetAppl
                 Name = applicationById.Cat.Name,
                 Age = applicationById.Cat.Age,
                 Breed = applicationById.Cat.Breed,
-                Size = applicationById.Cat.Size,
+                Weight = applicationById.Cat.Weight,
                 Color = applicationById.Cat.Color,
                 Description = applicationById.Cat.Description,
             });

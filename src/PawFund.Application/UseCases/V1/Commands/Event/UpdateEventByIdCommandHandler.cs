@@ -1,7 +1,5 @@
 ﻿using PawFund.Contract.Abstractions.Message;
-using PawFund.Contract.Services.Events;
 using PawFund.Contract.Shared;
-using PawFund.Contract.Abstractions.Message;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Exceptions;

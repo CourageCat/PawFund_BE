@@ -5,9 +5,6 @@ using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.AdoptApplications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
-using PawFund.Domain.Abstractions.Repositories;
-using PawFund.Domain.Entities;
-using PawFund.Domain.Exceptions;
 using static PawFund.Contract.Services.AdoptApplications.Response;
 
 namespace PawFund.Application.UseCases.V1.Queries.Adopt;
@@ -54,7 +51,7 @@ public sealed class GetAllApplicationQueryByStaffHandler : IQueryHandler<Query.G
                     Name = adoptApplication.Cat.Name,
                     Age = adoptApplication.Cat.Age,
                     Breed = adoptApplication.Cat.Breed,
-                    Size = adoptApplication.Cat.Size,
+                    Weight = adoptApplication.Cat.Weight,
                     Color = adoptApplication.Cat.Color,
                     Description = adoptApplication.Cat.Description,
                 }
