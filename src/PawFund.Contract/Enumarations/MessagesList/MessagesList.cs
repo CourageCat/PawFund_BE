@@ -86,6 +86,11 @@ public enum MessagesList
     [Message("Adopt Application Found", "adopt_noti_success_10")]
     AdoptGetAdoptApplicationSuccess,
 
+    [Message("Complete Adopt Application Successfully", "adopt_noti_success_11")]
+    AdoptCompleteAdoptApplicationSuccess,
+    [Message("Reject Outside Adopt Application Successfully", "adopt_noti_success_12")]
+    AdoptRejectOutsideAdoptApplicationSuccess,
+
     [Message("Can not found application with ID: {0}", "adopt_noti_exception_01")]
     AdoptApplicationNotFoundException,
 
@@ -119,6 +124,9 @@ public enum MessagesList
 
     [Message("This time is not available (Because no staff frees for this time)", "adopt_noti_exception_09")]
     AdoptNotStaffFreeForThisMeetingTimeException,
+
+    [Message("This application has already completed or rejected out side", "adopt_noti_exception_10")]
+    AdoptApplicationHasAlreadyCompletedOutSideException,
 
     [Message("User update profile successfully.", "account_noti_01")]
     UserUpdateProfileSuccess,

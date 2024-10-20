@@ -49,5 +49,12 @@ namespace PawFund.Domain.Exceptions
             { }
         }
 
+        public class AdoptApplicationHasAlreadyCompletedOutSideException : BadRequestException
+        {
+            public AdoptApplicationHasAlreadyCompletedOutSideException() : base
+                                              (MessagesList.AdoptApplicationHasAlreadyCompletedOutSideException.GetMessage().Message, MessagesList.AdoptApplicationHasAlreadyCompletedOutSideException.GetMessage().Code)
+            { }
+        }
+
     }
 }

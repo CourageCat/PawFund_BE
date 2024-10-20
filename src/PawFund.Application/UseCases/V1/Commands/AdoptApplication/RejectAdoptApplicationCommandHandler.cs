@@ -44,7 +44,7 @@ namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
             //Send email
             await Task.WhenAll(
-               _publisher.Publish(new DomainEvent.AdopterHasBeenRejected(request.AdoptId, applicationFound.Account.Email, applicationFound.Cat.Name, request.ReasonReject), cancellationToken)
+               _publisher.Publish(new DomainEvent.AdoptionHasBeenRejected(request.AdoptId, applicationFound.Account.Email, applicationFound.Cat.Name, request.ReasonReject), cancellationToken)
            );
 
             //Return result
