@@ -100,6 +100,7 @@ public class AdoptController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Policy = "StaffPolicy")]
     [HttpGet("get_all_application_by_staff", Name = "GetAllApplicationByStaff")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -192,29 +193,29 @@ public class AdoptController : ApiController
         return Ok(result);
     }
 
-    //[HttpPut("complete_adoption", Name = "CompleteAdoption")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> CompleteAdoption()
-    //{
-    //    var result = await Sender.Send(new Command.CompleteAdoptionCommand(Id));
-    //    if (result.IsFailure)
-    //        return HandlerFailure(result);
+    [HttpPut("complete_adoption", Name = "CompleteAdoption")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CompleteAdoption(Guid Id)
+    {
+        var result = await Sender.Send(new Command.CompleteAdoptionCommand(Id));
+        if (result.IsFailure)
+            return HandlerFailure(result);
 
-    //    return Ok(result);
-    //}
+        return Ok(result);
+    }
 
-    //[HttpPut("reject_outside", Name = "RejectOutside")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> RejectOutside()
-    //{
-    //    var result = await Sender.Send(new Command.RejectOutsideCommand(Id));
-    //    if (result.IsFailure)
-    //        return HandlerFailure(result);
+    [HttpPut("reject_outside", Name = "RejectOutside")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RejectOutside([FromBody]   Command.RejectOutsideAdoptionCommand RejectOutsideAdoption)
+    {
+        var result = await Sender.Send(RejectOutsideAdoption);
+        if (result.IsFailure)
+            return HandlerFailure(result);
 
-    //    return Ok(result);
-    //}
+        return Ok(result);
+    }
 
     //[HttpPost("update_data_from_google_sheet", Name = "UpdateDataFromGoogleSheet")]
     //[ProducesResponseType(StatusCodes.Status200OK)]

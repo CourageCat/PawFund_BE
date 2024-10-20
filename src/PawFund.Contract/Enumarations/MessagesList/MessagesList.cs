@@ -74,6 +74,9 @@ public enum MessagesList
     [Message("All Meeting Times", "adopt_noti_success_06")]
     AdoptGetAllMeetingTimeSuccess,
 
+    [Message("Choose Meeting Time Successfully", "adopt_noti_success_07")]
+    AdoptChooseMeetingTimeSuccess,
+
     [Message("Update meeting time successfully", "adopt_noti_exception_07")]
     AdoptUpdateMeetingTimeSuccess,
 
@@ -82,6 +85,11 @@ public enum MessagesList
 
     [Message("Adopt Application Found", "adopt_noti_success_10")]
     AdoptGetAdoptApplicationSuccess,
+
+    [Message("Complete Adopt Application Successfully", "adopt_noti_success_11")]
+    AdoptCompleteAdoptApplicationSuccess,
+    [Message("Reject Outside Adopt Application Successfully", "adopt_noti_success_12")]
+    AdoptRejectOutsideAdoptApplicationSuccess,
 
     [Message("Can not found application with ID: {0}", "adopt_noti_exception_01")]
     AdoptApplicationNotFoundException,
@@ -101,14 +109,24 @@ public enum MessagesList
     [Message("This application has already rejected", "adopt_noti_exception_06")]
     AdoptApplicationHasAlreadyRejectedException,
 
-    [Message("Can not find any meeting time", "adopt_noti_exception_07")]
-    AdoptNotFoundAnyMeetingTimeException,
-
     [Message("This user has already banned.", "change_status_noti_exception_01")]
     UserHasAlreadyBannedException,
 
-    [Message("This user has already unbanned.", "change_status_noti_exception_02")]
+    [Message("This user has already unbanned", "change_status_noti_exception_02")]
     UserHasAlreadyUnbannedException,
+
+    [Message("Can not find any meeting time", "adopt_noti_exception_07")]
+    AdoptNotFoundAnyMeetingTimeException,
+
+
+    [Message("This time is not exist, Please reload the page", "adopt_noti_exception_08")]
+    AdoptNotFoundMeetingTimeException,
+
+    [Message("This time is not available (Because no staff frees for this time)", "adopt_noti_exception_09")]
+    AdoptNotStaffFreeForThisMeetingTimeException,
+
+    [Message("This application has already completed or rejected out side", "adopt_noti_exception_10")]
+    AdoptApplicationHasAlreadyCompletedOutSideException,
 
     [Message("User update profile successfully.", "account_noti_01")]
     UserUpdateProfileSuccess,
