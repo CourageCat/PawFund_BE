@@ -7,9 +7,9 @@ using System.Security.Claims;
 
 namespace PawFund.Presentation.Controller.V1
 {
-    public class VolunteerApplictionDetailController : ApiController
+    public class VolunteerApplicationDetailController : ApiController
     {
-        public VolunteerApplictionDetailController(ISender sender) : base(sender)
+        public VolunteerApplicationDetailController(ISender sender) : base(sender)
         {
         }
         
