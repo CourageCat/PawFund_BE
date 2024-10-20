@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddAutoMapper(typeof(UserProfile));
         services.AddAutoMapper(typeof(ProductProfile));
+        services.AddAutoMapper(typeof(EventActivityProfile));
         return services;
     }
 }

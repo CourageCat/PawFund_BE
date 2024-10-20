@@ -8,7 +8,7 @@ using PawFund.Contract.Enumarations.VolunteerApplication;
 
 namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
 {
-    public sealed class CreateVolunteerApplicationDetailCommandHandler : ICommandHandler<Command.CreateVolunteerApplicationDetail>
+    public sealed class CreateVolunteerApplicationDetailCommandHandler : ICommandHandler<Command.CreateVolunteerApplicationDetailCommand>
     {
         private readonly IRepositoryBase<PawFund.Domain.Entities.VolunteerApplicationDetail, Guid> _volunteerApplicationDetailRepository;
         private readonly IRepositoryBase<PawFund.Domain.Entities.Event, Guid> _eventRepository;
@@ -21,7 +21,7 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
             _efUnitOfWork = efUnitOfWork;
         }
 
-        public async Task<Result> Handle(Command.CreateVolunteerApplicationDetail request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(Command.CreateVolunteerApplicationDetailCommand request, CancellationToken cancellationToken)
         {
             //check if event exist
             var existEvent = await _eventRepository.FindByIdAsync(request.form.eventId, cancellationToken);

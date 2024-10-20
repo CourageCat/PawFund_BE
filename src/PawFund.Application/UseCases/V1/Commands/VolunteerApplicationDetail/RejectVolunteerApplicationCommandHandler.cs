@@ -8,7 +8,7 @@ using MediatR;
 
 namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
 { 
-    public sealed class RejectVolunteerApplicationCommandHandler : ICommandHandler<Command.RejectVolunteerApplication>
+    public sealed class RejectVolunteerApplicationCommandHandler : ICommandHandler<Command.RejectVolunteerApplicationCommand>
     {
         private readonly IRepositoryBase<PawFund.Domain.Entities.VolunteerApplicationDetail, Guid> _volunteerApplicationDetailRepository;
         private readonly IEFUnitOfWork _efUnitOfWork;
@@ -21,7 +21,7 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
             _publisher = publisher;
         }
 
-        public async Task<Result> Handle(Command.RejectVolunteerApplication request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(Command.RejectVolunteerApplicationCommand request, CancellationToken cancellationToken)
         {
             //change status application
             var existVolunteerApplication = await _volunteerApplicationDetailRepository.FindByIdAsync(request.detailId);

@@ -63,6 +63,35 @@ WHERE ea.EventId = @Id";
         }
     }
 
+    public async Task<IEnumerable<EventActivity>> GetApprovedEventsActivityId(Guid id)
+    {
+        var sql = @"
+SELECT 
+    ea.Id, ea.Name, ea.Quantity, ea.StartDate, ea.Description, ea.Status, ea.NumberOfVolunteer, ea.IsDeleted as IsEvenActivitytDelete,
+    e.Id, e.Name, e.StartDate, e.EndDate, e.Description,  e.MaxAttendees, e.IsDeleted as IsEventDeleted
+FROM EventActivities ea
+JOIN Events e ON e.Id = ea.EventId
+WHERE ea.EventId = @Id AND ea.Status = 1";  // Thêm điều kiện Status = false (0)
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.QueryAsync<EventActivity, Event, EventActivity>(
+                sql,
+                (EventActivity, Event) =>
+                {
+                    EventActivity.Event = Event;
+                    return EventActivity;
+                },
+                new { Id = id },
+                splitOn: "IsEvenActivitytDelete"
+            );
+
+            return result;
+        }
+    }
+
     public async Task<EventActivity>? GetByIdAsync(Guid Id)
     {
         var sql = @"
@@ -91,6 +120,8 @@ WHERE ea.Id = @Id";
             return result.FirstOrDefault();
         }
     }
+
+
 
     public Task<PagedResult<EventActivity>> GetPagedAsync()
     {

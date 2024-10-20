@@ -1,4 +1,5 @@
-﻿using PawFund.Domain.Abstractions.Entities;
+﻿using PawFund.Contract.Enumarations.VolunteerApplication;
+using PawFund.Domain.Abstractions.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PawFund.Domain.Entities
@@ -23,6 +24,8 @@ namespace PawFund.Domain.Entities
 
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; } = 0;
+        public int NumberOfVolunteer { get; set; } = 0;
+
         public DateTime StartDate { get; set; }
         public string Description { get; set; } = string.Empty;
         public bool Status { get; set; } = false;
@@ -46,6 +49,11 @@ namespace PawFund.Domain.Entities
             EventId = eventId;
             ModifiedDate = DateTime.Now;
             IsDeleted = isDeleted;
+        }
+
+        public void UpdateNumberOfVolunteer(int numberOfVolunteer)
+        {
+            NumberOfVolunteer = numberOfVolunteer;
         }
     }
 

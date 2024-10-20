@@ -77,5 +77,17 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
+        [HttpGet("get_approved_events_activity",Name = "GetEventsActivityApproved")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetApprovedEventsActivity([FromQuery] Guid id)
+        {
+            var result = await Sender.Send(new Query.GetApprovedEventsActivityQuery(id));
+            if (result.IsFailure)
+                return HandlerFailure(result);
+
+            return Ok(result);
+        }
+
     }
 }
