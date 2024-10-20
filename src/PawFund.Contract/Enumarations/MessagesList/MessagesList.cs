@@ -29,7 +29,7 @@ public enum MessagesList
     [Message("Your OTP does not match", "auth_otp_01")]
     AuthOtpForgotPasswordNotMatchException,
 
-    [Message("An error occurred, please try again", "auth08")]
+    [Message("Unable to change password, please try again", "auth_forgot_01")]
     AuthErrorChangePasswordException,
 
     [Message("Please check your email to enter otp", "auth_noti_05")]

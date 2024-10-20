@@ -29,15 +29,15 @@ public class AuthenticationController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("verify-email", Name = "VerifyEmailCommand")]
+    [HttpPost("verify-email", Name = "VerifyEmailCommand")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> VerifyEmail([FromQuery] string email)
+    public async Task<IActionResult> VerifyEmail([FromBody] Command.VerifyEmailCommand VerifyEmail)
     {
-        var result = await Sender.Send(new Command.VerifyEmailCommand(email));
+        var result = await Sender.Send(VerifyEmail);
         if (result.IsFailure)
             return HandlerFailure(result);
-
+        
         return Ok(result);
     }
 
@@ -67,6 +67,7 @@ public class AuthenticationController : ApiController
             FirstName = value.FirstName,
             LastName = value.LastName,
             AvatarLink = value.AvatarLink,
+            RoleId = value.RoleId,
         };
 
         var tokenDto = new TokenDTO()
@@ -174,6 +175,7 @@ public class AuthenticationController : ApiController
             FirstName = value.FirstName,
             LastName = value.LastName,
             AvatarLink = value.AvatarLink,
+            RoleId = value.RoleId,
         };
 
         var tokenDto = new TokenDTO()
@@ -199,16 +201,5 @@ public class AuthenticationController : ApiController
         Response.Cookies.Delete("refreshToken");
         return Ok(Result.Success(new Success(MessagesList.AuthLogoutSuccess.GetMessage().Code,
             MessagesList.AuthLogoutSuccess.GetMessage().Message)));
-    }
-
-
-    [Authorize(Policy = "MemberPolicy")]
-    [HttpGet("get", Name = "Get")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Get()
-    {
-        var userId = User.FindFirstValue("UserId");
-        return Ok(userId);
     }
 }

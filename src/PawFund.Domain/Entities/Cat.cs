@@ -6,7 +6,6 @@ namespace PawFund.Domain.Entities
 {
     public class Cat : DomainEntity<Guid>
     {
-
         public Cat() { }
 
         public Cat(CatSex sex, string name, int age, string breed, decimal size, string color, string description, Guid branchId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
@@ -37,6 +36,7 @@ namespace PawFund.Domain.Entities
         public virtual Branch Branch { get; set; }
         public virtual ICollection<AdoptPetApplication> AdoptPetApplications { get; set; }
         public virtual ICollection<HistoryCat> HistoryCats { get; set; }
+        public virtual ICollection<ImageCat> ImageCats { get; set; }
 
         public static Cat CreateCat(CatSex sex, string name, int age, string breed, decimal size, string color, string description, Guid branchId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
         {

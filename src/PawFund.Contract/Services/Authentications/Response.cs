@@ -7,6 +7,7 @@ public static class Response
         string FirstName,
         string LastName,
         string AvatarLink,
+        int RoleId,
         string AccessToken,
         string RefreshToken);
 
