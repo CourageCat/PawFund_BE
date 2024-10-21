@@ -1,8 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using PawFund.Contract.Services.Event;
 using PawFund.Presentation.Abstractions;
+using static PawFund.Contract.Services.AdoptApplications.Filter;
+using static PawFund.Contract.Services.Event.Filter;
 
 namespace PawFund.Presentation.Controller.V1;
 public class EventController : ApiController
@@ -62,9 +65,13 @@ public class EventController : ApiController
     [HttpGet("get_all_event", Name = "GetAllEvent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllEvent()
+    public async Task<IActionResult> GetAllEvent([FromQuery] EventFilter filterParams,
+    [FromQuery] int pageIndex = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string[] selectedColumns = null)
     {
-        var result = await Sender.Send(new Query.GetAllEvent());
+
+        var result = await Sender.Send(new Query.GetAllEvent(pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
 

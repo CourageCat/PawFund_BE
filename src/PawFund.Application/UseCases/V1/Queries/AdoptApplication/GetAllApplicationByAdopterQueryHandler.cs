@@ -63,7 +63,7 @@ public sealed class GetAllApplicationQueryByAdopterHandler : IQueryHandler<Query
                 }
             }));
         });
-        var result = new PagedResult<ApplicationResponse>(listAdoptApplicationFoundDTO, listAdoptApplicationFoundPaging.PageIndex, listAdoptApplicationFoundPaging.PageSize, listAdoptApplicationFoundPaging.TotalCount,
+        var result = new PagedResult<ApplicationResponse>(listAdoptApplicationFoundDTO, listAdoptApplicationFoundPaging.PageSize, listAdoptApplicationFoundPaging.PageSize, listAdoptApplicationFoundPaging.TotalCount,
             listAdoptApplicationFoundPaging.TotalPages);
 
         //if (listAdoptApplicationFound.Count == 0)

@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.Enumarations.Event;
+using PawFund.Contract.Services.Event;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
 using System;
@@ -10,6 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PawFund.Contract.DTOs.Event.GetEventByIdDTO;
+using static PawFund.Contract.Services.Event.Filter;
+using static PawFund.Contract.Services.Event.Respone;
 
 namespace PawFund.Infrastructure.Dapper.Repositories;
 public class EventRepository : IEventRepository
@@ -56,6 +60,79 @@ JOIN Branchs b ON b.Id = e.BranchId";
             return result;
         }
     }
+
+    public async Task<PagedResult<Event>> GetAllEventAsync(
+     int pageIndex, int pageSize, EventFilter filterParams, string[] selectedColumns)
+    {
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            var validColumns = new HashSet<string>
+    {
+        "e.Id", "e.Name", "e.StartDate", "e.EndDate", "e.Description",
+        "b.Id", "b.Name", "b.PhoneNumberOfBranch", "b.EmailOfBranch"
+    };
+
+            var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
+            var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : string.Join(", ", validColumns);
+
+            var queryBuilder = new StringBuilder($@"
+        SELECT {selectedColumnsString} 
+        FROM Events e
+        LEFT JOIN Branchs b ON e.BranchId = b.Id
+        WHERE 1=1");
+
+            var parameters = new DynamicParameters();
+
+            pageIndex = pageIndex <= 0 ? 1 : pageIndex;
+            pageSize = pageSize <= 0 ? 10 : pageSize > 100 ? 100 : pageSize;
+
+            var totalCountQuery = new StringBuilder($@"
+        SELECT COUNT(1) 
+        FROM Events e
+        LEFT JOIN Branchs b ON e.BranchId = b.Id
+        WHERE 1=1");
+
+            // Filter by Event Name
+            if (!string.IsNullOrEmpty(filterParams.Name))
+            {
+                queryBuilder.Append(" AND e.Name LIKE @EventName");
+                totalCountQuery.Append(" AND e.Name LIKE @EventName");
+                parameters.Add("EventName", $"%{filterParams.Name}%");
+            }
+
+            // Filter by Event Status
+            if (filterParams.Status.HasValue)
+            {
+                queryBuilder.Append(" AND e.Status = @Status");
+                totalCountQuery.Append(" AND e.Status = @Status");
+                parameters.Add("Status", filterParams.Status.Value);
+            }
+
+            // Count TotalCount
+            var totalCount = await connection.ExecuteScalarAsync<int>(totalCountQuery.ToString(), parameters);
+
+            // Count TotalPages
+            var totalPages = Math.Ceiling((totalCount / (double)pageSize));
+
+            var offset = (pageIndex - 1) * pageSize;
+            var paginatedQuery = $"{queryBuilder} ORDER BY e.CreatedDate {(filterParams.IsAscCreatedDate ? "ASC" : "DESC")} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY";
+
+            var items = (await connection.QueryAsync<Event, Branch, Event>(
+                paginatedQuery,
+                (eventEntity, branch) =>
+                {
+                    eventEntity.Branch = branch; // Giả sử bạn có thuộc tính Branch trong Event
+                    return eventEntity;
+                },
+                parameters,
+                splitOn: "Id" // Điều này phụ thuộc vào cấu trúc của bảng Branch
+            )).ToList();
+
+            return new PagedResult<Event>(items, pageIndex, pageSize, totalCount, totalPages);
+        }
+    }
+
+
 
     public async Task<IEnumerable<Event>> GetAllNotApproved()
     {
@@ -115,10 +192,7 @@ WHERE e.Id = @Id";
         }
     }
 
-    public Task<PagedResult<Event>> GetPagedAsync()
-    {
-        throw new NotImplementedException();
-    }
+
 
     public Task<int> UpdateAsync(Event entity)
     {

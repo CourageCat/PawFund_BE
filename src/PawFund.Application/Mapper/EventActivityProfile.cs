@@ -15,16 +15,6 @@ namespace PawFund.Application.Mapper
                 CreateMap<Event, GetEventActivityByIdDTO.EventDTO>();
                 CreateMap<GetEventActivityByIdDTO.ActivityDTO, EventActivityResponse>()
                     .ConstructUsing(src => new EventActivityResponse(src, new GetEventActivityByIdDTO.EventDTO()));
-
-                //     CreateMap<EventActivity, GetEventActivityByIdDTO.ActivityDTO>()
-                //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Event.Id))
-                //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Event.Name));
-
-                //     CreateMap<Event, GetEventActivityByIdDTO.EventDTO>();
-
-                //     CreateMap<EventActivityResponse, EventActivityResponse>()
-                //         .ForMember(dest => dest.ActivityDTO, opt => opt.MapFrom(src => src.ActivityDTO))
-                //         .ForMember(dest => dest.EventDTO, opt => opt.MapFrom(src => src.EventDTO));
             }
         }
     }
