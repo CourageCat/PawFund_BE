@@ -8,7 +8,7 @@ namespace PawFund.Domain.Entities
     {
         public Cat() { }
 
-        public Cat(CatSex sex, string name, string age, string breed, decimal weight, string color, string description, Guid branchId)
+        public Cat(CatSex sex, string name, string age, string breed, decimal weight, string color, string description, Guid branchId, bool sterilization)
         {
             Sex = sex;
             Name = name;
@@ -18,6 +18,7 @@ namespace PawFund.Domain.Entities
             Color = color;
             Description = description;
             BranchId = branchId;
+            Sterilization = sterilization;
         }
 
         public CatSex Sex { get; set; } = CatSex.Male;
@@ -27,6 +28,7 @@ namespace PawFund.Domain.Entities
         public decimal Weight { get; set; } = 0;
         public string Color {  get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public bool Sterilization { get; set; }
 
         [ForeignKey("Cat_Branch")]
         public Guid BranchId { get; set; }
@@ -35,9 +37,9 @@ namespace PawFund.Domain.Entities
         public virtual ICollection<HistoryCat> HistoryCats { get; set; }
         public virtual ICollection<ImageCat> ImageCats { get; set; }
 
-        public static Cat CreateCat(CatSex sex, string name, string age, string breed, decimal weight, string color, string description, Guid branchId)
+        public static Cat CreateCat(CatSex sex, string name, string age, string breed, decimal weight, string color, string description, Guid branchId, bool sterilization)
         {
-            return new Cat(sex, name, age, breed, weight, color, description, branchId);
+            return new Cat(sex, name, age, breed, weight, color, description, branchId, sterilization);
         }
 
         public void UpdateCat(CatSex sex, string name, string age, string breed, decimal weight, string color, string description)
