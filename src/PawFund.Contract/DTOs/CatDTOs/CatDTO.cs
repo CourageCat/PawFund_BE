@@ -10,7 +10,7 @@ public class CatDto
     public string Breed { get; set; }
     public string Color { get; set; }
     public string Description { get; set; }
-    public string Sterilization { get; set; }
+    public bool Sterilization { get; set; }
     public CatSex Sex { get; set; }
     public List<ImageCatDto> ImageCats { get; set; }
 }

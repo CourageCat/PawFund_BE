@@ -68,7 +68,7 @@ public class CatRepository : ICatRepository
         {
             var validColumns = new HashSet<string>
         {
-            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Color", "c.Description",
+            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Color", "c.Description", "c.Sterilization",
             "ic.ImageUrl", "ic.PublicImageId"
         };
 
