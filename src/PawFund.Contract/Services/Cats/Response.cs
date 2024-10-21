@@ -1,8 +1,6 @@
-﻿using PawFund.Contract.Enumarations.Cat;
-
-namespace PawFund.Contract.Services.Cats;
+﻿namespace PawFund.Contract.Services.Cats;
 
 public static class Response
 {
-    public record CatResponse(Guid Id, string Sex, string Name, int Age, string Breed, decimal Size, string Color, string Description);
+    public record CatResponse(Guid Id, string Sex, string Name, string Age, string Breed, decimal Weight, string Color, string Description);
 }

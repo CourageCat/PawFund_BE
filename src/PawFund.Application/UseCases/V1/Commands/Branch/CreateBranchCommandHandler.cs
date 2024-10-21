@@ -1,7 +1,6 @@
 ﻿using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Branchs;
 using PawFund.Contract.Shared;
-using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Entities;
