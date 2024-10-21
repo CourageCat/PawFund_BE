@@ -44,7 +44,8 @@ namespace PawFund.Application.UseCases.V1.Commands.Cat
                 request.Weight,
                 request.Color,
                 request.Description,
-                request.BranchId);
+                request.BranchId,
+                request.Sterilization);
 
             _catRepository.Add(cat);
 

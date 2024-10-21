@@ -156,6 +156,7 @@ namespace PawFund.Persistence.Migrations
                     Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
+                    Sterilization = table.Column<bool>(type: "bit", nullable: false),
                     BranchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),

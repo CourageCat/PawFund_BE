@@ -249,6 +249,9 @@ namespace PawFund.Persistence.Migrations
                     b.Property<int>("Sex")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Sterilization")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("Weight")
                         .HasColumnType("decimal(18,2)");
 

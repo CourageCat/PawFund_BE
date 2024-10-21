@@ -12,7 +12,7 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241021062520_InitialCreate")]
+    [Migration("20241021095231_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -251,6 +251,9 @@ namespace PawFund.Persistence.Migrations
 
                     b.Property<int>("Sex")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Sterilization")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("Weight")
                         .HasColumnType("decimal(18,2)");
