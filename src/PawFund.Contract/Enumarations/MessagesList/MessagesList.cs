@@ -115,4 +115,7 @@ public enum MessagesList
 
     [Message("The payment bank has been created successfully.", "payment_noti_01")]
     PaymentSucccess,
+
+    [Message("Create cat successfully", "cat_noti_01")]
+    CreateCatSuccessfully,
 }
