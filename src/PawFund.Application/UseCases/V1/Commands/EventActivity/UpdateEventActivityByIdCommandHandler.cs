@@ -5,6 +5,7 @@ using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Exceptions;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Commands.EventActivity
 {
@@ -40,7 +41,7 @@ namespace PawFund.Application.UseCases.V1.Commands.EventActivity
             existActivity.UpdateEventActivity(request.Name, request.Quantity, request.StartDate, request.Description, request.Status, request.EventId, false);
             _eventActivityRepository.Update(existActivity);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Success("Update Event Activity Success");
+            return Result.Success(new Success(MessagesList.UpdateEventActivitySuccessfully.GetMessage().Code, MessagesList.UpdateEventActivitySuccessfully.GetMessage().Message));
         }
     }
 }

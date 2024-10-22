@@ -1,5 +1,6 @@
 ﻿
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
@@ -34,7 +35,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Event
             existEvent.UpdateEvent(existEvent.Name, existEvent.StartDate, existEvent.EndDate, existEvent.Description, existEvent.MaxAttendees, existEvent.BranchId, true);
             _eventRepository.Update(existEvent);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Success("Delete Event Success");
+            return Result.Success(new Success(MessagesList.DeleteEventSuccessfully.GetMessage().Code, MessagesList.DeleteEventSuccessfully.GetMessage().Message));
         }
     }
 }

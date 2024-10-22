@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
@@ -34,32 +35,75 @@ public class EventActivityRepository : IEventActivityRepository
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<EventActivity>> GetAllByEventId(Guid id)
+    public async Task<PagedResult<EventActivity>> GetAllByEventId(Guid eventId, int pageIndex, int pageSize, bool filterParams, string[] selectedColumns)
     {
-        var sql = @"
-SELECT 
-    ea.Id, ea.Name, ea.Quantity, ea.StartDate, ea.Description, ea.Status, ea.IsDeleted as IsEvenActivitytDelete,
-    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, e.IsDeleted as IsEventDeleted
-FROM EventActivities ea
-JOIN Events e ON e.Id = ea.EventId
-WHERE ea.EventId = @Id";
-
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
-            await connection.OpenAsync();
+            var validColumns = new HashSet<string>
+        {
+            "ea.Id", "ea.Name", "ea.Quantity", "ea.StartDate", "ea.Description", "ea.Status", "ea.IsDeleted as IsEventActivityDeleted",
+            "e.Id", "e.Name", "e.StartDate", "e.EndDate", "e.Description", "e.MaxAttendees", "e.IsDeleted as IsEventDeleted"
+        };
 
-            var result = await connection.QueryAsync<EventActivity, Event, EventActivity>(
-                sql,
-                (EventActivity, Event) =>
+            // Lọc các cột được chọn nếu có, hoặc sử dụng tất cả các cột hợp lệ
+            var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
+            var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : string.Join(", ", validColumns);
+
+            var queryBuilder = new StringBuilder($@"
+SELECT {selectedColumnsString} 
+FROM EventActivities ea
+JOIN Events e ON e.Id = ea.EventId
+WHERE ea.EventId = @EventId");
+
+            var parameters = new DynamicParameters();
+            parameters.Add("EventId", eventId);
+
+            // Thiết lập phân trang
+            pageIndex = pageIndex <= 0 ? 1 : pageIndex;
+            pageSize = pageSize <= 0 ? 10 : pageSize > 100 ? 100 : pageSize;
+
+            // Truy vấn đếm tổng số bản ghi để hỗ trợ phân trang
+            var totalCountQuery = new StringBuilder($@"
+SELECT COUNT(1) 
+FROM EventActivities ea
+JOIN Events e ON e.Id = ea.EventId
+WHERE ea.IsDeleted = 0 AND ea.EventId = @EventId");
+
+            // Áp dụng bộ lọc Status theo giá trị bool của filterParams
+            if (filterParams)
+            {
+                queryBuilder.Append(" AND ea.Status = 1");
+                totalCountQuery.Append(" AND ea.Status = 1");
+            }
+            else
+            {
+                queryBuilder.Append(" AND ea.Status = 0");
+                totalCountQuery.Append(" AND ea.Status = 0");
+            }
+
+            // Lấy tổng số bản ghi
+            var totalCount = await connection.ExecuteScalarAsync<int>(totalCountQuery.ToString(), parameters);
+
+            // Tính tổng số trang
+            var totalPages = totalCount == 0 ? 1 : Math.Ceiling(totalCount / (double)pageSize);
+
+            // Logic phân trang: Tính offset
+            var offset = (pageIndex - 1) * pageSize;
+            var paginatedQuery = $"{queryBuilder} ORDER BY ea.StartDate {(filterParams ? "ASC" : "DESC")} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY";
+
+            // Thực thi truy vấn và ánh xạ kết quả về các thực thể
+            var items = (await connection.QueryAsync<EventActivity, Event, EventActivity>(
+                paginatedQuery,
+                (eventActivity, eventEntity) =>
                 {
-                    EventActivity.Event = Event;
-                    return EventActivity;
+                    eventActivity.Event = eventEntity; // Ánh xạ event vào đối tượng eventActivity
+                    return eventActivity;
                 },
-                new { Id = id },
-                splitOn: "IsEvenActivitytDelete"
-            );
+                parameters,
+                splitOn: "IsEventActivityDeleted,IsEventDeleted" // Đảm bảo các cột split đúng với alias trong truy vấn
+            )).ToList();
 
-            return result;
+            return new PagedResult<EventActivity>(items, pageIndex, pageSize, totalCount, totalPages);
         }
     }
 

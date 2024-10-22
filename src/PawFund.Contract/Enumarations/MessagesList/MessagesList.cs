@@ -136,4 +136,43 @@ public enum MessagesList
 
     [Message("Create cat successfully", "cat_noti_01")]
     CreateCatSuccessfully,
+
+    [Message("Create event successfully", "event_noti_01")]
+    CreateEventSuccessfully,
+
+    [Message("Approve event successfully", "approve_event_noti_01")]
+    ApproveEventSuccessfully,
+
+    [Message("Delete event successfully", "delete_event_noti_01")]
+    DeleteEventSuccessfully,
+
+    [Message("Update event successfully", "update_event_noti_01")]
+    UpdateEventSuccessfully,
+
+    [Message("Create event activity successfully", "create_event_activity_noti_01")]
+    CreateEventActivitySuccessfully,
+
+    [Message("Delete event activity successfully", "delete_event_activity_noti_01")]
+    DeleteEventActivitySuccessfully,
+
+    [Message("Update event activity successfully", "update_event_activity_noti_01")]
+    UpdateEventActivitySuccessfully,
+
+    [Message("Approve volunteer application successfully", "approve_volunteer_application_noti_01")]
+    ApproveVolunteerApplicationSuccessfully,
+
+    [Message("Register to be volunteer success", "create_volunteer_application_noti_01")]
+    CreateVolunteerApplicationSuccessfully,
+
+    [Message("Reject application successfully", "reject_volunteer_application_noti_01")]
+    RejectVolunteerApplicationSuccessfully,
+
+    [Message("Can not found any event activity!", "event_activity_noti_exception_01")]
+    EventActivityEmptyException,
+
+    [Message("All event activity", "event_activity_noti_success_09")]
+    GetEventActivitySucess,
+
+    [Message("Event activity found", "event_activity_noti_success_10")]
+    GetEventActivityByIdSuccess,
 }

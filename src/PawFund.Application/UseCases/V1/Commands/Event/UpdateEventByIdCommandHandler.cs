@@ -5,6 +5,7 @@ using PawFund.Domain.Abstractions;
 using PawFund.Domain.Exceptions;
 using PawFund.Contract.Services.Event;
 using PawFund.Domain.Abstractions.Dappers;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Commands.Event
 {
@@ -40,7 +41,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Event
             existEvent.Status = Contract.Enumarations.Event.EventStatus.NotApproved;
             _eventRepository.Update(existEvent);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Success("Update Event Success");
+            return Result.Success(new Success(MessagesList.UpdateEventSuccessfully.GetMessage().Code, MessagesList.UpdateEventSuccessfully.GetMessage().Message));
         }
     }
 }
