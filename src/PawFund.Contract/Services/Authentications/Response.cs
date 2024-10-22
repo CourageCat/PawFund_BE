@@ -6,7 +6,8 @@ public static class Response
         (Guid UserId,
         string FirstName,
         string LastName,
-        string AvatarLink,
+        string CropAvatarLink,
+        string FullAvatarLink,
         int RoleId,
         string AccessToken,
         string RefreshToken);

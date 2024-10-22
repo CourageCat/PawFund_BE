@@ -30,7 +30,7 @@ public class MediaService : IMediaService
         return true;
     }
 
-    public async Task<ImageDTO> UploadImage(string fileName, IFormFile fileImage)
+    public async Task<ImageDTO> UploadImageAsync(string fileName, IFormFile fileImage)
     {
         var uploadParams = new ImageUploadParams
         {
@@ -48,7 +48,7 @@ public class MediaService : IMediaService
         };
     }
 
-    public async Task<List<ImageDTO>> UploadImages(List<IFormFile> fileImages)
+    public async Task<List<ImageDTO>> UploadImagesAsync(List<IFormFile> fileImages)
     {
         var imageDtoList = new List<ImageDTO>();
 

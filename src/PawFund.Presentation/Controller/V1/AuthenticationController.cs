@@ -66,7 +66,8 @@ public class AuthenticationController : ApiController
             UserId = value.UserId,
             FirstName = value.FirstName,
             LastName = value.LastName,
-            AvatarLink = value.AvatarLink,
+            CropAvatarLink = value.CropAvatarLink,
+            FullAvatarLink = value.FullAvatarLink,
             RoleId = value.RoleId,
         };
 
@@ -174,7 +175,8 @@ public class AuthenticationController : ApiController
             UserId = value.UserId,
             FirstName = value.FirstName,
             LastName = value.LastName,
-            AvatarLink = value.AvatarLink,
+            CropAvatarLink = value.CropAvatarLink,
+            FullAvatarLink = value.FullAvatarLink,
             RoleId = value.RoleId,
         };
 
@@ -197,7 +199,6 @@ public class AuthenticationController : ApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Logout()
     {
-        var userId = User.FindFirstValue("UserId");
         Response.Cookies.Delete("refreshToken");
         return Ok(Result.Success(new Success(MessagesList.AuthLogoutSuccess.GetMessage().Code,
             MessagesList.AuthLogoutSuccess.GetMessage().Message)));

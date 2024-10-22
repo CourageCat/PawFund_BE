@@ -69,7 +69,8 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
                 (accountMember.Id,
                 accountMember.FirstName,
                 accountMember.LastName,
-                accountMember.AvatarUrl,
+                accountMember.CropAvatarUrl,
+                accountMember.FullAvatarUrl,
                 (int)accountMember.RoleId,
                 accessToken,
                 refrehsToken));
@@ -88,7 +89,8 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
                 (account.Id,
                 account.FirstName,
                 account.LastName,
-                account.AvatarUrl,
+                account.CropAvatarUrl,
+                account.FullAvatarUrl,
                 (int)account.RoleId,
                 accessToken,
                 refrehsToken));
