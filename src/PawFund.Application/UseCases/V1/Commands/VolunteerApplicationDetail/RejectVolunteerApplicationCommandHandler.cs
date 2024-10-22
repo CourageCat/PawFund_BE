@@ -6,6 +6,7 @@ using PawFund.Contract.Shared;
 using PawFund.Contract.Enumarations.VolunteerApplication;
 using MediatR;
 using PawFund.Contract.Enumarations.MessagesList;
+using PawFund.Domain.Exceptions;
 
 namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
 { 
@@ -24,8 +25,14 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
 
         public async Task<Result> Handle(Command.RejectVolunteerApplication request, CancellationToken cancellationToken)
         {
-            //change status application
             var existVolunteerApplication = await _volunteerApplicationDetailRepository.FindByIdAsync(request.detailId);
+            //check application is exist
+            if (existVolunteerApplication == null)
+            {
+                throw new VolunteerApplicationDetailException.VolunteerApplicationNotFoundException(request.detailId);
+            }
+
+            //change status application
             existVolunteerApplication.UpdateVolunteerApplication(VolunteerApplicationStatus.Rejected, request.reason);
             await _efUnitOfWork.SaveChangesAsync();
 

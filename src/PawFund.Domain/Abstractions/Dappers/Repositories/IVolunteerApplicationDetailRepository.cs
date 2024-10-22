@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 
-    public interface IVolunteerApplicationDetail : IGenericRepository<VolunteerApplicationDetail>
+    public interface IVolunteerApplicationDetailRepository : IGenericRepository<VolunteerApplicationDetail>
     {
+        public Task<bool> CheckVolunteerApplicationExists(Guid eventId, Guid accountId);
     }
 

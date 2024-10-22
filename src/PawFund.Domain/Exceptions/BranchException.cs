@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PawFund.Contract.Enumarations.MessagesList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,8 @@ namespace PawFund.Domain.Exceptions
     {
         public class BranchNotFoundException : NotFoundException
         {
-            public BranchNotFoundException(Guid Id) : base($"Can not found Branch with Id: {Id}")
-            {
-            }
+            public BranchNotFoundException(Guid Id) : base(string.Format(MessagesList.BranchNotFoundException.GetMessage().Message, Id), MessagesList.BranchNotFoundException.GetMessage().Code)
+            { }
         }
     }
 }

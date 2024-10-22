@@ -31,7 +31,11 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
     {
         //check branch for event
         var branch = await _dPUnitOfWork.BranchRepositories.GetByIdAsync(request.BranchId);
-        if (branch != null || branch.IsDeleted != true)
+        if (branch == null || branch.IsDeleted == true)
+        {
+            throw new BranchException.BranchNotFoundException(request.BranchId);
+        }
+        else
         {
             //create new event
             var newEvent = Domain.Entities.Event.CreateEvent(request.Name, request.StartDate, request.EndDate, request.Description, request.MaxAttendees, request.BranchId, DateTime.Now, DateTime.Now, false);
@@ -41,10 +45,6 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
 
             //Return result
             return Result.Success(new Success(MessagesList.CreateEventSuccessfully.GetMessage().Code, MessagesList.CreateEventSuccessfully.GetMessage().Message));
-        }
-        else
-        {
-            throw new BranchException.BranchNotFoundException(request.BranchId);
         }
     }
 }

@@ -27,17 +27,16 @@ namespace PawFund.Application.UseCases.V1.Commands.EventActivity
         public async Task<Result> Handle(Command.CreateEventActivityCommand request, CancellationToken cancellationToken)
         {
             var existEvent = await _dPUnitOfWork.EventRepository.GetByIdAsync(request.EventId);
-            if (existEvent != null || existEvent.IsDeleted != true)
+            if (existEvent == null || existEvent.IsDeleted == true)
+            {
+                throw new EventException.EventNotFoundException(request.EventId);
+            }
+            else
             {
                 var newActivityEvent = Domain.Entities.EventActivity.CreateEventActivity(request.Name, request.Quantity, request.StartDate, request.Description, true, request.EventId, DateTime.Now, DateTime.Now, false);
                 _eventActivityRepository.Add(newActivityEvent);
                 await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-
                 return Result.Success(new Success(MessagesList.CreateEventActivitySuccessfully.GetMessage().Code, MessagesList.CreateEventActivitySuccessfully.GetMessage().Message));
-            }
-            else
-            {
-                throw new EventException.EventNotFoundException(request.EventId);
             }
         }
     }

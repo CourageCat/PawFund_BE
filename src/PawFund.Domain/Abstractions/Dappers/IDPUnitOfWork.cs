@@ -13,6 +13,6 @@ public interface IDPUnitOfWork
     IEventRepository EventRepository { get; }
     IHistoryCatRepository HistoryCatRepository { get; }
     IRoleUser RoleUserRepository { get; }
-    IVolunteerApplicationDetail VolunteerApplicationDetailRepository { get; }
+    IVolunteerApplicationDetailRepository VolunteerApplicationDetailRepository { get; }
     IDonationRepository DonationRepository { get; }
 }

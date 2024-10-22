@@ -5,6 +5,7 @@ using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.EventActivity;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
+using PawFund.Domain.Exceptions;
 using static PawFund.Contract.DTOs.EventActivity.GetEventActivityByIdDTO;
 using static PawFund.Contract.Services.EventActivity.Respone;
 
@@ -22,7 +23,11 @@ namespace PawFund.Application.UseCases.V1.Queries.EventActivity
         public async Task<Result<Success<EventActivityResponse>>> Handle(Query.GetEventActivityByIdQuery request, CancellationToken cancellationToken)
         {
             var existActivity = await _dPUnitOfWork.EventActivityRepositories.GetByIdAsync(request.Id);
-            if (existActivity != null)
+            if (existActivity == null)
+            {
+                throw new EventActivityException.EventActivityNotFoundException(request.Id);
+            }
+            else
             {
                 ActivityDTO activityDTO = new ActivityDTO()
                 {
@@ -45,10 +50,7 @@ namespace PawFund.Application.UseCases.V1.Queries.EventActivity
                 };
                 var result = new Respone.EventActivityResponse(activityDTO, eventDTO);
                 return Result.Success(new Success<Respone.EventActivityResponse>(MessagesList.GetEventActivityByIdSuccess.GetMessage().Code, MessagesList.GetEventActivityByIdSuccess.GetMessage().Message, result));
-            }
-            else
-            {
-                throw new Domain.Exceptions.EventActivityException.EventActivityNotFoundException(request.Id);
+
             }
         }
     }

@@ -3,6 +3,7 @@ using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
+using PawFund.Domain.Exceptions;
 using static PawFund.Contract.DTOs.Event.GetEventByIdDTO;
 
 namespace PawFund.Application.UseCases.V1.Queries.Event
@@ -17,7 +18,11 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
         public async Task<Result<Respone.EventResponse>> Handle(Query.GetEventByIdQuery request, CancellationToken cancellationToken)
         {
             var existEvent = await _dPUnitOfWork.EventRepository.GetByIdAsync(request.Id);
-            if (existEvent != null)
+            if (existEvent == null)
+            {
+                throw new EventException.EventNotFoundException(request.Id);
+            }
+            else
             {
                 EventDTO eventDTO = new EventDTO()
                 {
@@ -45,10 +50,6 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
                 };
                 var result = new Respone.EventResponse(eventDTO, branchDTO);
                 return Result.Success(result);
-            }
-            else
-            {
-                throw new Domain.Exceptions.EventException.EventNotFoundException(request.Id);
             }
         }
     }

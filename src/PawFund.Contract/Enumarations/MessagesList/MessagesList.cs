@@ -175,4 +175,19 @@ public enum MessagesList
 
     [Message("Event activity found", "event_activity_noti_success_10")]
     GetEventActivityByIdSuccess,
+
+    [Message("This user is already registering into this event", "volunteer_application_noti_exception_1")]
+    CheckVolunteerApplicationException,
+
+    [Message("Can not find volunteer application with id: {0}", "volunteer_application_noti_exception_2")]
+    VolunteerApplicationNotFoundException,
+
+    [Message("Can not find event with id: {0}", "event_noti_exception_1")]
+    EventNotFoundException,
+
+    [Message("Can not find branch with id: {0}", "branch_noti_exception_1")]
+    BranchNotFoundException,
+
+    [Message("Can not found event activity with ID: {0}", "event_activity_noti_exception_1")]
+    EventActivityNotFoundException,
 }
