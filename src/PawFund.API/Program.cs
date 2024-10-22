@@ -7,6 +7,9 @@ using PawFund.Persistence.DependencyInjection.Options;
 using PawFund.Persistence.DependencyInjection.Extensions;
 using PawFund.Infrastructure.DependencyInjection.Extensions;
 using PawFund.Infrastructure.Dapper.DependencyInjection.Extensions;
+using PawFund.Persistence;
+using PawFund.Persistence.SeedData;
+using PawFund.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,7 +82,17 @@ builder.Services.AddCors(options =>
         });
 });
 
+
 var app = builder.Build();
+
+// Seed data
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+
+    SeedData.Seed(context, builder.Configuration, new PasswordHashService());
+}
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

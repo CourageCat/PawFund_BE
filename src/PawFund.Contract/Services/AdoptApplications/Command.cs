@@ -20,10 +20,16 @@ public static class Command
         (Guid AdoptId)
         : ICommand;
 
-    public record UpdateMeetingTimeCommand(Guid AdoptId, List<UpdateMeetingTimeRequestDTO.MeetingTimeDTO> ListTime) : ICommand;
+    public record UpdateMeetingTimeCommand(Guid AccountId, List<UpdateMeetingTimeRequestDTO.MeetingTimeDTO> ListTime) : ICommand;
 
     public record ApplyAdoptApplicationCommand(Guid AdoptId) : ICommand;
     public record RejectAdoptApplicationCommand(Guid AdoptId, string ReasonReject) : ICommand;
 
+    public record ChooseMeetingTimeCommand(Guid AdoptId, DateTime MeetingTime) : ICommand;
+    public record CompleteAdoptionCommand(Guid AdoptId) : ICommand;
+    public record RejectOutsideAdoptionCommand(Guid AdoptId, string ReasonReject) : ICommand;
+
+
     public record UpdateDataFromGoogleSheetCommand(string Branch, string Time, int NumberOfStaffsFree) : ICommand;
+
 }

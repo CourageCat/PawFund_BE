@@ -1,12 +1,11 @@
 ﻿using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
-using PawFund.Infrastructure.Dapper.Repositories;
 
 namespace PawFund.Infrastructure.Dapper;
 
 public class DPUnitOfWork : IDPUnitOfWork
 {
-    public DPUnitOfWork(IAccountRepository accountRepositories, IAdoptRepository adoptRepositories, ICatRepository catRepositories, IBranchRepository branchRepositories, IEventActivityRepository eventActivityRepositories, IEventRepository eventRepository, IHistoryCat historyCatRepository, IRoleUser roleUserRepository, IVolunteerApplicationDetail volunteerApplicationDetailRepository)
+    public DPUnitOfWork(IAccountRepository accountRepositories, IAdoptRepository adoptRepositories, ICatRepository catRepositories, IBranchRepository branchRepositories, IEventActivityRepository eventActivityRepositories, IEventRepository eventRepository, IHistoryCatRepository historyCatRepository, IRoleUser roleUserRepository, IVolunteerApplicationDetail volunteerApplicationDetailRepository, IDonationRepository donationRepository)
     {
         AccountRepositories = accountRepositories;
         AdoptRepositories = adoptRepositories;
@@ -17,6 +16,7 @@ public class DPUnitOfWork : IDPUnitOfWork
         HistoryCatRepository = historyCatRepository;
         RoleUserRepository = roleUserRepository;
         VolunteerApplicationDetailRepository = volunteerApplicationDetailRepository;
+        DonationRepository = donationRepository;
     }
 
     public IAccountRepository AccountRepositories { get; }
@@ -29,9 +29,13 @@ public class DPUnitOfWork : IDPUnitOfWork
 
     public IEventRepository EventRepository { get; }
 
-    public IHistoryCat HistoryCatRepository { get; }
+    public IHistoryCatRepository HistoryCatRepository{ get; }
 
     public IRoleUser RoleUserRepository { get; }
 
     public IVolunteerApplicationDetail VolunteerApplicationDetailRepository { get; }
+
+    public IDonationRepository DonationRepository { get; }
+
+    public IHistoryCatRepository HistoryCatRepositories { get; }
 }

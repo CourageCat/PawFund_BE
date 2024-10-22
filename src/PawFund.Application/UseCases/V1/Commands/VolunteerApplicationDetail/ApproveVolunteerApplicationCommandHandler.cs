@@ -7,6 +7,7 @@ using PawFund.Domain.Abstractions;
 using PawFund.Contract.Enumarations.VolunteerApplication;
 using MediatR;
 using PawFund.Domain.Entities;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
 {
@@ -17,7 +18,7 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
         private readonly IEFUnitOfWork _efUnitOfWork;
         private readonly IPublisher _publisher;
 
-        public ApproveVolunteerApplicationCommandHandler(IRepositoryBase<Domain.Entities.VolunteerApplicationDetail, Guid> volunteerApplicationDetailRepository, IRepositoryBase<Account, Guid> accountRepository, IEFUnitOfWork efUnitOfWork, IPublisher publisher)
+        public ApproveVolunteerApplicationCommandHandler(IRepositoryBase<Domain.Entities.VolunteerApplicationDetail, Guid> volunteerApplicationDetailRepository, IRepositoryBase<Domain.Entities.Account, Guid> accountRepository, IEFUnitOfWork efUnitOfWork, IPublisher publisher)
         {
             _volunteerApplicationDetailRepository = volunteerApplicationDetailRepository;
             _accountRepository = accountRepository;
@@ -35,13 +36,11 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
             //get account by accountId
             var account = await _accountRepository.FindByIdAsync(existVolunteerApplication.AccountId);
 
-
-
             // Send email
             await Task.WhenAll(
                _publisher.Publish(new DomainEvent.ApproveSendMail(Guid.NewGuid(), account.Email, existVolunteerApplication.EventActivity.Name), cancellationToken)
            );
-            return Result.Success("Approve Application Success");
+            return Result.Success(new Success(MessagesList.ApproveVolunteerApplicationSuccessfully.GetMessage().Code, MessagesList.ApproveVolunteerApplicationSuccessfully.GetMessage().Message));
         }
     }
 }

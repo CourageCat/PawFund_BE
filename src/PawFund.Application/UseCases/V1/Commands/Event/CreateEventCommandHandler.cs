@@ -1,5 +1,6 @@
 ﻿
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
@@ -32,12 +33,14 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
         var branch = await _dPUnitOfWork.BranchRepositories.GetByIdAsync(request.BranchId);
         if (branch != null || branch.IsDeleted != true)
         {
+            //create new event
             var newEvent = Domain.Entities.Event.CreateEvent(request.Name, request.StartDate, request.EndDate, request.Description, request.MaxAttendees, request.BranchId, DateTime.Now, DateTime.Now, false);
             newEvent.Status = Contract.Enumarations.Event.EventStatus.NotApproved;
             _eventRepository.Add(newEvent);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Result.Success("Create Event Success");
+            //Return result
+            return Result.Success(new Success(MessagesList.CreateEventSuccessfully.GetMessage().Code, MessagesList.CreateEventSuccessfully.GetMessage().Message));
         }
         else
         {

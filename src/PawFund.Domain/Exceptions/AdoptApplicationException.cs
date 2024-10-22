@@ -25,16 +25,36 @@ namespace PawFund.Domain.Exceptions
             { }
         }
 
-        public class AdoptApplicationHasAlreadyApprovedException : NotFoundException
+        public class AdoptApplicationHasAlreadyApprovedException : BadRequestException
         {
             public AdoptApplicationHasAlreadyApprovedException() : base(MessagesList.AdoptApplicationHasAlreadyApprovedException.GetMessage().Message, MessagesList.AdoptApplicationHasAlreadyApprovedException.GetMessage().Code)
             { }
         }
 
-        public class AdoptApplicationHasAlreadyRejectedException : NotFoundException
+        public class AdoptApplicationHasAlreadyRejectedException : BadRequestException
         {
             public AdoptApplicationHasAlreadyRejectedException() : base(MessagesList.AdoptApplicationHasAlreadyRejectedException.GetMessage().Message, MessagesList.AdoptApplicationHasAlreadyRejectedException.GetMessage().Code)
             { }
         }
+
+        public class NoStaffFreesForTheMeetingTimeException : BadRequestException
+        {
+            public NoStaffFreesForTheMeetingTimeException() : base(MessagesList.AdoptNotStaffFreeForThisMeetingTimeException.GetMessage().Message, MessagesList.AdoptNotStaffFreeForThisMeetingTimeException.GetMessage().Code)
+            { }
+        }
+
+        public class NotFoundMeetingTimeException : NotFoundException
+        {
+            public NotFoundMeetingTimeException() : base(MessagesList.AdoptNotFoundMeetingTimeException.GetMessage().Message, MessagesList.AdoptNotFoundMeetingTimeException.GetMessage().Code)
+            { }
+        }
+
+        public class AdoptApplicationHasAlreadyCompletedOutSideException : BadRequestException
+        {
+            public AdoptApplicationHasAlreadyCompletedOutSideException() : base
+                                              (MessagesList.AdoptApplicationHasAlreadyCompletedOutSideException.GetMessage().Message, MessagesList.AdoptApplicationHasAlreadyCompletedOutSideException.GetMessage().Code)
+            { }
+        }
+
     }
 }

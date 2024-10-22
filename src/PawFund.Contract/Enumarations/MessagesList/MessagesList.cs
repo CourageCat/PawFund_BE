@@ -29,7 +29,7 @@ public enum MessagesList
     [Message("Your OTP does not match", "auth_otp_01")]
     AuthOtpForgotPasswordNotMatchException,
 
-    [Message("An error occurred, please try again", "auth08")]
+    [Message("Unable to change password, please try again", "auth_forgot_01")]
     AuthErrorChangePasswordException,
 
     [Message("Please check your email to enter otp", "auth_noti_05")]
@@ -67,8 +67,29 @@ public enum MessagesList
 
     [Message("Approve Adopt Application Successfully", "adopt_noti_success_04")]
     AdoptApproveApplicationSuccess,
+
     [Message("Reject Adopt Application Successfully", "adopt_noti_success_05")]
     AdoptRejectApplicationSuccess,
+
+    [Message("All Meeting Times", "adopt_noti_success_06")]
+    AdoptGetAllMeetingTimeSuccess,
+
+    [Message("Choose Meeting Time Successfully", "adopt_noti_success_07")]
+    AdoptChooseMeetingTimeSuccess,
+
+    [Message("Update meeting time successfully", "adopt_noti_exception_07")]
+    AdoptUpdateMeetingTimeSuccess,
+
+    [Message("All Adopt Applications", "adopt_noti_success_09")]
+    AdoptGetAdoptApplicationsSuccess,
+
+    [Message("Adopt Application Found", "adopt_noti_success_10")]
+    AdoptGetAdoptApplicationSuccess,
+
+    [Message("Complete Adopt Application Successfully", "adopt_noti_success_11")]
+    AdoptCompleteAdoptApplicationSuccess,
+    [Message("Reject Outside Adopt Application Successfully", "adopt_noti_success_12")]
+    AdoptRejectOutsideAdoptApplicationSuccess,
 
     [Message("Can not found application with ID: {0}", "adopt_noti_exception_01")]
     AdoptApplicationNotFoundException,
@@ -87,4 +108,71 @@ public enum MessagesList
 
     [Message("This application has already rejected", "adopt_noti_exception_06")]
     AdoptApplicationHasAlreadyRejectedException,
+
+    [Message("This user has already banned.", "change_status_noti_exception_01")]
+    UserHasAlreadyBannedException,
+
+    [Message("This user has already unbanned", "change_status_noti_exception_02")]
+    UserHasAlreadyUnbannedException,
+
+    [Message("Can not find any meeting time", "adopt_noti_exception_07")]
+    AdoptNotFoundAnyMeetingTimeException,
+
+
+    [Message("This time is not exist, Please reload the page", "adopt_noti_exception_08")]
+    AdoptNotFoundMeetingTimeException,
+
+    [Message("This time is not available (Because no staff frees for this time)", "adopt_noti_exception_09")]
+    AdoptNotStaffFreeForThisMeetingTimeException,
+
+    [Message("This application has already completed or rejected out side", "adopt_noti_exception_10")]
+    AdoptApplicationHasAlreadyCompletedOutSideException,
+
+    [Message("User update profile successfully.", "account_noti_01")]
+    UserUpdateProfileSuccess,
+
+    [Message("The payment bank has been created successfully.", "payment_noti_01")]
+    PaymentSucccess,
+
+    [Message("Create cat successfully", "cat_noti_01")]
+    CreateCatSuccessfully,
+
+    [Message("Create event successfully", "event_noti_01")]
+    CreateEventSuccessfully,
+
+    [Message("Approve event successfully", "approve_event_noti_01")]
+    ApproveEventSuccessfully,
+
+    [Message("Delete event successfully", "delete_event_noti_01")]
+    DeleteEventSuccessfully,
+
+    [Message("Update event successfully", "update_event_noti_01")]
+    UpdateEventSuccessfully,
+
+    [Message("Create event activity successfully", "create_event_activity_noti_01")]
+    CreateEventActivitySuccessfully,
+
+    [Message("Delete event activity successfully", "delete_event_activity_noti_01")]
+    DeleteEventActivitySuccessfully,
+
+    [Message("Update event activity successfully", "update_event_activity_noti_01")]
+    UpdateEventActivitySuccessfully,
+
+    [Message("Approve volunteer application successfully", "approve_volunteer_application_noti_01")]
+    ApproveVolunteerApplicationSuccessfully,
+
+    [Message("Register to be volunteer success", "create_volunteer_application_noti_01")]
+    CreateVolunteerApplicationSuccessfully,
+
+    [Message("Reject application successfully", "reject_volunteer_application_noti_01")]
+    RejectVolunteerApplicationSuccessfully,
+
+    [Message("Can not found any event activity!", "event_activity_noti_exception_01")]
+    EventActivityEmptyException,
+
+    [Message("All event activity", "event_activity_noti_success_09")]
+    GetEventActivitySucess,
+
+    [Message("Event activity found", "event_activity_noti_success_10")]
+    GetEventActivityByIdSuccess,
 }

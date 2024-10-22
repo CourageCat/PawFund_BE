@@ -1,14 +1,16 @@
 ﻿using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.DTOs.EventActivity;
+using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.EventActivity;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
-using static PawFund.Contract.DTOs.Event.GetEventByIdDTO;
 using static PawFund.Contract.DTOs.EventActivity.GetEventActivityByIdDTO;
+using static PawFund.Contract.Services.EventActivity.Respone;
 
 namespace PawFund.Application.UseCases.V1.Queries.EventActivity
 {
-    public sealed class GetEventActivityByIdQueryHandler : IQueryHandler<Query.GetEventActivityByIdQuery, Respone.EventActivityResponse>
+    public sealed class GetEventActivityByIdQueryHandler : IQueryHandler<Query.GetEventActivityByIdQuery, Success<Respone.EventActivityResponse>>
     {
         private readonly IDPUnitOfWork _dPUnitOfWork;
 
@@ -17,7 +19,7 @@ namespace PawFund.Application.UseCases.V1.Queries.EventActivity
             _dPUnitOfWork = dPUnitOfWork;
         }
 
-        public async Task<Result<Respone.EventActivityResponse>> Handle(Query.GetEventActivityByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<Success<EventActivityResponse>>> Handle(Query.GetEventActivityByIdQuery request, CancellationToken cancellationToken)
         {
             var existActivity = await _dPUnitOfWork.EventActivityRepositories.GetByIdAsync(request.Id);
             if (existActivity != null)
@@ -42,7 +44,7 @@ namespace PawFund.Application.UseCases.V1.Queries.EventActivity
                     Status = existActivity.Event.Status.ToString()
                 };
                 var result = new Respone.EventActivityResponse(activityDTO, eventDTO);
-                return Result.Success(result);
+                return Result.Success(new Success<Respone.EventActivityResponse>(MessagesList.GetEventActivityByIdSuccess.GetMessage().Code, MessagesList.GetEventActivityByIdSuccess.GetMessage().Message, result));
             }
             else
             {

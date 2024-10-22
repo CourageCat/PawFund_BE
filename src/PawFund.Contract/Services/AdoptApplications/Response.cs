@@ -14,7 +14,10 @@ public static class Response
         GetApplicationByIdResponseDTO.AccountDto Account,
         GetApplicationByIdResponseDTO.CatDto Cat);
 
-    public record GetAllApplicationResponse(List<GetAllApplicationsResponseDTO.AdoptApplicationDTO> List);
+    public record ApplicationResponse(GetAllApplicationsResponseDTO.AdoptApplicationDTO Application);
+
+    public record GetMeetingTimeByStaffResponse(List<GetMeetingTimeByStaffResponseDTO.MeetingTimeDTO> ListMeetingTime);
+    public record GetMeetingTimeByAdopterResponse(List<DateTime> ListMeetingTime);
 
 
 }

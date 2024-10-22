@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using MediatR;
 using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Authentications;
@@ -6,16 +7,14 @@ using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
-using PawFund.Domain.Entities;
-using static PawFund.Domain.Exceptions.AuthenticationException;
 using PawFund.Contract.Enumarations.MessagesList;
-using MediatR;
+using static PawFund.Domain.Exceptions.AuthenticationException;
 
 namespace PawFund.Application.UseCases.V1.Commands.Authentication;
 
 public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEmailCommand>
 {
-    private readonly IRepositoryBase<Account, Guid> _accountRepository;
+    private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
     private readonly IResponseCacheService _responseCacheService;
     private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IDPUnitOfWork _dbUnitOfWork;
@@ -23,7 +22,7 @@ public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEm
     private readonly IPublisher _publisher;
 
     public VerifyEmailCommandHandler
-        (IRepositoryBase<Account, Guid> accountRepository,
+        (IRepositoryBase<Domain.Entities.Account, Guid> accountRepository,
         IResponseCacheService responseCacheService,
         IEFUnitOfWork unitOfWork,
         IDPUnitOfWork dbUnitOfWork,
@@ -57,7 +56,7 @@ public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEm
         var passwordHash = _passwordHashService.HashPassword(user.Password);
 
         // Create object account with type register local
-        var accountMember = Account.CreateMemberAccountLocal
+        var accountMember = Domain.Entities.Account.CreateMemberAccountLocal
             (user.FirstName, user.LastName, user.Email, user.PhoneNumber, passwordHash);
         
         _accountRepository.Add(accountMember);

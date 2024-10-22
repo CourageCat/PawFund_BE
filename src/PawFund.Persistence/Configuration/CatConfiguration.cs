@@ -27,7 +27,7 @@ namespace PawFund.Persistence.Configuration
                 .IsRequired()
                 .HasMaxLength(150);
 
-            builder.Property(p => p.Size)
+            builder.Property(p => p.Weight)
                 .IsRequired();
 
             builder.Property(p => p.Color)
@@ -37,7 +37,6 @@ namespace PawFund.Persistence.Configuration
             builder.Property(p => p.Description)
                 .IsRequired()
                 .HasMaxLength(1500);
-
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Settings;
 using Microsoft.AspNetCore.Http;
-using PawFund.Contract.DTOs.MediaDTOS;
+using PawFund.Contract.DTOs.MediaDTOs;
 
 namespace PawFund.Infrastructure.Services;
 
@@ -47,4 +47,37 @@ public class MediaService : IMediaService
             PublicImageId = imageId
         };
     }
+
+    public async Task<List<ImageDTO>> UploadImages(List<IFormFile> fileImages)
+    {
+        var imageDtoList = new List<ImageDTO>();
+
+        foreach (var fileImage in fileImages)
+        {
+            var fileName = fileImage.FileName;
+
+            var uploadParams = new ImageUploadParams
+            {
+                File = new FileDescription(fileName, fileImage.OpenReadStream()),
+                Folder = _cloudinarySetting.Folder,
+            };
+
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+            if (uploadResult?.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var imageUrl = uploadResult.Url.AbsoluteUri;
+                var imageId = uploadResult.PublicId;
+
+                imageDtoList.Add(new ImageDTO
+                {
+                    ImageUrl = imageUrl,
+                    PublicImageId = imageId
+                });
+            }
+        }
+
+        return imageDtoList;
+    }
+
 }

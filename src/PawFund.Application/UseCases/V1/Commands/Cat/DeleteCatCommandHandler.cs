@@ -29,7 +29,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Cat;
             {
                 throw new CatException.CatNotFoundException(request.Id);
             }
-            catFound.UpdateCat(catFound.Sex, catFound.Name, catFound.Age, catFound.Breed, catFound.Size, catFound.Color, catFound.Description, catFound.BranchId, catFound.CreatedDate, DateTime.Now, true);
+            catFound.UpdateCat(catFound.Sex, catFound.Name, catFound.Age, catFound.Breed, catFound.Weight, catFound.Color, catFound.Description);
             _catRepository.Update(catFound);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
             return Result.Success("Delete Pet successfully.");

@@ -6,7 +6,6 @@ using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
-using PawFund.Domain.Entities;
 using PawFund.Contract.Enumarations.Authentication;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 
@@ -17,7 +16,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
     private readonly IGoogleOAuthService _googleOAuthService;
     private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IEFUnitOfWork _efUnitOfWork;
-    private readonly IRepositoryBase<Account, Guid> _accountRepository;
+    private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
     private readonly IPublisher _publisher;
     private readonly ITokenGeneratorService _tokenGeneratorService;
 
@@ -25,7 +24,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
         (IGoogleOAuthService googleOAuthService,
         IDPUnitOfWork dPUnitOfWork,
         IEFUnitOfWork efUnitOfWork,
-        IRepositoryBase<Account, Guid> accountRepository,
+        IRepositoryBase<Domain.Entities.Account, Guid> accountRepository,
         IPublisher publisher,
         ITokenGeneratorService tokenGeneratorService)
     {
@@ -49,7 +48,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
         if (account == null)
         {
             // Create object account member
-            var accountMember = Account.CreateMemberAccountGoogle
+            var accountMember = Domain.Entities.Account.CreateMemberAccountGoogle
                 (googleUserInfo.Name, googleUserInfo.Name, googleUserInfo.Email);
             _accountRepository.Add(accountMember);
 
@@ -62,7 +61,6 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
             );
 
             // Generate accessToken and refreshToken
-
             var accessToken = _tokenGeneratorService.GenerateAccessToken(accountMember.Id, (int)accountMember.RoleId);
             var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(accountMember.Id, (int)accountMember.RoleId);
 
@@ -72,6 +70,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
                 accountMember.FirstName,
                 accountMember.LastName,
                 accountMember.AvatarUrl,
+                (int)accountMember.RoleId,
                 accessToken,
                 refrehsToken));
         }
@@ -90,6 +89,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
                 account.FirstName,
                 account.LastName,
                 account.AvatarUrl,
+                (int)account.RoleId,
                 accessToken,
                 refrehsToken));
         }

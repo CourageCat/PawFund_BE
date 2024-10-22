@@ -3,11 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PawFund.Contract.Services.Cats;
 using PawFund.Presentation.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PawFund.Presentation.Controller.V1;
 public class CatController : ApiController
@@ -19,12 +14,12 @@ public class CatController : ApiController
     [HttpPost("create_cat", Name = "CreateCat")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateCat([FromBody] Command.CreateCatCommand CreateCat)
+    public async Task<IActionResult> CreateCat([FromForm] Command.CreateCatCommand CreateCat)
     {
         var result = await Sender.Send(CreateCat);
         if (result.IsFailure)
             return HandlerFailure(result);
-
+        
         return Ok(result);
     }
 

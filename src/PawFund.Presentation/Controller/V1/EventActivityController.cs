@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PawFund.Contract.Services.AdoptApplications.Filter;
 
 namespace PawFund.Presentation.Controller.V1
 {
@@ -68,9 +69,14 @@ namespace PawFund.Presentation.Controller.V1
         [HttpGet("get_all_event_activity_by_eventId",Name = "GetAllEventActivity")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAllEvent([FromQuery] Guid id)
+        public async Task<IActionResult> GetAllEvent(
+            [FromQuery] Guid id,
+            [FromQuery] bool filterParams = true,
+            [FromQuery] int pageIndex = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string[] selectedColumns = null)
         {
-            var result = await Sender.Send(new Query.GetAllEventActivity(id));
+            var result = await Sender.Send(new Query.GetAllEventActivity(id, filterParams, pageIndex, pageSize, selectedColumns));
             if (result.IsFailure)
                 return HandlerFailure(result);
 

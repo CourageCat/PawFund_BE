@@ -1,61 +1,56 @@
-﻿using PawFund.Domain.Abstractions.Entities;
+﻿using PawFund.Contract.Enumarations.Cat;
+using PawFund.Domain.Abstractions.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PawFund.Domain.Entities
 {
     public class Cat : DomainEntity<Guid>
     {
-
         public Cat() { }
 
-        public Cat(string sex, string name, int age, string breed, decimal size, string color, string description, Guid branchId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
+        public Cat(CatSex sex, string name, string age, string breed, decimal weight, string color, string description, Guid branchId, bool sterilization)
         {
             Sex = sex;
             Name = name;
             Age = age;
             Breed = breed;
-            Size = size;
+            Weight = weight;
             Color = color;
             Description = description;
             BranchId = branchId;
-            CreatedDate = createdDate;
-            ModifiedDate = modifiedDate;
-            IsDeleted = isDeleted;
+            Sterilization = sterilization;
         }
 
-        public string Sex {  get; set; } = string.Empty;
+        public CatSex Sex { get; set; } = CatSex.Male;
         public string Name { get; set; } = string.Empty;
-        public int Age { get; set; } = 1;
+        public string Age { get; set; } = string.Empty;
         public string Breed {  get; set; } = string.Empty;
-        public decimal Size { get; set; } = 0;
+        public decimal Weight { get; set; } = 0;
         public string Color {  get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public bool Sterilization { get; set; }
 
         [ForeignKey("Cat_Branch")]
         public Guid BranchId { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual ICollection<AdoptPetApplication> AdoptPetApplications { get; set; }
         public virtual ICollection<HistoryCat> HistoryCats { get; set; }
+        public virtual ICollection<ImageCat> ImageCats { get; set; }
 
-        public static Cat CreateCat(string sex, string name, int age, string breed, decimal size, string color, string description, Guid branchId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
+        public static Cat CreateCat(CatSex sex, string name, string age, string breed, decimal weight, string color, string description, Guid branchId, bool sterilization)
         {
-            return new Cat(sex, name, age, breed, size, color, description, branchId, createdDate, modifiedDate, isDeleted);
+            return new Cat(sex, name, age, breed, weight, color, description, branchId, sterilization);
         }
 
-        public void UpdateCat(string sex, string name, int age, string breed, decimal size, string color, string description, Guid branchId, DateTime? createdDate, DateTime modifiedDate, bool isDeleted)
+        public void UpdateCat(CatSex sex, string name, string age, string breed, decimal weight, string color, string description)
         {
             Sex = sex;
             Name = name;
             Age = age;
             Breed = breed;
-            Size = size;
+            Weight = weight;
             Color = color;
             Description = description;
-            BranchId = branchId;
-            CreatedDate = createdDate;
-            ModifiedDate = modifiedDate;
-            IsDeleted = isDeleted;
         }
-
     }
 }

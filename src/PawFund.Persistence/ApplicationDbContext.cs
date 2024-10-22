@@ -21,4 +21,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<AdoptPetApplication> AdoptPetApplications { get; set; }
     public DbSet<Cat> Cats { get; set; }
     public DbSet<HistoryCat> HistoryCats { get; set; }
+    public DbSet<Donation> Donations { get; set; }
+    public DbSet<ImageCat> ImageCats { get; set; }
+    public DbSet<PaymentMethod> PaymentMethods { get; set; }
 }

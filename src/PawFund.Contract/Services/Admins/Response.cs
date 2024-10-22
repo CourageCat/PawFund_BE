@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PawFund.Presentation.Controller.V1
+namespace PawFund.Contract.Services.Admin
 {
-    internal class PetController
+    public static class Response
     {
+        public record UserResponse();
     }
 }

@@ -22,9 +22,9 @@ namespace PawFund.Contract.DTOs.Adopt.Response
             public Guid Id { get; set; }
             public string Sex { get; set; } = string.Empty;
             public string Name { get; set; } = string.Empty;
-            public int Age { get; set; } = 1;
+            public string Age { get; set; } = string.Empty;
             public string Breed { get; set; } = string.Empty;
-            public decimal Size { get; set; } = 0;
+            public decimal Weight { get; set; } = 0;
             public string Color { get; set; } = string.Empty;
             public string Description { get; set; } = string.Empty;
         }
