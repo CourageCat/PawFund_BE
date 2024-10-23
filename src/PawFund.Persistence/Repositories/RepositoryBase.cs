@@ -73,4 +73,14 @@ public class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey>, IDi
         entity.ModifiedDate = DateTime.UtcNow;
         _context.Set<TEntity>().Update(entity);
     }
+
+    public void AddRange(List<TEntity> entities)
+    {
+        foreach (var entity in entities)
+        {
+            entity.CreatedDate = DateTime.UtcNow;
+            entity.ModifiedDate = DateTime.UtcNow;
+        }
+        _context.AddRange(entities);
+    }
 }

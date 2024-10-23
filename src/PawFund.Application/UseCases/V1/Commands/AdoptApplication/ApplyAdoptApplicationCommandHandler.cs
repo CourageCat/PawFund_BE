@@ -13,8 +13,8 @@ namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication;
 
 public sealed class ApplyAdoptApplicationCommandHandler : ICommandHandler<Command.ApplyAdoptApplicationCommand>
 {
-    public readonly IRepositoryBase<AdoptPetApplication, Guid> _adoptPetApplicationRepository;
-    public readonly IEFUnitOfWork _efUnitOfWork;
+    private readonly IRepositoryBase<AdoptPetApplication, Guid> _adoptPetApplicationRepository;
+    private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IPublisher _publisher;
 
     public ApplyAdoptApplicationCommandHandler(IRepositoryBase<AdoptPetApplication, Guid> adoptPetApplicationRepository, IEFUnitOfWork efUnitOfWork, IPublisher publisher)
@@ -43,7 +43,7 @@ public sealed class ApplyAdoptApplicationCommandHandler : ICommandHandler<Comman
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         //Send email
         await Task.WhenAll(
-           _publisher.Publish(new DomainEvent.AdopterHasBeenApproved(request.AdoptId, applicationFound.Account.Email, applicationFound.Cat.Name), cancellationToken)
+           _publisher.Publish(new DomainEvent.AdoptionHasBeenApproved(request.AdoptId, applicationFound.Account.Email, applicationFound.Cat.Name), cancellationToken)
        );
 
         //Return result

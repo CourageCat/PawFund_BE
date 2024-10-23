@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
-using PawFund.Contract.Enumarations.Cat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.DTOs.Account;
 
 namespace PawFund.Contract.Services.Accounts
 {
     public static class Command
     {
-        public record UpdateUserCommand(Guid ID, string FirstName, string LastName, IFormFile? AvatarFile) : Abstractions.Message.ICommand;
-
+        public record UpdateUserCommand(Guid ID, string FirstName, string LastName, IFormFile? AvatarFile) : ICommand;
+        public record UpdateAvatarCommand(Guid UserId, IFormFile CropAvatarFile, IFormFile FullAvatarFile) : ICommand<Success<AccountAvatarDto>>;
     }
 }

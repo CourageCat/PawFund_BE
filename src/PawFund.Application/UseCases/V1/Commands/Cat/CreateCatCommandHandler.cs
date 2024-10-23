@@ -5,6 +5,8 @@ using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Exceptions;
 using PawFund.Contract.Abstractions.Services;
+using PawFund.Domain.Entities;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Commands.Cat
 {
@@ -12,15 +14,18 @@ namespace PawFund.Application.UseCases.V1.Commands.Cat
     {
         private readonly IRepositoryBase<Domain.Entities.Cat, Guid> _catRepository;
         private readonly IRepositoryBase<Domain.Entities.Branch, Guid> _branchRepository;
+        private readonly IRepositoryBase<Domain.Entities.ImageCat, Guid> _imageCatRepository;
+
         private readonly IEFUnitOfWork _efUnitOfWork;
         private readonly IMediaService _mediaService;
 
-        public CreateCatCommandHandler(IRepositoryBase<Domain.Entities.Cat, Guid> catRepository, IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository, IEFUnitOfWork efUnitOfWork, IMediaService mediaService)
+        public CreateCatCommandHandler(IRepositoryBase<Domain.Entities.Cat, Guid> catRepository, IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository, IEFUnitOfWork efUnitOfWork, IMediaService mediaService, IRepositoryBase<ImageCat, Guid> imageCatRepository)
         {
             _catRepository = catRepository;
             _branchRepository = branchRepository;
             _efUnitOfWork = efUnitOfWork;
             _mediaService = mediaService;
+            _imageCatRepository = imageCatRepository;
         }
 
         public async Task<Result> Handle(Command.CreateCatCommand request, CancellationToken cancellationToken)
@@ -29,13 +34,34 @@ namespace PawFund.Application.UseCases.V1.Commands.Cat
             if (branchFound == null)
                 throw new BranchException.BranchNotFoundException(request.BranchId);
 
-            //_mediaService.UploadImage()
+            var uploadImages = await _mediaService.UploadImagesAsync(request.Images);
 
-            var catCreated = Domain.Entities.Cat.CreateCat(request.Sex, request.Name, request.Age, request.Breed, request.Size, request.Color, request.Description, request.BranchId, DateTime.Now, DateTime.Now, false);
-            _catRepository.Add(catCreated);
-            await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Success("Create Cat Successfully.");
+            var cat = Domain.Entities.Cat.CreateCat(
+                request.Sex,
+                request.Name,
+                request.Age,
+                request.Breed,
+                request.Weight,
+                request.Color,
+                request.Description,
+                request.BranchId,
+                request.Sterilization);
 
+            _catRepository.Add(cat);
+
+            var imageCats = uploadImages.Select(image => new ImageCat
+            {
+                ImageUrl = image.ImageUrl,
+                PublicImageId = image.PublicImageId,
+                CatId = cat.Id
+            }).ToList();
+
+            _imageCatRepository.AddRange(imageCats);
+
+            await _efUnitOfWork.SaveChangesAsync();
+
+            return Result.Success(new Success(MessagesList.CreateCatSuccessfully.GetMessage().Code,
+                MessagesList.CreateCatSuccessfully.GetMessage().Message));
         }
     }
 }

@@ -5,6 +5,7 @@ using PawFund.Contract.Services.VolunteerApplicationDetail;
 using PawFund.Contract.Shared;
 using PawFund.Contract.Enumarations.VolunteerApplication;
 using MediatR;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
 { 
@@ -33,7 +34,7 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
             await Task.WhenAll(
                _publisher.Publish(new DomainEvent.RejectSendMail(Guid.NewGuid(),request.reason , existVolunteerApplication.Account.Email, existVolunteerApplication.EventActivity.Name), cancellationToken)
            );
-            return Result.Success("Reject Application Success");
+            return Result.Success(new Success(MessagesList.RejectVolunteerApplicationSuccessfully.GetMessage().Code, MessagesList.RejectVolunteerApplicationSuccessfully.GetMessage().Message));
         }
     }
 }

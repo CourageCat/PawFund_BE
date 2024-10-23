@@ -1,4 +1,5 @@
 ﻿using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
@@ -31,7 +32,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Event
             existEvent.Status = Contract.Enumarations.Event.EventStatus.NotStarted;
             _eventRepository.Update(existEvent);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Success("Approve event success");
+            return Result.Success(new Success(MessagesList.ApproveEventSuccessfully.GetMessage().Code, MessagesList.ApproveEventSuccessfully.GetMessage().Message));
         }
     }
 }

@@ -5,6 +5,7 @@ namespace PawFund.Contract.Abstractions.Services;
 
 public interface IMediaService
 {
-    Task<ImageDTO> UploadImage(string fileName, IFormFile fileImage);
+    Task<ImageDTO> UploadImageAsync(string fileName, IFormFile fileImage);
+    Task<List<ImageDTO>> UploadImagesAsync(List<IFormFile> fileImages);
     Task<bool> DeleteFileAsync(string publicId);
 }

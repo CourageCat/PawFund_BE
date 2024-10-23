@@ -37,7 +37,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Account
             }
 
             //Upload Avatar File to cloud
-            var media = await _mediaService.UploadImage($"avatar_{request.ID}", request.AvatarFile);
+            var media = await _mediaService.UploadImageAsync($"avatar_{request.ID}", request.AvatarFile);
 
             user.UpdateProfileUser(request.FirstName, request.LastName, media.ImageUrl, false); 
             _accountRepository.Update(user);

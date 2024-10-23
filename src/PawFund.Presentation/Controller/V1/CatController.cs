@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PawFund.Contract.Services.Cats;
 using PawFund.Presentation.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static PawFund.Contract.Services.Cats.Filter;
+using static PawFund.Contract.Services.Products.Filter;
 
 namespace PawFund.Presentation.Controller.V1;
 public class CatController : ApiController
@@ -19,12 +16,12 @@ public class CatController : ApiController
     [HttpPost("create_cat", Name = "CreateCat")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateCat([FromBody] Command.CreateCatCommand CreateCat)
+    public async Task<IActionResult> CreateCat([FromForm] Command.CreateCatCommand CreateCat)
     {
         var result = await Sender.Send(CreateCat);
         if (result.IsFailure)
             return HandlerFailure(result);
-
+        
         return Ok(result);
     }
 
@@ -58,6 +55,23 @@ public class CatController : ApiController
     public async Task<IActionResult> GetCatById([FromQuery] Guid Id)
     {
         var result = await Sender.Send(new Query.GetCatByIdQuery(Id));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpGet("get_cats", Name = "GetCats")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCats(
+        [FromQuery] CatAdoptFilter filterParams,
+    [FromQuery] int pageIndex = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string[] selectedColumns = null
+        )
+    {
+        var result = await Sender.Send(new Query.GetCats(pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
 

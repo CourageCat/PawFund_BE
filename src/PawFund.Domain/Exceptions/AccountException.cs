@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PawFund.Contract.Enumarations.MessagesList;
 
-namespace PawFund.Domain.Exceptions
+namespace PawFund.Domain.Exceptions;
+
+public static class AccountException
 {
-    public static class AccountException
+    public class AccountNotFoundException : NotFoundException
     {
-        public class AccountNotFoundException : NotFoundException
-        {
-            public AccountNotFoundException(Guid Id) : base($"Can not found Account with Id: {Id}")
-            {
-            }
-        }
+        public AccountNotFoundException()
+        : base(MessagesList.AccountNotFound.GetMessage().Message,
+               MessagesList.AccountNotFound.GetMessage().Code)
+            { }
     }
 }

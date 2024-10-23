@@ -74,6 +74,9 @@ public enum MessagesList
     [Message("All Meeting Times", "adopt_noti_success_06")]
     AdoptGetAllMeetingTimeSuccess,
 
+    [Message("Choose Meeting Time Successfully", "adopt_noti_success_07")]
+    AdoptChooseMeetingTimeSuccess,
+
     [Message("Update meeting time successfully", "adopt_noti_exception_07")]
     AdoptUpdateMeetingTimeSuccess,
 
@@ -82,6 +85,11 @@ public enum MessagesList
 
     [Message("Adopt Application Found", "adopt_noti_success_10")]
     AdoptGetAdoptApplicationSuccess,
+
+    [Message("Complete Adopt Application Successfully", "adopt_noti_success_11")]
+    AdoptCompleteAdoptApplicationSuccess,
+    [Message("Reject Outside Adopt Application Successfully", "adopt_noti_success_12")]
+    AdoptRejectOutsideAdoptApplicationSuccess,
 
     [Message("Can not found application with ID: {0}", "adopt_noti_exception_01")]
     AdoptApplicationNotFoundException,
@@ -101,18 +109,78 @@ public enum MessagesList
     [Message("This application has already rejected", "adopt_noti_exception_06")]
     AdoptApplicationHasAlreadyRejectedException,
 
-    [Message("Can not find any meeting time", "adopt_noti_exception_07")]
-    AdoptNotFoundAnyMeetingTimeException,
-
     [Message("This user has already banned.", "change_status_noti_exception_01")]
     UserHasAlreadyBannedException,
 
-    [Message("This user has already unbanned.", "change_status_noti_exception_02")]
+    [Message("This user has already unbanned", "change_status_noti_exception_02")]
     UserHasAlreadyUnbannedException,
+
+    [Message("Can not find any meeting time", "adopt_noti_exception_07")]
+    AdoptNotFoundAnyMeetingTimeException,
+
+    [Message("This time is not exist, Please reload the page", "adopt_noti_exception_08")]
+    AdoptNotFoundMeetingTimeException,
+
+    [Message("This time is not available (Because no staff frees for this time)", "adopt_noti_exception_09")]
+    AdoptNotStaffFreeForThisMeetingTimeException,
+
+    [Message("This application has already completed or rejected out side", "adopt_noti_exception_10")]
+    AdoptApplicationHasAlreadyCompletedOutSideException,
 
     [Message("User update profile successfully.", "account_noti_01")]
     UserUpdateProfileSuccess,
 
     [Message("The payment bank has been created successfully.", "payment_noti_01")]
     PaymentSucccess,
+
+    [Message("Create cat successfully", "cat_noti_01")]
+    CreateCatSuccessfully,
+
+    [Message("Create event successfully", "event_noti_01")]
+    CreateEventSuccessfully,
+
+    [Message("Approve event successfully", "approve_event_noti_01")]
+    ApproveEventSuccessfully,
+
+    [Message("Delete event successfully", "delete_event_noti_01")]
+    DeleteEventSuccessfully,
+
+    [Message("Update event successfully", "update_event_noti_01")]
+    UpdateEventSuccessfully,
+
+    [Message("Create event activity successfully", "create_event_activity_noti_01")]
+    CreateEventActivitySuccessfully,
+
+    [Message("Delete event activity successfully", "delete_event_activity_noti_01")]
+    DeleteEventActivitySuccessfully,
+
+    [Message("Update event activity successfully", "update_event_activity_noti_01")]
+    UpdateEventActivitySuccessfully,
+
+    [Message("Approve volunteer application successfully", "approve_volunteer_application_noti_01")]
+    ApproveVolunteerApplicationSuccessfully,
+
+    [Message("Register to be volunteer success", "create_volunteer_application_noti_01")]
+    CreateVolunteerApplicationSuccessfully,
+
+    [Message("Reject application successfully", "reject_volunteer_application_noti_01")]
+    RejectVolunteerApplicationSuccessfully,
+
+    [Message("Can not found any event activity!", "event_activity_noti_exception_01")]
+    EventActivityEmptyException,
+
+    [Message("All event activity", "event_activity_noti_success_09")]
+    GetEventActivitySucess,
+
+    [Message("Event activity found", "event_activity_noti_success_10")]
+    GetEventActivityByIdSuccess,
+
+    [Message("This account cannot be found", "account_noti_02")]
+    AccountNotFound,
+
+    [Message("Avatar upload successful", "account_noti_03")]
+    AccountUploadAvatarSuccess,
+
+    [Message("Get information profile successfully", "account_noti_04")]
+    AccountGetInfoProfileSuccess
 }

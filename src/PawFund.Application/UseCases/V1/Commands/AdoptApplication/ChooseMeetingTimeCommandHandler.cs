@@ -11,6 +11,8 @@ using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Entities;
 using PawFund.Domain.Exceptions;
 using PawFund.Contract.DTOs.Adopt.Response;
+using PawFund.Contract.Enumarations.MessagesList;
+using PawFund.Domain.Abstractions;
 
 namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication
 {
@@ -18,11 +20,13 @@ namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication
     {
         private readonly IResponseCacheService _responseCacheService;
         private readonly IRepositoryBase<AdoptPetApplication, Guid> _adoptRepository;
+        private readonly IEFUnitOfWork _efUnitOfWork;
 
-        public ChooseMeetingTimeCommandHandler(IResponseCacheService responseCacheService, IRepositoryBase<AdoptPetApplication, Guid> adoptRepository)
+        public ChooseMeetingTimeCommandHandler(IResponseCacheService responseCacheService, IRepositoryBase<AdoptPetApplication, Guid> adoptRepository, IEFUnitOfWork efUnitOfWork)
         {
             _responseCacheService = responseCacheService;
             _adoptRepository = adoptRepository;
+            _efUnitOfWork = efUnitOfWork;
         }
 
         public async Task<Result> Handle(Command.ChooseMeetingTimeCommand request, CancellationToken cancellationToken)
@@ -50,12 +54,22 @@ namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication
                     }
                     else
                     {
-                        throw new Exception();
+                        throw new AdoptApplicationException.NoStaffFreesForTheMeetingTimeException();
                     }
                 }
-                throw new Exception();
-            });
-            throw new Exception();
+                throw new AdoptApplicationException.NotFoundMeetingTimeException();
+            }).ToList();
+            //Find farthest time and set expired time for key in redis
+            //ExpiredTime = farthestTime - DateTime.Now + 0.5Day
+            var fartheseTime = listUpdatedMeetingTime.Max(x => x.MeetingTime);
+            var expiredTime = (fartheseTime - DateTime.Now).Add(TimeSpan.FromDays(0.5));
+
+            //Add time to Redis (Key: Branch Name, Value: List of time)
+            await _responseCacheService.SetListAsync(branchName, listUpdatedMeetingTime, expiredTime);
+            applicationFound.MeetingDate = request.MeetingTime;
+            _adoptRepository.Update(applicationFound);
+            await _efUnitOfWork.SaveChangesAsync(cancellationToken);
+            return Result.Success(new Success(MessagesList.AdoptChooseMeetingTimeSuccess.GetMessage().Code, MessagesList.AdoptChooseMeetingTimeSuccess.GetMessage().Message));
         }
     }
 }

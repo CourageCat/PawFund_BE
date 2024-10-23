@@ -57,7 +57,7 @@ public sealed class GetAllApplicationQueryByAdopterHandler : IQueryHandler<Query
                     Name = adoptApplication.Cat.Name,
                     Age = adoptApplication.Cat.Age,
                     Breed = adoptApplication.Cat.Breed,
-                    Size = adoptApplication.Cat.Size,
+                    Weight = adoptApplication.Cat.Weight,
                     Color = adoptApplication.Cat.Color,
                     Description = adoptApplication.Cat.Description,
                 }

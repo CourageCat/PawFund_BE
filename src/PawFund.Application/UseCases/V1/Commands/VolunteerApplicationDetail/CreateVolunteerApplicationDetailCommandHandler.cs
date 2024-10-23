@@ -5,6 +5,7 @@ using PawFund.Contract.Services.VolunteerApplicationDetail;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Exceptions;
 using PawFund.Contract.Enumarations.VolunteerApplication;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
 {
@@ -38,7 +39,7 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
                 await _efUnitOfWork.SaveChangesAsync();
             }
 
-            return Result.Success("Register to be volunteer success");
+            return Result.Success(new Success(MessagesList.CreateVolunteerApplicationSuccessfully.GetMessage().Code, MessagesList.CreateVolunteerApplicationSuccessfully.GetMessage().Message));
 
         }
     }

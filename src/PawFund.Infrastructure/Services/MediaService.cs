@@ -30,7 +30,7 @@ public class MediaService : IMediaService
         return true;
     }
 
-    public async Task<ImageDTO> UploadImage(string fileName, IFormFile fileImage)
+    public async Task<ImageDTO> UploadImageAsync(string fileName, IFormFile fileImage)
     {
         var uploadParams = new ImageUploadParams
         {
@@ -47,4 +47,37 @@ public class MediaService : IMediaService
             PublicImageId = imageId
         };
     }
+
+    public async Task<List<ImageDTO>> UploadImagesAsync(List<IFormFile> fileImages)
+    {
+        var imageDtoList = new List<ImageDTO>();
+
+        foreach (var fileImage in fileImages)
+        {
+            var fileName = fileImage.FileName;
+
+            var uploadParams = new ImageUploadParams
+            {
+                File = new FileDescription(fileName, fileImage.OpenReadStream()),
+                Folder = _cloudinarySetting.Folder,
+            };
+
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+            if (uploadResult?.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var imageUrl = uploadResult.Url.AbsoluteUri;
+                var imageId = uploadResult.PublicId;
+
+                imageDtoList.Add(new ImageDTO
+                {
+                    ImageUrl = imageUrl,
+                    PublicImageId = imageId
+                });
+            }
+        }
+
+        return imageDtoList;
+    }
+
 }

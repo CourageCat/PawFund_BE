@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -90,6 +91,7 @@ public class EventController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Policy = "Admin")]
     [HttpPut("approved_by_admin", Name = "ApprovedEventByAdmin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

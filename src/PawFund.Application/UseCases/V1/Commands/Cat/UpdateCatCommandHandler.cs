@@ -30,7 +30,7 @@ public sealed class UpdateCatCommandHandler : ICommandHandler<Command.UpdateCatC
         {
             throw new CatException.CatNotFoundException(request.Id);
         }
-        catFound.UpdateCat(request.Sex, request.Name, request.Age, request.Breed, request.Size, request.Color, request.Description, catFound.BranchId, catFound.CreatedDate, DateTime.Now, false);
+        catFound.UpdateCat(request.Sex, request.Name, request.Age, request.Breed, request.Size, request.Color, request.Description);
         _catRepository.Update(catFound);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success("Update Pet successfully.");

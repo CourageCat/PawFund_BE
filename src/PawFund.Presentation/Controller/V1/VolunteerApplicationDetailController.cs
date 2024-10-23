@@ -21,7 +21,9 @@ namespace PawFund.Presentation.Controller.V1
         public async Task<IActionResult> CreateVolunteerApplication([FromBody] Command.FormRegisterVolunteerCommand form)
         {
             var userId = User.FindFirstValue("UserId");
+
             var result = await Sender.Send(new Command.CreateVolunteerApplicationDetailCommand(form,Guid.Parse(userId)));
+
             if (result.IsFailure)
                 return HandlerFailure(result);
             return Ok(result);
