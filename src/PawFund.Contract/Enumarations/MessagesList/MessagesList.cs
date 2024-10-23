@@ -192,4 +192,13 @@ public enum MessagesList
 
     [Message("Email must be different from previous email", "account_email_01")]
     AccountEmailDuplicate,
+
+    [Message("Updated email successfully", "account_noti_07")]
+    AccountUpdateEmailSuccess,
+
+    [Message("Account must login by system to change email", "account_noti_08")]
+    AccountNotLoginUpdate,
+
+    [Message("This email is valid, please wait for another email", "account_email_02")]
+    AccountEmailUpdateExit
 }

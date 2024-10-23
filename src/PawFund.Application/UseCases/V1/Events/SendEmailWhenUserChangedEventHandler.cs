@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace PawFund.Application.UseCases.V1.Events;
 
-public class SendEmailWhenUserChangedEventHandler 
+public sealed class SendEmailWhenUserChangedEventHandler 
     : IDomainEventHandler<DomainEvent.UserCreated>, 
     IDomainEventHandler<DomainEvent.UserVerifiedEmailRegist>,
     IDomainEventHandler<DomainEvent.UserOtpChanged>,
@@ -84,6 +84,7 @@ public class SendEmailWhenUserChangedEventHandler
             "Change email",
             "EmailUserChangeEmail.html", new Dictionary<string, string> {
             {"ToEmail", notification.Email},
+               {"Link", $"{_clientSetting.Url}{_clientSetting.VerifyChangeEmail}/{notification.UserId}"}
         });
     }
 }

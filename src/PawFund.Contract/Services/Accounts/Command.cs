@@ -12,4 +12,5 @@ public static class Command
     public record UpdateInfoCommand(Guid UserId, string FirstName, string LastName, string PhoneNumber, GenderType Gender) : ICommand<Success<Response.UserResponse>>;
     public record UpdateAvatarCommand(Guid UserId, IFormFile CropAvatarFile, IFormFile FullAvatarFile) : ICommand<Success<AccountAvatarDto>>;
     public record UpdateEmailCommand(Guid UserId, string Email) : ICommand<Success>;
+    public record VerifyUpdateEmailCommand(Guid UserId) : ICommand<Success>;
 }

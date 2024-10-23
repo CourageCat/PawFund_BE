@@ -99,4 +99,9 @@ public class Account : DomainEntity<Guid>
         PhoneNumber = phoneNumber;
         Gender = gender;
     }
+
+    public void UpdateEmail(string email)
+    {
+        Email = email;
+    }
 }

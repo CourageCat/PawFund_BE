@@ -70,4 +70,16 @@ public class AccountController : ApiController
 
         return Ok(result);
     }
+
+    [HttpPut("verify-update-email", Name = "VerifyUpdateEmail")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateEmailProfile([FromQuery] string userId)
+    {
+        var result = await Sender.Send(new Command.VerifyUpdateEmailCommand(Guid.Parse(userId)));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
 }
