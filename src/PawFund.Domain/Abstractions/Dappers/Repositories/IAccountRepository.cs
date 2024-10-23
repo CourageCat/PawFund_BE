@@ -7,10 +7,9 @@ namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 
 public interface IAccountRepository : IGenericRepository<Domain.Entities.Account>
 {
-    Task<bool> EmailExistSystem(string email);
+    Task<bool> EmailExistSystemAsync(string email);
+    Task<bool>? AccountExistSystemAsync(Guid userId);
     Task<Account> GetByEmailAsync(string email);
-
-    Task<List<Account>> GetListUser();
-
+    Task<List<Account>> GetListUserAsync();
     Task<PagedResult<Account>> GetPagedAsync(int pageIndex, int pageSize, Filter.AccountFilter filterParams, string[] selectedColumns);
 }

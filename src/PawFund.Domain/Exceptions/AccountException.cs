@@ -9,6 +9,14 @@ public static class AccountException
         public AccountNotFoundException()
         : base(MessagesList.AccountNotFound.GetMessage().Message,
                MessagesList.AccountNotFound.GetMessage().Code)
-            { }
+        { }
+    }
+
+    public class AccountEmailDuplicateException : BadRequestException
+    {
+        public AccountEmailDuplicateException()
+      : base(MessagesList.AccountEmailDuplicate.GetMessage().Message,
+             MessagesList.AccountEmailDuplicate.GetMessage().Code)
+        { }
     }
 }

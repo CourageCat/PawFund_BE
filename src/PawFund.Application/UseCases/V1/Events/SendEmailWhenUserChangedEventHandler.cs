@@ -11,7 +11,8 @@ public class SendEmailWhenUserChangedEventHandler
     IDomainEventHandler<DomainEvent.UserVerifiedEmailRegist>,
     IDomainEventHandler<DomainEvent.UserOtpChanged>,
     IDomainEventHandler<DomainEvent.UserPasswordChanged>,
-    IDomainEventHandler<DomainEvent.UserCreatedWithGoogle>
+    IDomainEventHandler<DomainEvent.UserCreatedWithGoogle>,
+    IDomainEventHandler<Contract.Services.Accounts.DomainEvent.UserEmailChanged>
 {
     private readonly IEmailService _emailService;
     private readonly ClientSetting _clientSetting;
@@ -72,6 +73,16 @@ public class SendEmailWhenUserChangedEventHandler
             (notification.Email,
             "Register with Google",
             "EmailRegister.html", new Dictionary<string, string> {
+            {"ToEmail", notification.Email},
+        });
+    }
+
+    public async Task Handle(Contract.Services.Accounts.DomainEvent.UserEmailChanged notification, CancellationToken cancellationToken)
+    {
+        await _emailService.SendMailAsync
+            (notification.Email,
+            "Change email",
+            "EmailUserChangeEmail.html", new Dictionary<string, string> {
             {"ToEmail", notification.Email},
         });
     }

@@ -186,4 +186,10 @@ public enum MessagesList
 
     [Message("Update information profile successfully", "account_noti_05")]
     AccountUpdateInformationSuccess,
+
+    [Message("Please check email to change", "account_noti_06")]
+    AccountUpdateChangeEmail,
+
+    [Message("Email must be different from previous email", "account_email_01")]
+    AccountEmailDuplicate,
 }

@@ -56,4 +56,18 @@ public class AccountController : ApiController
 
         return Ok(result);
     }
+
+    [Authorize(Policy = "MemberPolicy")]
+    [HttpPut("update-email-profile", Name = "UpdateEmailProfile")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateEmailProfile([FromBody] AccountRequest.UpdateEmailRequestDto request)
+    {
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.UpdateEmailCommand(Guid.Parse(userId), request.Email));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
 }

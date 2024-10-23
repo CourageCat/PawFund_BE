@@ -37,7 +37,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet("get_list_user", Name = "GetListUser")]
+        [HttpGet("get_list_user", Name = "GetListUserAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProduct([FromQuery] AccountFilter filterParams,
