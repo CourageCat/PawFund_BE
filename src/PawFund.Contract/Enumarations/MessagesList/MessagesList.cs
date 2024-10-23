@@ -118,7 +118,6 @@ public enum MessagesList
     [Message("Can not find any meeting time", "adopt_noti_exception_07")]
     AdoptNotFoundAnyMeetingTimeException,
 
-
     [Message("This time is not exist, Please reload the page", "adopt_noti_exception_08")]
     AdoptNotFoundMeetingTimeException,
 
@@ -175,4 +174,13 @@ public enum MessagesList
 
     [Message("Event activity found", "event_activity_noti_success_10")]
     GetEventActivityByIdSuccess,
+
+    [Message("This account cannot be found", "account_noti_02")]
+    AccountNotFound,
+
+    [Message("Avatar upload successful", "account_noti_03")]
+    AccountUploadAvatarSuccess,
+
+    [Message("Get information profile successfully", "account_noti_04")]
+    AccountGetInfoProfileSuccess
 }

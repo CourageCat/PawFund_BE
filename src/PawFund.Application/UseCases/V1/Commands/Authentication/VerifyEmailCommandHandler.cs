@@ -57,7 +57,7 @@ public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEm
 
         // Create object account with type register local
         var accountMember = Domain.Entities.Account.CreateMemberAccountLocal
-            (user.FirstName, user.LastName, user.Email, user.PhoneNumber, passwordHash);
+            (user.FirstName, user.LastName, user.Email, user.PhoneNumber, passwordHash, user.Gender);
         
         _accountRepository.Add(accountMember);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);

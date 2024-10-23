@@ -50,10 +50,10 @@ public class AccountRepository : IAccountRepository
             return (List<Account>)result;
         }
     }
-
+    
     public async Task<Account> GetByEmailAsync(string email)
     {
-        var sql = "SELECT Id, FirstName, LastName, Email, PhoneNumber, Password, RoleId, LoginType, AvatarUrl, IsDeleted FROM Accounts WHERE Email = @Email";
+        var sql = "SELECT Id, FirstName, LastName, Email, PhoneNumber, Password, RoleId, LoginType, CropAvatarUrl, FullAvatarUrl, IsDeleted FROM Accounts WHERE Email = @Email";
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();
@@ -64,7 +64,26 @@ public class AccountRepository : IAccountRepository
 
     public async Task<Account> GetByIdAsync(Guid id)
     {
-        var sql = "SELECT Id, FirstName, LastName, Email, PhoneNumber, Password, RoleId, LoginType, AvatarUrl, IsDeleted FROM Accounts WHERE Id = @id";
+        var sql = @"
+        SELECT 
+            [Id],
+            [FirstName],
+            [LastName],
+            [Email],
+            [PhoneNumber],
+            [Status],
+            [LoginType],
+            [Password],
+            [CropAvatarUrl],
+            [CropAvatarId],
+            [FullAvatarUrl],
+            [FullAvatarId],
+            [RoleId],
+            [CreatedDate],
+            [ModifiedDate],
+            [IsDeleted]
+        FROM [Accounts]
+        WHERE [Id] = @id"; 
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();
@@ -88,7 +107,7 @@ public class AccountRepository : IAccountRepository
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             // Valid columns for selecting
-            var validColumns = new HashSet<string> { "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Status", "RoleId" };
+            var validColumns = new HashSet<string> { "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Password", "Status", "RoleId", "Gender" , "IsDeleted"};
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
 
             // If no selected columns, select all
@@ -98,6 +117,13 @@ public class AccountRepository : IAccountRepository
             var queryBuilder = new StringBuilder($"SELECT {selectedColumnsString} FROM Accounts WHERE 1=1");
 
             var parameters = new DynamicParameters();
+
+            // Filter by Id
+            if (filterParams?.Id.HasValue == true)
+            {
+                queryBuilder.Append(" AND Id LIKE @Id");
+                parameters.Add("Id", $"%{filterParams.Id}%");
+            }
 
             // Filter by FirstName
             if (!string.IsNullOrEmpty(filterParams?.FirstName))

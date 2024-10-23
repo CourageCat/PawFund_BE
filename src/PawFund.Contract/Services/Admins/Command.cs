@@ -1,14 +1,9 @@
-﻿
-using System.Windows.Input;
-using PawFund.Contract.Abstractions.Message;
+﻿namespace PawFund.Contract.Services.Admins;
 
-namespace PawFund.Contract.Services.Admins
+public static class Command
 {
-    public static class Command
-    {
-       public record BanUserCommand(Guid Id, string? Reason) : Abstractions.Message.ICommand;
+   public record BanUserCommand(Guid Id, string? Reason) : Abstractions.Message.ICommand;
 
-       public record UnBanUserCommand(Guid Id) : Abstractions.Message.ICommand;
+   public record UnBanUserCommand(Guid Id) : Abstractions.Message.ICommand;
 
-    }
 }

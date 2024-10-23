@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PawFund.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class IntialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,8 +64,11 @@ namespace PawFund.Persistence.Migrations
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     LoginType = table.Column<int>(type: "int", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AvatarId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    CropAvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CropAvatarId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullAvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullAvatarId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
