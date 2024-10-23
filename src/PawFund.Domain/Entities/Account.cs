@@ -9,7 +9,7 @@ public class Account : DomainEntity<Guid>
     public Account()
     {
     }
-    
+
     public Account
         (string firstName,
         string lastName,
@@ -92,14 +92,11 @@ public class Account : DomainEntity<Guid>
         FullAvatarId = fullAvatarId;
     }
 
-    public void UpdateProfileUser(string firstName, string lastName, string? avatarUrl, bool isDeleted)
+    public void UpdateInfoProfileUser(string firstName, string lastName, string phoneNumber, GenderType gender)
     {
         FirstName = firstName;
         LastName = lastName;
-        CropAvatarUrl = avatarUrl;
-        ModifiedDate = DateTime.Now;
-        IsDeleted = isDeleted;
+        PhoneNumber = phoneNumber;
+        Gender = gender;
     }
-
-    
 }

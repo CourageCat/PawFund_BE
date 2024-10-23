@@ -182,5 +182,8 @@ public enum MessagesList
     AccountUploadAvatarSuccess,
 
     [Message("Get information profile successfully", "account_noti_04")]
-    AccountGetInfoProfileSuccess
+    AccountGetInfoProfileSuccess,
+
+    [Message("Update information profile successfully", "account_noti_05")]
+    AccountUpdateInformationSuccess,
 }

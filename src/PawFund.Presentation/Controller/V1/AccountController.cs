@@ -15,12 +15,14 @@ public class AccountController : ApiController
     {
     }
 
-    [HttpPut("update_profile", Name = "UpdateProfile")]
+    [Authorize(Policy = "MemberPolicy")]
+    [HttpPut("update-info-profile", Name = "UpdateInfoProfile")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateProfile([FromForm] Command.UpdateUserCommand ChangeStatus)
+    public async Task<IActionResult> UpdateInfoProfile([FromBody] AccountRequest.UpdateInfoProfileRequestDto request)
     {
-        var result = await Sender.Send(ChangeStatus);
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.UpdateInfoCommand(Guid.Parse(userId), request.FirstName, request.LastName, request.PhoneNumber, request.Gender));
         if (result.IsFailure)
             return HandlerFailure(result);
 
