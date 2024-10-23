@@ -62,24 +62,25 @@ JOIN Branchs b ON b.Id = e.BranchId";
     }
 
     public async Task<PagedResult<Event>> GetAllEventAsync(
-     int pageIndex, int pageSize, EventFilter filterParams, string[] selectedColumns)
+      int pageIndex, int pageSize, EventFilter filterParams, string[] selectedColumns)
     {
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             var validColumns = new HashSet<string>
-    {
-        "e.Id", "e.Name", "e.StartDate", "e.EndDate", "e.Description",
-        "b.Id", "b.Name", "b.PhoneNumberOfBranch", "b.EmailOfBranch"
-    };
+        {
+            "e.Id", "e.Name", "e.StartDate", "e.EndDate", "e.Description", "e.MaxAttendees",
+            "b.Id", "b.Name", "b.PhoneNumberOfBranch", "b.EmailOfBranch",
+            "b.Description", "b.NumberHome", "b.StreetName", "b.Ward", "b.District", "b.Province"
+        };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
             var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : string.Join(", ", validColumns);
 
             var queryBuilder = new StringBuilder($@"
-        SELECT {selectedColumnsString} 
-        FROM Events e
-        LEFT JOIN Branchs b ON e.BranchId = b.Id
-        WHERE 1=1");
+            SELECT {selectedColumnsString} 
+            FROM Events e
+            LEFT JOIN Branchs b ON e.BranchId = b.Id
+            WHERE 1=1");
 
             var parameters = new DynamicParameters();
 
@@ -87,10 +88,10 @@ JOIN Branchs b ON b.Id = e.BranchId";
             pageSize = pageSize <= 0 ? 10 : pageSize > 100 ? 100 : pageSize;
 
             var totalCountQuery = new StringBuilder($@"
-        SELECT COUNT(1) 
-        FROM Events e
-        LEFT JOIN Branchs b ON e.BranchId = b.Id
-        WHERE 1=1");
+            SELECT COUNT(1) 
+            FROM Events e
+            LEFT JOIN Branchs b ON e.BranchId = b.Id
+            WHERE 1=1");
 
             // Filter by Event Name
             if (!string.IsNullOrEmpty(filterParams.Name))
@@ -131,6 +132,7 @@ JOIN Branchs b ON b.Id = e.BranchId";
             return new PagedResult<Event>(items, pageIndex, pageSize, totalCount, totalPages);
         }
     }
+
 
 
 

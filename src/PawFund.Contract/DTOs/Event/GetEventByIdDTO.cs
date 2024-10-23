@@ -4,12 +4,6 @@ namespace PawFund.Contract.DTOs.Event
     public class GetEventByIdDTO
     {
 
-        public class ListEventResponse
-        {
-            public List<EventDTO> eventDTOs;
-            public List<BranchDTO> branchDTOs;
-        }
-
         public class EventDTO
         {
             public Guid Id { get; set; }
