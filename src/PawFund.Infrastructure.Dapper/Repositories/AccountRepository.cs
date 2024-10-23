@@ -107,7 +107,7 @@ public class AccountRepository : IAccountRepository
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             // Valid columns for selecting
-            var validColumns = new HashSet<string> { "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Status", "RoleId" };
+            var validColumns = new HashSet<string> { "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Password", "Status", "RoleId", "Gender" , "IsDeleted"};
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
 
             // If no selected columns, select all
@@ -117,6 +117,13 @@ public class AccountRepository : IAccountRepository
             var queryBuilder = new StringBuilder($"SELECT {selectedColumnsString} FROM Accounts WHERE 1=1");
 
             var parameters = new DynamicParameters();
+
+            // Filter by Id
+            if (filterParams?.Id.HasValue == true)
+            {
+                queryBuilder.Append(" AND Id LIKE @Id");
+                parameters.Add("Id", $"%{filterParams.Id}%");
+            }
 
             // Filter by FirstName
             if (!string.IsNullOrEmpty(filterParams?.FirstName))

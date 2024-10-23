@@ -179,5 +179,8 @@ public enum MessagesList
     AccountNotFound,
 
     [Message("Avatar upload successful", "account_noti_03")]
-    AccountUploadAvatarSuccess
+    AccountUploadAvatarSuccess,
+
+    [Message("Get information profile successfully", "account_noti_04")]
+    AccountGetInfoProfileSuccess
 }

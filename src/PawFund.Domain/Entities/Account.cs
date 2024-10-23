@@ -17,6 +17,7 @@ public class Account : DomainEntity<Guid>
         string phoneNumber,
         bool status,
         string password,
+        GenderType gender,
         string cropAvatarUrl,
         string cropAvatarId,
         string fullAvatarUrl,
@@ -30,6 +31,7 @@ public class Account : DomainEntity<Guid>
         PhoneNumber = phoneNumber;
         Status = status;
         Password = password;
+        Gender = gender;
         CropAvatarUrl = cropAvatarUrl;
         CropAvatarId = cropAvatarId;
         FullAvatarUrl = fullAvatarUrl;
@@ -45,6 +47,7 @@ public class Account : DomainEntity<Guid>
     public bool Status { get; set; } = false;
     public LoginType LoginType { get; set; }
     public string Password { get; set; } = string.Empty;
+    public GenderType Gender { get; set; }
     public string? CropAvatarUrl { get; set; }
     public string? CropAvatarId { get; set; }
     public string? FullAvatarUrl { get; set; }
@@ -62,24 +65,31 @@ public class Account : DomainEntity<Guid>
     public virtual ICollection<VolunteerApplicationDetail> VolunteerApplicationDetails { get; set; }
 
     public static Account CreateMemberAccountLocal
-        (string firstName, string lastName, string email, string phoneNumber, string password)
+        (string firstName, string lastName, string email, string phoneNumber, string password, GenderType gender)
     {
         string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
-        return new Account(firstName, lastName, email, phoneNumber, false, password, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Member);
+        return new Account(firstName, lastName, email, phoneNumber, false, password, gender, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Member);
     }
 
     public static Account CreateMemberAccountGoogle
-        (string firstName, string lastName, string email)
+        (string firstName, string lastName, string email, GenderType gender)
     {
         string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
-        return new Account(firstName, lastName, email, "", false, "", avatarUrl, "", avatarUrl, "", LoginType.Google, RoleType.Member);
+        return new Account(firstName, lastName, email, "", false, "", gender, avatarUrl, "", avatarUrl, "", LoginType.Google, RoleType.Member);
     }
 
     public static Account CreateAdminAccount
        (string email, string password)
     {
         string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
-        return new Account("Admin", "", email, "", false, password, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Admin);
+        return new Account("Admin", "", email, "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Admin);
+    }
+    public void UpdateAvatarProfileUser(string cropAvatarUrl, string cropAvatarId, string fullAvatarUrl, string fullAvatarId)
+    {
+        CropAvatarUrl = cropAvatarUrl;
+        CropAvatarId = cropAvatarId;
+        FullAvatarUrl = fullAvatarUrl;
+        FullAvatarId = fullAvatarId;
     }
 
     public void UpdateProfileUser(string firstName, string lastName, string? avatarUrl, bool isDeleted)
@@ -91,11 +101,5 @@ public class Account : DomainEntity<Guid>
         IsDeleted = isDeleted;
     }
 
-    public void UpdateAvatarProfileUser(string cropAvatarUrl, string cropAvatarId, string fullAvatarUrl, string fullAvatarId)
-    {
-        CropAvatarUrl = cropAvatarUrl;
-        CropAvatarId = cropAvatarId;
-        FullAvatarUrl = fullAvatarUrl;
-        FullAvatarId = fullAvatarId;
-    }
+    
 }

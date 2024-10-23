@@ -55,6 +55,9 @@ namespace PawFund.Persistence.Migrations
                     b.Property<string>("FullAvatarUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
