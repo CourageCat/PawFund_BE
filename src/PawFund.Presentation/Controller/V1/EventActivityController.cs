@@ -66,17 +66,12 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet("get_all_event_activity_by_eventId",Name = "GetAllEventActivity")]
+        [HttpGet(Name = "GetAllEventActivity")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAllEvent(
-            [FromQuery] Guid id,
-            [FromQuery] bool filterParams = true,
-            [FromQuery] int pageIndex = 1,
-            [FromQuery] int pageSize = 10,
-            [FromQuery] string[] selectedColumns = null)
+        public async Task<IActionResult> GetAllEvent([FromQuery] Guid id)
         {
-            var result = await Sender.Send(new Query.GetAllEventActivity(id, filterParams, pageIndex, pageSize, selectedColumns));
+            var result = await Sender.Send(new Query.GetAllEventActivity(id));
             if (result.IsFailure)
                 return HandlerFailure(result);
 
