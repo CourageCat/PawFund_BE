@@ -50,7 +50,7 @@ public class AdoptRepository : IAdoptRepository
         SELECT
             a.Id, a.MeetingDate, a.ReasonReject, a.Status, a.IsFinalized, a.Description, a.CreatedDate, a.IsDeleted as IsAdoptDeleted,
             acc.Id, acc.FirstName, acc.LastName, acc.Email, acc.PhoneNumber, acc.IsDeleted as IsAccountDeleted,
-            c.Id, c.Sex, c.Name, c.Age, c.Breed, c.Size, c.Color, c.Description
+            c.Id, c.Sex, c.Name, c.Age, c.Breed, c.Weight, c.Color, c.Description
         FROM AdoptPetApplications a
         JOIN Accounts acc ON acc.Id = a.AccountId
         JOIN Cats c ON c.Id = a.CatId
@@ -91,7 +91,7 @@ public class AdoptRepository : IAdoptRepository
         {
             "a.Id", "a.MeetingDate", "a.ReasonReject", "a.Status", "a.IsFinalized", "a.Description", "a.CreatedDate", "a.IsDeleted as IsAdoptDeleted",
             "acc.Id", "acc.FirstName", "acc.LastName", "acc.Email", "acc.PhoneNumber", "acc.IsDeleted as IsAccountDeleted",
-            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Size", "c.Color", "c.Description as CatDescription"
+            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Weight", "c.Color", "c.Description as CatDescription"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
@@ -160,7 +160,7 @@ public class AdoptRepository : IAdoptRepository
         {
             "a.Id", "a.MeetingDate", "a.ReasonReject", "a.Status", "a.IsFinalized", "a.Description", "a.CreatedDate", "a.IsDeleted as IsAdoptDeleted",
             "acc.Id", "acc.FirstName", "acc.LastName", "acc.Email", "acc.PhoneNumber", "acc.IsDeleted as IsAccountDeleted",
-            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Size", "c.Color", "c.Description as CatDescription"
+            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Weight", "c.Color", "c.Description as CatDescription"
         };
 
             // Filter selected columns based on valid columns
@@ -229,7 +229,7 @@ public class AdoptRepository : IAdoptRepository
         SELECT
             a.Id, a.MeetingDate, a.ReasonReject, a.Status, a.IsFinalized, a.Description, a.CreatedDate, a.AccountId, a.CatId, a.IsDeleted as IsAdoptDeleted,
             acc.Id, acc.FirstName, acc.LastName, acc.Email, acc.PhoneNumber, acc.IsDeleted as IsAccountDeleted,
-            c.Id, c.Sex, c.Name, c.Age, c.Breed, c.Size, c.Color, c.Description
+            c.Id, c.Sex, c.Name, c.Age, c.Breed, c.Weight, c.Color, c.Description
         FROM AdoptPetApplications a
         JOIN Accounts acc ON acc.Id = a.AccountId
         JOIN Cats c ON c.Id = a.CatId
