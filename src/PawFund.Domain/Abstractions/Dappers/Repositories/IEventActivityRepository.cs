@@ -11,6 +11,10 @@ namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 
     public interface IEventActivityRepository : IGenericRepository<EventActivity>
     {
-    public Task<PagedResult<EventActivity>> GetAllByEventId(Guid eventId, int pageIndex, int pageSize, bool filterParams, string[] selectedColumns);
+    public Task<IEnumerable<EventActivity>> GetAllByEventId(Guid id);
+
+    public Task<IEnumerable<EventActivity>> GetApprovedEventsActivityId(Guid id);
+
+    
 }
 

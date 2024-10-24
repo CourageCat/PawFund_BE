@@ -1,69 +1,45 @@
 ﻿
+
+
+
+
+using AutoMapper;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.DTOs.Account;
 using PawFund.Contract.DTOs.Event;
+using PawFund.Contract.DTOs.EventActivity;
+using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
-using PawFund.Domain.Entities;
-using static PawFund.Contract.DTOs.Event.GetEventByIdDTO;
+using PawFund.Domain.Abstractions.Dappers.Repositories;
+using static PawFund.Contract.Services.Event.Respone;
+using static PawFund.Contract.Services.EventActivity.Respone;
 
 namespace PawFund.Application.UseCases.V1.Queries.Event
 {
-    public sealed class GetAllEventQueryHandler : IQueryHandler<Query.GetAllEvent, List<Respone.EventResponse>>
+    public sealed class GetAllEventQueryHandler : IQueryHandler<Query.GetAllEvent, Success<PagedResult<EventDTO>>>
     {
         private readonly IDPUnitOfWork _dpUnitOfWork;
+        private readonly IMapper _mapper;
+        private readonly IEventRepository _eventRepository;
 
-        public GetAllEventQueryHandler(IDPUnitOfWork dpUnitOfWork)
+        public GetAllEventQueryHandler(IDPUnitOfWork dpUnitOfWork, IMapper mapper, IEventRepository eventRepository)
         {
             _dpUnitOfWork = dpUnitOfWork;
+            _mapper = mapper;
+            _eventRepository = eventRepository;
         }
 
-        public async Task<Result<List<Respone.EventResponse>>> Handle(Query.GetAllEvent request, CancellationToken cancellationToken)
+        public async Task<Result<Success<PagedResult<EventDTO>>>> Handle(Query.GetAllEvent request, CancellationToken cancellationToken)
         {
-            //generator respone and find all event
-            List<Respone.EventResponse> listEvent = new List<Respone.EventResponse>();
-            var queryEvent = await _dpUnitOfWork.EventRepository.GetAll();
+            var result = await _eventRepository.GetAllEventAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
 
-            if (queryEvent != null)
-            {
-                // Ánh xạ dữ liệu từ Event sang GetEventByIdDTO.EventDTO và GetEventByIdDTO.BranchDTO
-                foreach (var eventItem in queryEvent)
-                {
-                    var eventDto = new GetEventByIdDTO.EventDTO
-                    {
-                        Id = eventItem.Id,
-                        Name = eventItem.Name,
-                        StartDate = eventItem.StartDate,
-                        EndDate = eventItem.EndDate,
-                        Description = eventItem.Description,
-                        MaxAttendees = eventItem.MaxAttendees,
-                        Status = eventItem.Status.ToString(),
-                    };
+            var eventDtos = _mapper.Map<List<EventDTO>>(result.Items);
 
-                    var branchDto = new GetEventByIdDTO.BranchDTO
-                    {
-                        Id = eventItem.Branch.Id,
-                        Name = eventItem.Branch.Name,
-                        PhoneNumberOfBranch = eventItem.Branch.PhoneNumberOfBranch,
-                        EmailOfBranch = eventItem.Branch.EmailOfBranch,
-                        Description = eventItem.Branch.Description,
-                        NumberHome = eventItem.Branch.NumberHome,
-                        StreetName = eventItem.Branch.StreetName,
-                        Ward = eventItem.Branch.Ward,
-                        District = eventItem.Branch.District,
-                        Province = eventItem.Branch.Province,
-                        PostalCode = eventItem.Branch.PostalCode
-                    };
-
-                    var dto = new Respone.EventResponse(eventDto, branchDto);
-
-                    // Thêm DTO vào danh sách
-                    listEvent.Add(dto);
-                }
-            }
-
-            // Trả về kết quả thành công với danh sách DTO
-            return Result.Success(listEvent);
+            return Result.Success(new Success<PagedResult<EventDTO>>("", "", new PagedResult<EventDTO>(eventDtos, result.PageIndex, result.PageSize, result.TotalCount, result.TotalPages)));
         }
     }
 }
+    
