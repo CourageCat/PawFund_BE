@@ -52,6 +52,9 @@ public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetAppl
                 Weight = applicationById.Cat.Weight,
                 Color = applicationById.Cat.Color,
                 Description = applicationById.Cat.Description,
+                Sterilization = applicationById.Cat.Sterilization,
+                ImageUrl = applicationById.Cat.ImageCats.ToList()[0].ImageUrl,
+                PublicImageId = applicationById.Cat.ImageCats.ToList()[0].PublicImageId
             });
 
         //Return result

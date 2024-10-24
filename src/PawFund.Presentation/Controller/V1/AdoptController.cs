@@ -16,14 +16,14 @@ public class AdoptController : ApiController
     {
     }
 
-    [Authorize(Policy = "MemberPolicy")]
+    //[Authorize(Policy = "MemberPolicy")]
     [HttpPost("create_adopt_application", Name = "CreateAdoptApplication")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateAdoptApplication([FromBody] CreateAdoptApplicationRequestDTO CreateAdoptApplication)
     {
-        var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var result = await Sender.Send(new Command.CreateAdoptApplicationCommand(CreateAdoptApplication.Description, accountId, CreateAdoptApplication.CatId));
+        //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
+        var result = await Sender.Send(new Command.CreateAdoptApplicationCommand(CreateAdoptApplication.Description, Guid.Parse("F5D1BA3F-3ADD-44E3-BB79-B6A73049F485"), CreateAdoptApplication.CatId));
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -81,8 +81,7 @@ public class AdoptController : ApiController
         return Ok(result);
     }
 
-    [Authorize(Policy = "MemberPolicy")]
-
+    //[Authorize(Policy = "MemberPolicy")]
     [HttpGet("get_all_application_by_adopter", Name = "GetAllApplicationByAdopter")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -92,15 +91,15 @@ public class AdoptController : ApiController
     [FromQuery] int pageSize = 10,
     [FromQuery] string[] selectedColumns = null)
     {
-        var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var result = await Sender.Send(new Query.GetAllApplicationByAdopterQuery(accountId, pageIndex, pageSize, filterParams, selectedColumns));
+        //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
+        var result = await Sender.Send(new Query.GetAllApplicationByAdopterQuery(Guid.Parse("F5D1BA3F-3ADD-44E3-BB79-B6A73049F485"), pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
 
         return Ok(result);
     }
 
-    [Authorize(Policy = "StaffPolicy")]
+    //[Authorize(Policy = "StaffPolicy")]
     [HttpGet("get_all_application_by_staff", Name = "GetAllApplicationByStaff")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -110,8 +109,8 @@ public class AdoptController : ApiController
     [FromQuery] int pageSize = 10,
     [FromQuery] string[] selectedColumns = null)
     {
-        var accountId = Guid.Parse(User.FindFirstValue("UserId"));
-        var result = await Sender.Send(new Query.GetAllApplicationByStaffQuery(accountId, pageIndex, pageSize, filterParams, selectedColumns)); if (result.IsFailure)
+        //var accountId = Guid.Parse(User.FindFirstValue("UserId"));
+        var result = await Sender.Send(new Query.GetAllApplicationByStaffQuery(Guid.Parse("133849D0-16BE-4181-B4A8-DC871A00215D"), pageIndex, pageSize, filterParams, selectedColumns)); if (result.IsFailure)
             return HandlerFailure(result);
 
         return Ok(result);

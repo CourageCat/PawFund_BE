@@ -50,26 +50,34 @@ public class AdoptRepository : IAdoptRepository
         SELECT
             a.Id, a.MeetingDate, a.ReasonReject, a.Status, a.IsFinalized, a.Description, a.CreatedDate, a.IsDeleted as IsAdoptDeleted,
             acc.Id, acc.FirstName, acc.LastName, acc.Email, acc.PhoneNumber, acc.IsDeleted as IsAccountDeleted,
-            c.Id, c.Sex, c.Name, c.Age, c.Breed, c.Weight, c.Color, c.Description
+            c.Id, c.Sex, c.Name, c.Age, c.Breed, c.Weight, c.Color, c.Description, c.Sterilization, c.IsDeleted as IsCatDeleted,
+            ic.ImageUrl, ic.PublicImageId
+
         FROM AdoptPetApplications a
         JOIN Accounts acc ON acc.Id = a.AccountId
         JOIN Cats c ON c.Id = a.CatId
+        LEFT JOIN ImageCats ic ON c.Id = ic.CatId
         WHERE a.Id = @Id AND a.IsDeleted = 0";
 
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();
 
-            var result = await connection.QueryAsync<AdoptPetApplication, Account, Cat, AdoptPetApplication>(
+            var result = await connection.QueryAsync<AdoptPetApplication, Account, Cat, ImageCat, AdoptPetApplication>(
                 sql,
-                (adoptPetApplication, account, cat) =>
+                (adoptPetApplication, account, cat, imageCat) =>
                 {
+                    cat.ImageCats = cat.ImageCats ?? new List<ImageCat>();
+                    if (imageCat != null)
+                    {
+                        cat.ImageCats.Add(imageCat);
+                    }
                     adoptPetApplication.Account = account;
                     adoptPetApplication.Cat = cat;
                     return adoptPetApplication;
                 },
                 new { Id = Id },
-                splitOn: "IsAdoptDeleted,IsAccountDeleted"
+                splitOn: "IsAdoptDeleted,IsAccountDeleted, IsCatDeleted"
             );
 
             return result.FirstOrDefault();
@@ -91,7 +99,8 @@ public class AdoptRepository : IAdoptRepository
         {
             "a.Id", "a.MeetingDate", "a.ReasonReject", "a.Status", "a.IsFinalized", "a.Description", "a.CreatedDate", "a.IsDeleted as IsAdoptDeleted",
             "acc.Id", "acc.FirstName", "acc.LastName", "acc.Email", "acc.PhoneNumber", "acc.IsDeleted as IsAccountDeleted",
-            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Weight", "c.Color", "c.Description as CatDescription"
+            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Weight", "c.Color", "c.Description as CatDescription", "c.Sterilization", "c.IsDeleted as IsCatDeleted",
+            "ic.ImageUrl", "ic.PublicImageId"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
@@ -102,6 +111,7 @@ public class AdoptRepository : IAdoptRepository
         FROM AdoptPetApplications a
         JOIN Accounts acc ON acc.Id = a.AccountId
         JOIN Cats c ON c.Id = a.CatId
+        LEFT JOIN ImageCats ic ON c.Id = ic.CatId
         WHERE 1=1 AND a.AccountId = @AccountId");
 
             var parameters = new DynamicParameters();
@@ -115,6 +125,7 @@ public class AdoptRepository : IAdoptRepository
         FROM AdoptPetApplications a
         JOIN Accounts acc ON acc.Id = a.AccountId
         JOIN Cats c ON c.Id = a.CatId
+        LEFT JOIN ImageCats ic ON c.Id = ic.CatId
         WHERE a.IsDeleted = 0 AND a.AccountId = @AccountId");
 
             // Use the table alias 'a' for Status
@@ -134,16 +145,21 @@ public class AdoptRepository : IAdoptRepository
             var offset = (pageIndex - 1) * pageSize;
             var paginatedQuery = $"{queryBuilder} ORDER BY a.CreatedDate {(filterParams.IsAscCreatedDate ? "ASC" : "DESC")} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY";
 
-            var items = (await connection.QueryAsync<AdoptPetApplication, Account, Cat, AdoptPetApplication>(
+            var items = (await connection.QueryAsync<AdoptPetApplication, Account, Cat, ImageCat, AdoptPetApplication>(
                 paginatedQuery,
-                (adoptPetApplication, account, cat) =>
+                (adoptPetApplication, account, cat, imageCat) =>
                 {
+                    cat.ImageCats = cat.ImageCats ?? new List<ImageCat>();
+                    if (imageCat != null)
+                    {
+                        cat.ImageCats.Add(imageCat);
+                    }
                     adoptPetApplication.Account = account;
                     adoptPetApplication.Cat = cat;
                     return adoptPetApplication;
                 },
                 parameters,
-                splitOn: "IsAdoptDeleted,IsAccountDeleted"
+                splitOn: "IsAdoptDeleted,IsAccountDeleted, IsCatDeleted"
             )).ToList();
 
             return new PagedResult<AdoptPetApplication>(items, pageIndex, pageSize, totalCount, totalPages);
@@ -160,7 +176,8 @@ public class AdoptRepository : IAdoptRepository
         {
             "a.Id", "a.MeetingDate", "a.ReasonReject", "a.Status", "a.IsFinalized", "a.Description", "a.CreatedDate", "a.IsDeleted as IsAdoptDeleted",
             "acc.Id", "acc.FirstName", "acc.LastName", "acc.Email", "acc.PhoneNumber", "acc.IsDeleted as IsAccountDeleted",
-            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Weight", "c.Color", "c.Description as CatDescription"
+            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Weight", "c.Color", "c.Description as CatDescription", "c.Sterilization", "acc.IsDeleted as IsCatDeleted",
+            "ic.ImageUrl", "ic.PublicImageId"
         };
 
             // Filter selected columns based on valid columns
@@ -174,6 +191,7 @@ public class AdoptRepository : IAdoptRepository
             JOIN Accounts acc ON acc.Id = a.AccountId
             JOIN Cats c ON c.Id = a.CatId
             JOIN Branchs b ON b.Id = c.BranchId
+            LEFT JOIN ImageCats ic ON c.Id = ic.CatId
             WHERE 1=1 AND b.AccountId = @AccountId");
 
             var parameters = new DynamicParameters();
@@ -189,6 +207,7 @@ public class AdoptRepository : IAdoptRepository
             JOIN Accounts acc ON acc.Id = a.AccountId
             JOIN Cats c ON c.Id = a.CatId
             JOIN Branchs b ON b.Id = c.BranchId
+            LEFT JOIN ImageCats ic ON c.Id = ic.CatId
             WHERE a.IsDeleted = 0 AND b.AccountId = @AccountId");
             // Use the table alias 'a' for Status
             if (filterParams?.Status.HasValue == true)
@@ -207,16 +226,21 @@ public class AdoptRepository : IAdoptRepository
             var offset = (pageIndex - 1) * pageSize;
             var paginatedQuery = $"{queryBuilder} ORDER BY a.CreatedDate {(filterParams.IsAscCreatedDate ? "ASC" : "DESC")} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY";
 
-            var items = (await connection.QueryAsync<AdoptPetApplication, Account, Cat, AdoptPetApplication>(
+            var items = (await connection.QueryAsync<AdoptPetApplication, Account, Cat, ImageCat, AdoptPetApplication>(
                 paginatedQuery,
-                (adoptPetApplication, account, cat) =>
+                (adoptPetApplication, account, cat, imageCat) =>
                 {
+                    cat.ImageCats = cat.ImageCats ?? new List<ImageCat>();
+                    if (imageCat != null)
+                    {
+                        cat.ImageCats.Add(imageCat);
+                    }
                     adoptPetApplication.Account = account;
                     adoptPetApplication.Cat = cat;
                     return adoptPetApplication;
                 },
                 parameters,
-                splitOn: "IsAdoptDeleted,IsAccountDeleted"
+                splitOn: "IsAdoptDeleted,IsAccountDeleted, IsCatDeleted"
             )).ToList();
 
             return new PagedResult<AdoptPetApplication>(items, pageIndex, pageSize, totalCount, totalPages);
