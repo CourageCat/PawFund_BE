@@ -44,7 +44,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Event
             _backgroundJobService.ScheduleRecurringJob(
                 $"CheckEventStatus-{request.Id}",
                 () => CheckAndUpdateEventStatusAsync(request.Id),
-                CronExpressionsEvent.EveryMinute); // Sử dụng biểu thức cron từ lớp tiện ích
+                CronExpressionsEvent.Hourly); // Sử dụng biểu thức cron từ lớp tiện ích
 
             return Result.Success(new Success(MessagesList.ApproveEventSuccessfully.GetMessage().Code, MessagesList.ApproveEventSuccessfully.GetMessage().Message));
         }
