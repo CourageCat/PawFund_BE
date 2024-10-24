@@ -104,4 +104,9 @@ public class Account : DomainEntity<Guid>
     {
         Email = email;
     }
+
+    public void UpdatePassword(string password)
+    {
+        Password = password;
+    }
 }

@@ -13,4 +13,6 @@ public static class Command
     public record UpdateAvatarCommand(Guid UserId, IFormFile CropAvatarFile, IFormFile FullAvatarFile) : ICommand<Success<AccountAvatarDto>>;
     public record UpdateEmailCommand(Guid UserId, string Email) : ICommand<Success>;
     public record VerifyUpdateEmailCommand(Guid UserId) : ICommand<Success>;
+    public record ChangePasswordCommand(Guid UserId, string Password) : ICommand<Success>;
+    public record VerifyChangePasswordCommand(Guid UserId) : ICommand<Success>;
 }

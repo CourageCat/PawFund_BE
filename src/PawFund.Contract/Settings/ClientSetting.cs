@@ -8,5 +8,6 @@ public class ClientSetting
     public string VerifyChangeEmail { get; set; }
     public string DonateSuccess { get; set; }
     public string DonateFail { get; set; }
+    public string VerifyChangePassword { get; set; }
 }
 

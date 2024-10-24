@@ -74,9 +74,35 @@ public class AccountController : ApiController
     [HttpPut("verify-update-email", Name = "VerifyUpdateEmail")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateEmailProfile([FromQuery] string userId)
+    public async Task<IActionResult> VerifyUpdateEmail([FromQuery] string userId)
     {
         var result = await Sender.Send(new Command.VerifyUpdateEmailCommand(Guid.Parse(userId)));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [Authorize(Policy = "MemberPolicy")]
+    [HttpPut("change-password", Name = "ChangePassword")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ChangePassword([FromBody] AccountRequest.ChangePasswordRequestDto request)
+    {
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.ChangePasswordCommand(Guid.Parse(userId), request.Password));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPut("verify-change-password", Name = "VerifyChangePassword")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> VerifyChangePassword([FromQuery] string userId)
+    {
+        var result = await Sender.Send(new Command.VerifyChangePasswordCommand(Guid.Parse(userId)));
         if (result.IsFailure)
             return HandlerFailure(result);
 

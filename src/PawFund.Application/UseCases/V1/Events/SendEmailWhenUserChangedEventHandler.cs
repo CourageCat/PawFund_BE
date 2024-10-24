@@ -12,7 +12,9 @@ public sealed class SendEmailWhenUserChangedEventHandler
     IDomainEventHandler<DomainEvent.UserOtpChanged>,
     IDomainEventHandler<DomainEvent.UserPasswordChanged>,
     IDomainEventHandler<DomainEvent.UserCreatedWithGoogle>,
-    IDomainEventHandler<Contract.Services.Accounts.DomainEvent.UserEmailChanged>
+    IDomainEventHandler<Contract.Services.Accounts.DomainEvent.UserEmailChanged>,
+    IDomainEventHandler<Contract.Services.Accounts.DomainEvent.UserPasswordChanged>
+
 {
     private readonly IEmailService _emailService;
     private readonly ClientSetting _clientSetting;
@@ -86,5 +88,16 @@ public sealed class SendEmailWhenUserChangedEventHandler
             {"ToEmail", notification.Email},
                {"Link", $"{_clientSetting.Url}{_clientSetting.VerifyChangeEmail}/{notification.UserId}"}
         });
+    }
+
+    public async Task Handle(Contract.Services.Accounts.DomainEvent.UserPasswordChanged notification, CancellationToken cancellationToken)
+    {
+        await _emailService.SendMailAsync
+           (notification.Email,
+           "Change password",
+           "EmailUserChangePassword.html", new Dictionary<string, string> {
+            {"ToEmail", notification.Email},
+               {"Link", $"{_clientSetting.Url}{_clientSetting.VerifyChangePassword}/{notification.UserId}"}
+       });
     }
 }

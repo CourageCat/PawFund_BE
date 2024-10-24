@@ -196,9 +196,15 @@ public enum MessagesList
     [Message("Updated email successfully", "account_noti_07")]
     AccountUpdateEmailSuccess,
 
-    [Message("Account must login by system to change email", "account_noti_08")]
+    [Message("Account must login by system to change", "account_noti_08")]
     AccountNotLoginUpdate,
 
     [Message("This email is valid, please wait for another email", "account_email_02")]
-    AccountEmailUpdateExit
+    AccountEmailUpdateExit,
+
+    [Message("Please check mail to change password", "account_noti_09")]
+    AccountChangePasswordSuccess,
+
+    [Message("Change password successfully", "account_noti_10")]
+    ChangePasswordSuccess
 }
