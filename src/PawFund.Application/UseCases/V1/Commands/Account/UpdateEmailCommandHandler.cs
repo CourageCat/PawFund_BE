@@ -41,7 +41,7 @@ public sealed class UpdateEmailCommandHandler : ICommandHandler<Command.UpdateEm
 
         await _responseCacheService.SetCacheResponseAsync($"changeemail_{request.UserId}", request.Email, TimeSpan.FromMinutes(30));
         await Task.WhenAll(
-            _publisher.Publish(new DomainEvent.UserEmailChanged(Guid.NewGuid(), request.UserId, request.Email), cancellationToken)
+            _publisher.Publish(new DomainEvent.UserEmailChanged(Guid.NewGuid(), request.UserId, account.Email), cancellationToken)
         );
         
         return Result.Success(new Success(MessagesList.AccountUpdateChangeEmail.GetMessage().Code, MessagesList.AccountUpdateChangeEmail.GetMessage().Message));
