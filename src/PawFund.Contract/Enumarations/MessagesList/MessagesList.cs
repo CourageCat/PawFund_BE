@@ -207,7 +207,6 @@ public enum MessagesList
 
     [Message("Can not find branch managed by Staff with Id: {0}", "branch_noti_exception_02")]
     BranchNotFoundBranchOfStaffException,
-    AccountGetInfoProfileSuccess,
 
     [Message("Update information profile successfully", "account_noti_05")]
     AccountUpdateInformationSuccess,
