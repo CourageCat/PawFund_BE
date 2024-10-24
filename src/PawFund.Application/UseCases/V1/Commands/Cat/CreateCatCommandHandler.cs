@@ -34,7 +34,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Cat
             if (branchFound == null)
                 throw new BranchException.BranchNotFoundException(request.BranchId);
 
-            var uploadImages = await _mediaService.UploadImages(request.Images);
+            var uploadImages = await _mediaService.UploadImagesAsync(request.Images);
 
             var cat = Domain.Entities.Cat.CreateCat(
                 request.Sex,

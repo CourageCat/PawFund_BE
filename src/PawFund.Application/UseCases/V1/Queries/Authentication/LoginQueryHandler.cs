@@ -48,7 +48,8 @@ public sealed class LoginQueryHandler : IQueryHandler<Query.LoginQuery, Response
             (account.Id,
             account.FirstName,
             account.LastName,
-            account.AvatarUrl,
+            account.CropAvatarUrl,
+            account.FullAvatarUrl,
             (int)account.RoleId,
             accessToken,
             refrehsToken));

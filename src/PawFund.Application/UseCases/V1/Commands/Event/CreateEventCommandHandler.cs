@@ -38,7 +38,9 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
         else
         {
             //create new event
-            var newEvent = Domain.Entities.Event.CreateEvent(request.Name, request.StartDate, request.EndDate, request.Description, request.MaxAttendees, request.BranchId, DateTime.Now, DateTime.Now, false);
+            var newEvent = Domain.Entities.Event.CreateEvent(request.Name, DateTime.Now.AddMinutes(1), request.EndDate, request.Description, request.MaxAttendees, request.BranchId, DateTime.Now, DateTime.Now, false);
+
+            //var newEvent = Domain.Entities.Event.CreateEvent(request.Name, request.StartDate, request.EndDate, request.Description, request.MaxAttendees, request.BranchId, DateTime.Now, DateTime.Now, false);
             newEvent.Status = Contract.Enumarations.Event.EventStatus.NotApproved;
             _eventRepository.Add(newEvent);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);

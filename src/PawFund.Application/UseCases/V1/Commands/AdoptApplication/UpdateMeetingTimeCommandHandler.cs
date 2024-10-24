@@ -13,7 +13,7 @@ public class UpdateMeetingTimeCommandHandler : ICommandHandler<Command.UpdateMee
 {
     private readonly IResponseCacheService _responseCacheService;
     private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
-
+    
     public UpdateMeetingTimeCommandHandler(IResponseCacheService responseCacheService, IRepositoryBase<Domain.Entities.Account, Guid> accountRepository)
     {
         _responseCacheService = responseCacheService;

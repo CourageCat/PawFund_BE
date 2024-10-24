@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PawFund.Domain.Exceptions;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Commands.Branch;
 public sealed class UpdateBranchCommandHandler : ICommandHandler<Command.UpdateBranchCommand>
@@ -33,7 +34,7 @@ public sealed class UpdateBranchCommandHandler : ICommandHandler<Command.UpdateB
         branchFound.UpdateBranch(request.Name, request.PhoneNumberOfBranch, request.EmailOfBranch, request.Description, request.NumberHome, request.StreetName, request.Ward, request.District, request.Province, request.PostalCode, branchFound.AccountId, DateTime.Now, DateTime.Now, false);
         _branchRepository.Update(branchFound);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-        return Result.Success("Update Branch successfully.");
+        return Result.Success(new Success(MessagesList.BranchUpdateBranchSuccess.GetMessage().Code, MessagesList.BranchUpdateBranchSuccess.GetMessage().Message));
     }
 }
 

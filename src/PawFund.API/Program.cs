@@ -10,6 +10,7 @@ using PawFund.Infrastructure.Dapper.DependencyInjection.Extensions;
 using PawFund.Persistence;
 using PawFund.Persistence.SeedData;
 using PawFund.Infrastructure.Services;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,9 @@ builder.Services.AddConfigurationAutoMapper();
 
 // Configure Dapper
 builder.Services.AddInfrastructureDapper();
+
+// Configure Hangfire
+builder.Services.AddConfigurationHangfire(builder.Configuration);
 
 // Configure Options and Redis
 builder.Services.AddConfigurationRedis(builder.Configuration);
@@ -99,6 +103,10 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseCors("AllowSpecificOrigin");
+
+app.UseHangfireDashboard();
+
+app.UseHangfireServer();
 
 app.UseAuthorization();
 

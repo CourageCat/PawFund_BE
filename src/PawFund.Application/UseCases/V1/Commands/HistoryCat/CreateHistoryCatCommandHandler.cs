@@ -31,15 +31,11 @@ namespace PawFund.Application.UseCases.V1.Commands.HistoryCat
         public async Task<Result> Handle(Command.CreateHistoryCatCommand request, CancellationToken cancellationToken)
         {
             var accountFound = await _accountRepository.FindByIdAsync(request.AccountId);
-            var catFound = await _catRepository.FindByIdAsync(request.CatId);
             if (accountFound == null)
-            {
-                throw new AccountException.AccountNotFoundException(request.AccountId);
-            }
+                throw new AccountException.AccountNotFoundException();
+            var catFound = await _catRepository.FindByIdAsync(request.CatId);
             if (catFound == null)
-            {
                 throw new CatException.CatNotFoundException(request.CatId);
-            }
             var historycatCreated = Domain.Entities.HistoryCat.CreateHistoryCat(request.DateAdopt, request.CatId, request.AccountId, DateTime.Now, DateTime.Now, false);
             _historycatRepository.Add(historycatCreated);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);

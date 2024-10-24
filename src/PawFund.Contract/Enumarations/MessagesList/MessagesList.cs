@@ -118,7 +118,6 @@ public enum MessagesList
     [Message("Can not find any meeting time", "adopt_noti_exception_07")]
     AdoptNotFoundAnyMeetingTimeException,
 
-
     [Message("This time is not exist, Please reload the page", "adopt_noti_exception_08")]
     AdoptNotFoundMeetingTimeException,
 
@@ -176,6 +175,39 @@ public enum MessagesList
     [Message("Event activity found", "event_activity_noti_success_10")]
     GetEventActivityByIdSuccess,
 
+    [Message("This account cannot be found", "account_noti_02")]
+    AccountNotFound,
+
+    [Message("Avatar upload successful", "account_noti_03")]
+    AccountUploadAvatarSuccess,
+
+    [Message("Get information profile successfully", "account_noti_04")]
+    AccountGetInfoProfileSuccess,
+
+    [Message("Create Branch successfully", "branch_noti_success_01")]
+    BranchCreateBranchSuccess,
+
+    [Message("Update Branch successfully", "branch_noti_success_02")]
+    BranchUpdateBranchSuccess,
+
+    [Message("Delete Branch successfully", "branch_noti_success_03")]
+    BranchDeleteBranchSuccess,
+
+    [Message("Branch Details", "branch_noti_success_04")]
+    BranchGetBranchByIdSuccess,
+
+    [Message("All Branches", "branch_noti_success_05")]
+    BranchGetAllBranchesSuccess,
+
+    [Message("Can not find any branch", "branch_noti_exception_01")]
+    BranchEmptyBranchesException,
+
+    [Message("Can not find branch with Id: {0}", "branch_noti_exception_02")]
+    BranchNotFoundBranchException,
+
+    [Message("Can not find branch managed by Staff with Id: {0}", "branch_noti_exception_02")]
+    BranchNotFoundBranchOfStaffException,
+
     [Message("This user is already registering into this event", "volunteer_application_noti_exception_1")]
     CheckVolunteerApplicationException,
 
@@ -184,9 +216,6 @@ public enum MessagesList
 
     [Message("Can not find event with id: {0}", "event_noti_exception_1")]
     EventNotFoundException,
-
-    [Message("Can not find branch with id: {0}", "branch_noti_exception_1")]
-    BranchNotFoundException,
 
     [Message("Can not found event activity with ID: {0}", "event_activity_noti_exception_1")]
     EventActivityNotFoundException,

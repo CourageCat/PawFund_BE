@@ -84,7 +84,7 @@ public class EventController : ApiController
         return Ok(result);
     }
 
-    [Authorize(Policy = "Admin")]
+    //[Authorize(Policy = "Admin")]
     [HttpPut("approved_by_admin", Name = "ApprovedEventByAdmin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

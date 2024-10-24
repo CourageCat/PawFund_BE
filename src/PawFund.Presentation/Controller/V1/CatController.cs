@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PawFund.Contract.Services.Cats;
 using PawFund.Presentation.Abstractions;
+using static PawFund.Contract.Services.Cats.Filter;
+using static PawFund.Contract.Services.Products.Filter;
 
 namespace PawFund.Presentation.Controller.V1;
 public class CatController : ApiController
@@ -53,6 +55,23 @@ public class CatController : ApiController
     public async Task<IActionResult> GetCatById([FromQuery] Guid Id)
     {
         var result = await Sender.Send(new Query.GetCatByIdQuery(Id));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpGet("get_cats", Name = "GetCats")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCats(
+        [FromQuery] CatAdoptFilter filterParams,
+    [FromQuery] int pageIndex = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string[] selectedColumns = null
+        )
+    {
+        var result = await Sender.Send(new Query.GetCats(pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
 

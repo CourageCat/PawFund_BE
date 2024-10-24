@@ -1,4 +1,5 @@
 ﻿using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Enumarations.Authentication;
 
 namespace PawFund.Contract.Services.Authentications;
 
@@ -9,7 +10,8 @@ public static class Command
         string LastName, 
         string Email, 
         string PhoneNumber, 
-        string Password) 
+        string Password,
+        GenderType Gender) 
         : ICommand;
     public record VerifyEmailCommand(string Email) : ICommand;
     public record ForgotPasswordEmailCommand(string Email): ICommand;
