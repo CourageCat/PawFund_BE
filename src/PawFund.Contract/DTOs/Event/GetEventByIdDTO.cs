@@ -3,6 +3,7 @@ namespace PawFund.Contract.DTOs.Event
 {
     public class GetEventByIdDTO
     {
+
         public class EventDTO
         {
             public Guid Id { get; set; }

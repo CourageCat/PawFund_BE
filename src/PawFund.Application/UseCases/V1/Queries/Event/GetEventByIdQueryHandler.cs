@@ -1,5 +1,6 @@
 ﻿
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
@@ -7,14 +8,14 @@ using static PawFund.Contract.DTOs.Event.GetEventByIdDTO;
 
 namespace PawFund.Application.UseCases.V1.Queries.Event
 {
-    public class GetEventByIdQueryHandler : IQueryHandler<Query.GetEventByIdQuery, Respone.EventResponse>
+    public class GetEventByIdQueryHandler : IQueryHandler<Query.GetEventByIdQuery, Success<Respone.EventResponse>>
     {
         private readonly IDPUnitOfWork _dPUnitOfWork;
         public GetEventByIdQueryHandler(IDPUnitOfWork dPUnitOfWork)
         {
             _dPUnitOfWork = dPUnitOfWork;
         }
-        public async Task<Result<Respone.EventResponse>> Handle(Query.GetEventByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<Success<Respone.EventResponse>>> Handle(Query.GetEventByIdQuery request, CancellationToken cancellationToken)
         {
             var existEvent = await _dPUnitOfWork.EventRepository.GetByIdAsync(request.Id);
             if (existEvent != null)
@@ -44,7 +45,7 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
                     Ward = existEvent.Branch.Ward,
                 };
                 var result = new Respone.EventResponse(eventDTO, branchDTO);
-                return Result.Success(result);
+                return Result.Success(new Success<Respone.EventResponse>("", "", result));
             }
             else
             {
