@@ -39,7 +39,7 @@ public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEm
 
     public async Task<Result> Handle(Command.VerifyEmailCommand request, CancellationToken cancellationToken)
     {
-        var isCheckEmail = await _dbUnitOfWork.AccountRepositories.EmailExistSystem(request.Email);
+        var isCheckEmail = await _dbUnitOfWork.AccountRepositories.EmailExistSystemAsync(request.Email);
         // Check user have exit in system by email
         if (isCheckEmail) throw new EmailExistException();
 

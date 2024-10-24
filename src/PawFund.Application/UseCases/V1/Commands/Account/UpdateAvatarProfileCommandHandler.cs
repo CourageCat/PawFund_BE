@@ -36,18 +36,22 @@ public sealed class UpdateAvatarProfileCommandHandler : ICommandHandler<Command.
     {
         var account = await _accountRepository.FindByIdAsync(request.UserId);
         if (account == null) throw new AccountNotFoundException();
-        var oldCropPublicId = account.CropAvatarId;
-        var oldFullPublicId = account.FullAvatarId;
+        if((!string.IsNullOrEmpty(account.CropAvatarId) && !string.IsNullOrEmpty(account.FullAvatarId)) == true)
+        {
+            var oldCropPublicId = account.CropAvatarId;
+            var oldFullPublicId = account.FullAvatarId;
+            await Task.WhenAll(
+                _mediaService.DeleteFileAsync(oldCropPublicId),
+                _mediaService.DeleteFileAsync(oldFullPublicId)
+            );
+        }
 
         var uploadImages = await _mediaService.UploadImagesAsync(new List<IFormFile> { request.CropAvatarFile, request.FullAvatarFile });
 
         account.UpdateAvatarProfileUser(uploadImages[0].ImageUrl, uploadImages[0].PublicImageId, uploadImages[1].ImageUrl, uploadImages[1].PublicImageId);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        await Task.WhenAll(
-            _mediaService.DeleteFileAsync(oldCropPublicId),
-            _mediaService.DeleteFileAsync(oldFullPublicId)
-        );
+        
 
         return Result.Success(new Success<AccountAvatarDto>
             (MessagesList.AccountUploadAvatarSuccess.GetMessage().Code,

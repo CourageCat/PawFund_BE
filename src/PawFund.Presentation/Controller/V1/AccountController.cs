@@ -15,12 +15,14 @@ public class AccountController : ApiController
     {
     }
 
-    [HttpPut("update_profile", Name = "UpdateProfile")]
+    [Authorize(Policy = "MemberPolicy")]
+    [HttpPut("update-info-profile", Name = "UpdateInfoProfile")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateProfile([FromForm] Command.UpdateUserCommand ChangeStatus)
+    public async Task<IActionResult> UpdateInfoProfile([FromBody] AccountRequest.UpdateInfoProfileRequestDto request)
     {
-        var result = await Sender.Send(ChangeStatus);
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.UpdateInfoCommand(Guid.Parse(userId), request.FirstName, request.LastName, request.PhoneNumber, request.Gender));
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -49,6 +51,58 @@ public class AccountController : ApiController
     {
         var userId = User.FindFirstValue("UserId");
         var result = await Sender.Send(new Query.GetUserProfileQuery(Guid.Parse(userId)));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [Authorize(Policy = "MemberPolicy")]
+    [HttpPut("update-email-profile", Name = "UpdateEmailProfile")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateEmailProfile([FromBody] AccountRequest.UpdateEmailRequestDto request)
+    {
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.UpdateEmailCommand(Guid.Parse(userId), request.Email));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPut("verify-update-email", Name = "VerifyUpdateEmail")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> VerifyUpdateEmail([FromQuery] string userId)
+    {
+        var result = await Sender.Send(new Command.VerifyUpdateEmailCommand(Guid.Parse(userId)));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [Authorize(Policy = "MemberPolicy")]
+    [HttpPut("change-password", Name = "ChangePassword")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ChangePassword([FromBody] AccountRequest.ChangePasswordRequestDto request)
+    {
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.ChangePasswordCommand(Guid.Parse(userId), request.Password));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPut("verify-change-password", Name = "VerifyChangePassword")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> VerifyChangePassword([FromQuery] string userId)
+    {
+        var result = await Sender.Send(new Command.VerifyChangePasswordCommand(Guid.Parse(userId)));
         if (result.IsFailure)
             return HandlerFailure(result);
 

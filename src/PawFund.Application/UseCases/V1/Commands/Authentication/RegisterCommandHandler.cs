@@ -27,7 +27,7 @@ public sealed class RegisterCommandHandler : ICommandHandler<Command.RegisterCom
 
     public async Task<Result> Handle(Command.RegisterCommand request, CancellationToken cancellationToken)
     {
-        var user = await _dbUnitOfWork.AccountRepositories.EmailExistSystem(request.Email);
+        var user = await _dbUnitOfWork.AccountRepositories.EmailExistSystemAsync(request.Email);
         // Check user have exits in system, if exit not regist
         if (user) throw new EmailExistException();
 

@@ -28,7 +28,7 @@ public class AccountRepository : IAccountRepository
         throw new NotImplementedException();
     }
 
-    public async Task<bool>? EmailExistSystem(string email)
+    public async Task<bool>? EmailExistSystemAsync(string email)
     {
         var sql = "SELECT CASE WHEN EXISTS (SELECT 1 FROM Accounts WHERE Email = @Email) THEN 1 ELSE 0 END";
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
@@ -39,7 +39,18 @@ public class AccountRepository : IAccountRepository
         }
     }
 
-    public async Task<List<Account>> GetListUser()
+    public async Task<bool>? AccountExistSystemAsync(Guid userId)
+    {
+        var sql = "SELECT CASE WHEN EXISTS (SELECT 1 FROM Accounts WHERE Id = @Id) THEN 1 ELSE 0 END";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.ExecuteScalarAsync<bool>(sql, new { Id = userId });
+            return result;
+        }
+    }
+
+    public async Task<List<Account>> GetListUserAsync()
     {
         var sql = "SELECT * FROM Accounts";
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
@@ -107,7 +118,7 @@ public class AccountRepository : IAccountRepository
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             // Valid columns for selecting
-            var validColumns = new HashSet<string> { "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Password", "Status", "RoleId", "Gender" , "IsDeleted"};
+            var validColumns = new HashSet<string> { "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Password", "Status", "RoleId", "Gender", "LoginType", "IsDeleted"};
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
 
             // If no selected columns, select all

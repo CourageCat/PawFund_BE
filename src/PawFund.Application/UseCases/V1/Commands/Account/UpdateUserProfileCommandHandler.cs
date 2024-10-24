@@ -1,50 +1,40 @@
 ﻿using PawFund.Contract.Abstractions.Message;
-using PawFund.Contract.Abstractions.Services;
+using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Accounts;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Repositories;
-using PawFund.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static PawFund.Domain.Exceptions.AccountException;
 
-namespace PawFund.Application.UseCases.V1.Commands.Account
+namespace PawFund.Application.UseCases.V1.Commands.Account;
+
+public sealed class UpdateInfoProfileCommandHandler : ICommandHandler<Command.UpdateInfoCommand, Success<Response.UserResponse>>
 {
-    public sealed class UpdateUserProfileCommandHandler : ICommandHandler<Command.UpdateUserCommand>
+    private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
+    private readonly IEFUnitOfWork _efUnitOfWork;
+
+    public UpdateInfoProfileCommandHandler(IRepositoryBase<Domain.Entities.Account, Guid> accountRepository, IEFUnitOfWork efUnitOfWork)
     {
+        _accountRepository = accountRepository;
+        _efUnitOfWork = efUnitOfWork;
+    }
 
-        private readonly IEFUnitOfWork _efUnitOfWork;
-        private readonly IRepositoryBase<PawFund.Domain.Entities.Account, Guid> _accountRepository;
-        private readonly IMediaService _mediaService;
+    public async Task<Result<Success<Response.UserResponse>>> Handle(Command.UpdateInfoCommand request, CancellationToken cancellationToken)
+    {
+        var result = await _accountRepository.FindByIdAsync(request.UserId);
+        if (result == null)
+            throw new AccountNotFoundException();
+        
+        result.UpdateInfoProfileUser(request.FirstName, request.LastName, request.PhoneNumber, request.Gender);
+        _accountRepository.Update(result);
+        await _efUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        public UpdateUserProfileCommandHandler(IEFUnitOfWork efUnitOfWork, IRepositoryBase<Domain.Entities.Account, Guid> accountRepository, IMediaService mediaService)
-        {
-            _efUnitOfWork = efUnitOfWork;
-            _accountRepository = accountRepository;
-            _mediaService = mediaService;
-        }
-
-        public async Task<Result> Handle(Command.UpdateUserCommand request, CancellationToken cancellationToken)
-        {
-            var user = await _accountRepository.FindByIdAsync(request.ID);
-            if (user == null)
-            {
-                throw new UserException.UserNotFoundException((Guid)request.ID);
-            }
-
-            //Upload Avatar File to cloud
-            var media = await _mediaService.UploadImageAsync($"avatar_{request.ID}", request.AvatarFile);
-
-            user.UpdateProfileUser(request.FirstName, request.LastName, media.ImageUrl, false); 
-            _accountRepository.Update(user);
-            await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-            //Return result
-            return Result.Success(new Success(MessagesList.UserUpdateProfileSuccess.GetMessage().Code, MessagesList.UserUpdateProfileSuccess.GetMessage().Message));
-        }
-
+        var response = new Response.UserResponse(result.Id, result.FirstName, result.LastName, result.Email, result.PhoneNumber, result.Gender);
+        
+        return Result.Success(new Success<Response.UserResponse>
+            (MessagesList.AccountUpdateInformationSuccess.GetMessage().Code,
+            MessagesList.AccountUpdateInformationSuccess.GetMessage().Message,
+            response));
     }
 }

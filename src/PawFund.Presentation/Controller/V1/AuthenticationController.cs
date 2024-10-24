@@ -7,7 +7,6 @@ using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Presentation.Abstractions;
-using System.Security.Claims;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 
 namespace PawFund.Presentation.Controller.V1;
