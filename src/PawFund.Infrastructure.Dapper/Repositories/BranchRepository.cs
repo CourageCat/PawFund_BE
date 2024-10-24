@@ -83,6 +83,7 @@ public class BranchRepository : IBranchRepository
             if (filterParams?.Id.HasValue == true)
             {
                 queryBuilder.Append(" AND Id = @Id");
+                totalCountQuery.Append(" AND Id = @Id");
                 parameters.Add("Id", $"{filterParams.Id}");
             }
 
@@ -90,6 +91,7 @@ public class BranchRepository : IBranchRepository
             if (filterParams?.AccountId.HasValue == true)
             {
                 queryBuilder.Append(" AND AccountId = @AccountId");
+                totalCountQuery.Append(" AND AccountId = @AccountId");
                 parameters.Add("AccountId", $"{filterParams.AccountId}");
             }
 
@@ -97,6 +99,7 @@ public class BranchRepository : IBranchRepository
             if (filterParams?.Id.HasValue == true)
             {
                 queryBuilder.Append(" AND Id = @Id");
+                totalCountQuery.Append(" AND Id = @Id");
                 parameters.Add("Id", $"{filterParams.Id}");
             }
 
@@ -104,60 +107,70 @@ public class BranchRepository : IBranchRepository
             if (!string.IsNullOrEmpty(filterParams?.Name))
             {
                 queryBuilder.Append(" AND Name LIKE @Name");
+                totalCountQuery.Append(" AND Name LIKE @Name");
                 parameters.Add("Name", $"%{filterParams.Name}%");
             }
 
             if (!string.IsNullOrEmpty(filterParams?.PhoneNumberOfBranch))
             {
                 queryBuilder.Append(" AND PhoneNumberOfBranch LIKE @PhoneNumberOfBranch");
+                totalCountQuery.Append(" AND PhoneNumberOfBranch LIKE @PhoneNumberOfBranch");
                 parameters.Add("PhoneNumberOfBranch", $"%{filterParams.PhoneNumberOfBranch}%");
             }
 
             if (!string.IsNullOrEmpty(filterParams?.EmailOfBranch))
             {
                 queryBuilder.Append(" AND EmailOfBranch LIKE @EmailOfBranch");
+                totalCountQuery.Append(" AND EmailOfBranch LIKE @EmailOfBranch");
                 parameters.Add("EmailOfBranch", $"%{filterParams.EmailOfBranch}%");
             }
 
             if (!string.IsNullOrEmpty(filterParams?.Description))
             {
                 queryBuilder.Append(" AND Description LIKE @Description");
+                totalCountQuery.Append(" AND Description LIKE @Description");
                 parameters.Add("Description", $"%{filterParams.Description}%");
             }
 
             if (!string.IsNullOrEmpty(filterParams?.NumberHome))
             {
                 queryBuilder.Append(" AND NumberHome LIKE @NumberHome");
+                totalCountQuery.Append(" AND NumberHome LIKE @NumberHome");
                 parameters.Add("NumberHome", $"%{filterParams.NumberHome}%");
             }
 
             if (!string.IsNullOrEmpty(filterParams?.StreetName))
             {
                 queryBuilder.Append(" AND StreetName LIKE @StreetName");
+                totalCountQuery.Append(" AND StreetName LIKE @StreetName");
                 parameters.Add("StreetName", $"%{filterParams.StreetName}%");
             }
 
             if (!string.IsNullOrEmpty(filterParams?.Ward))
             {
                 queryBuilder.Append(" AND Ward LIKE @Ward");
+                totalCountQuery.Append(" AND Ward LIKE @Ward");
                 parameters.Add("Ward", $"%{filterParams.Ward}%");
             }
 
             if (!string.IsNullOrEmpty(filterParams?.District))
             {
                 queryBuilder.Append(" AND District LIKE @District");
+                totalCountQuery.Append(" AND District LIKE @District");
                 parameters.Add("District", $"%{filterParams.District}%");
             }
 
             if (!string.IsNullOrEmpty(filterParams?.Province))
             {
                 queryBuilder.Append(" AND Province LIKE @Province");
+                totalCountQuery.Append(" AND Province LIKE @Province");
                 parameters.Add("Province", $"%{filterParams.Province}%");
             }
 
             if (!string.IsNullOrEmpty(filterParams?.PostalCode))
             {
                 queryBuilder.Append(" AND PostalCode LIKE @PostalCode");
+                totalCountQuery.Append(" AND PostalCode LIKE @PostalCode");
                 parameters.Add("PostalCode", $"%{filterParams.PostalCode}%");
             }
 

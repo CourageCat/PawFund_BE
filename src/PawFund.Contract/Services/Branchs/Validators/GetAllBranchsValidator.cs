@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
-namespace PawFund.Contract.Services.Branchs.Validators
+namespace PawFund.Contract.Services.Branchs.Validators;
+
+public class GetAllBranchsValidator : AbstractValidator<Query.GetAllBranchesQuery>
 {
-    internal class GetAllBranchsValidator
+    public GetAllBranchsValidator()
     {
+
     }
 }
