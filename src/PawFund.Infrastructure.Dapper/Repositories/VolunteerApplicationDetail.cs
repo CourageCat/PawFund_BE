@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using System;
@@ -20,6 +22,7 @@ public class VolunteerApplicationDetail : IVolunteerApplicationDetail
     {
         throw new NotImplementedException();
     }
+
 
     public Task<int> DeleteAsync(Domain.Entities.VolunteerApplicationDetail entity)
     {

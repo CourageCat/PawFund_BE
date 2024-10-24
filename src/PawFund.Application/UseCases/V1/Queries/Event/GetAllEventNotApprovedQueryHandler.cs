@@ -62,5 +62,10 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
             // Trả về kết quả thành công với danh sách DTO
             return Result.Success(listEvent);
         }
+
+        public Task<Result<List<Contract.Services.EventActivity.Respone.EventActivityResponse>>> Handle(Contract.Services.EventActivity.Query.GetApprovedEventsActivityQuery request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

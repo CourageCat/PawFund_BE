@@ -184,6 +184,31 @@ public enum MessagesList
     [Message("Get information profile successfully", "account_noti_04")]
     AccountGetInfoProfileSuccess,
 
+    [Message("Create Branch successfully", "branch_noti_success_01")]
+    BranchCreateBranchSuccess,
+
+    [Message("Update Branch successfully", "branch_noti_success_02")]
+    BranchUpdateBranchSuccess,
+
+    [Message("Delete Branch successfully", "branch_noti_success_03")]
+    BranchDeleteBranchSuccess,
+
+    [Message("Branch Details", "branch_noti_success_04")]
+    BranchGetBranchByIdSuccess,
+
+    [Message("All Branches", "branch_noti_success_05")]
+    BranchGetAllBranchesSuccess,
+
+    [Message("Can not find any branch", "branch_noti_exception_01")]
+    BranchEmptyBranchesException,
+
+    [Message("Can not find branch with Id: {0}", "branch_noti_exception_02")]
+    BranchNotFoundBranchException,
+
+    [Message("Can not find branch managed by Staff with Id: {0}", "branch_noti_exception_02")]
+    BranchNotFoundBranchOfStaffException,
+    AccountGetInfoProfileSuccess,
+
     [Message("Update information profile successfully", "account_noti_05")]
     AccountUpdateInformationSuccess,
 

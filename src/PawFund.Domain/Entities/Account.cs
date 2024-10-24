@@ -40,6 +40,38 @@ public class Account : DomainEntity<Guid>
         RoleId = roleId;
     }
 
+    public Account
+        (Guid id,
+        string firstName,
+        string lastName,
+        string email,
+        string phoneNumber,
+        bool status,
+        string password,
+        GenderType gender,
+        string cropAvatarUrl,
+        string cropAvatarId,
+        string fullAvatarUrl,
+        string fullAvatarId,
+        LoginType loginType,
+        RoleType roleId)
+    {
+        Id = id;
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        Status = status;
+        Password = password;
+        Gender = gender;
+        CropAvatarUrl = cropAvatarUrl;
+        CropAvatarId = cropAvatarId;
+        FullAvatarUrl = fullAvatarUrl;
+        FullAvatarId = fullAvatarId;
+        LoginType = loginType;
+        RoleId = roleId;
+    }
+
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
@@ -84,6 +116,14 @@ public class Account : DomainEntity<Guid>
         string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
         return new Account("Admin", "", email, "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Admin);
     }
+
+    public static Account CreateStaffAccount
+       (string password, string branchName)
+    {
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        return new Account(Guid.NewGuid(), "Staff", $"{branchName}", $"{branchName.ToLower().Replace(" ", "")}staff@pawfund.com", "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Staff);
+    }
+
     public void UpdateAvatarProfileUser(string cropAvatarUrl, string cropAvatarId, string fullAvatarUrl, string fullAvatarId)
     {
         CropAvatarUrl = cropAvatarUrl;
