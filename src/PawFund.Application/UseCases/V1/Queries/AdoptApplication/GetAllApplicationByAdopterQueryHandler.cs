@@ -60,6 +60,9 @@ public sealed class GetAllApplicationQueryByAdopterHandler : IQueryHandler<Query
                     Weight = adoptApplication.Cat.Weight,
                     Color = adoptApplication.Cat.Color,
                     Description = adoptApplication.Cat.Description,
+                    Sterilization = adoptApplication.Cat.Sterilization,
+                    ImageUrl = adoptApplication.Cat.ImageCats.ToList()[0].ImageUrl,
+                    PublicImageId = adoptApplication.Cat.ImageCats.ToList()[0].PublicImageId
                 }
             }));
         });

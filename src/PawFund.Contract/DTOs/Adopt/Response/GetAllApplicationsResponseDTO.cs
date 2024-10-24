@@ -34,6 +34,10 @@ public static class GetAllApplicationsResponseDTO
         public decimal Weight { get; set; } = 0;
         public string Color { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public bool Sterilization { get; set; }
+        public string ImageUrl { get; set; }
+        public string PublicImageId { get; set; }
+
     }
 }
 
