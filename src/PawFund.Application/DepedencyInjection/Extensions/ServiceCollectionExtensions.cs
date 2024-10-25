@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
         services.AddAutoMapper(typeof(EventActivityProfile));
         services.AddAutoMapper(typeof(EventProfile));
         services.AddAutoMapper(typeof(BranchProfile));
+        services.AddAutoMapper(typeof(DonateProfile));
         return services;
     }
 }

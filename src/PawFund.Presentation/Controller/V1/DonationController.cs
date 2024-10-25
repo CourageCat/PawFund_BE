@@ -52,4 +52,20 @@ public class DonationController : ApiController
 
         return Redirect(result.Value.FailUrl);
     }
+
+
+    [HttpGet("get-donates", Name = "GetDonates")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetDonates([FromQuery] Contract.Services.Donates.Filter.DonateFilter filterParams,
+    [FromQuery] int pageIndex = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string[] selectedColumns = null)
+    {
+        var result = await Sender.Send(new Query.GetDonatesQuery(pageIndex, pageSize, filterParams, selectedColumns));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+        
+        return Ok(result);
+    }
 }

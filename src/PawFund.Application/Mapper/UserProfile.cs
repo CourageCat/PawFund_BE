@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.DTOs.Account;
 using PawFund.Domain.Entities;
 using static PawFund.Contract.Services.Accounts.Response;
 
@@ -11,5 +12,6 @@ public class UserProfile : Profile
     {
         CreateMap<Account, UsersResponse>().ReverseMap();
         CreateMap<PagedResult<Account>, PagedResult<UsersResponse>>().ReverseMap();
+        CreateMap<Account, AccountDto>();
     }
 }
