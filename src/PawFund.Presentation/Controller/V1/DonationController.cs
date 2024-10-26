@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using PawFund.Contract.DTOs.PaymentDTOs;
 using PawFund.Contract.Services.Donate;
+using PawFund.Contract.Services.Donates;
 using PawFund.Presentation.Abstractions;
 using System.Security.Claims;
+using static PawFund.Contract.Services.Donates.Filter;
 namespace PawFund.Presentation.Controller.V1;
 
 public class DonationController : ApiController
@@ -51,5 +54,24 @@ public class DonationController : ApiController
             return HandlerFailure(result);
 
         return Redirect(result.Value.FailUrl);
+    }
+
+    [Authorize(Policy = "MemberPolicy")]
+    [HttpGet("get-user-donates", Name = "GetUserDonates")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetUserDonates(
+    [FromQuery] Filter.DonateFilter filterParams,
+    [FromQuery] int pageIndex = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string[] selectedColumns = null)
+    {
+        var userId = User.FindFirstValue("UserId");
+        Filter.DonateFilter filter = new DonateFilter(PaymentMethodType: filterParams.PaymentMethodType, MinAmount: filterParams.MinAmount, MaxAmount: filterParams.MaxAmount, UserId: Guid.Parse(userId), IsDateDesc: filterParams.IsDateDesc);
+        var result = await Sender.Send(new Query.GetDonatesQuery(pageIndex, pageSize, filter, selectedColumns));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+        
+        return Ok(result);
     }
 }
