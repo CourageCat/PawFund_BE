@@ -4,5 +4,6 @@ namespace PawFund.Contract.Services.Donates;
 
 public static class Filter
 {
-    public record DonateFilter(PaymentMethodType? PaymentMethodType, int? MinAmount, int? MaxAmount, Guid? UserId);
+    // IsDateDesc = true ? DESC : ASC
+    public record DonateFilter(PaymentMethodType? PaymentMethodType, int? MinAmount, int? MaxAmount, Guid? UserId, bool? IsDateDesc);
 }

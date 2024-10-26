@@ -66,10 +66,10 @@ public class DonationRepository : IDonationRepository
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             var validColumns = new HashSet<string>
-            {
-                "d.Id", "d.Amount", "d.Description", "d.OrderId", "d.PaymentMethodId", "d.CreatedDate", "d.ModifiedDate", "d.IsDeleted",
-                "ac.FirstName", "ac.LastName"
-            };
+        {
+            "d.Id", "d.Amount", "d.Description", "d.OrderId", "d.PaymentMethodId", "d.CreatedDate", "d.ModifiedDate", "d.IsDeleted",
+            "ac.FirstName", "ac.LastName"
+        };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
             var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : string.Join(", ", validColumns);
@@ -96,7 +96,7 @@ public class DonationRepository : IDonationRepository
             {
                 queryBuilder.Append(" AND d.AccountId = @UserId");
                 totalCountQuery.Append(" AND d.AccountId = @UserId");
-                parameters.Add("UserId", filterParams.UserId);
+                parameters.Add("UserId", filterParams.UserId.Value);
             }
 
             // Filter by PaymentMethod
@@ -104,7 +104,7 @@ public class DonationRepository : IDonationRepository
             {
                 queryBuilder.Append(" AND d.PaymentMethodId = @PaymentMethodId");
                 totalCountQuery.Append(" AND d.PaymentMethodId = @PaymentMethodId");
-                parameters.Add("PaymentMethodId", (int)filterParams.PaymentMethodType);
+                parameters.Add("PaymentMethodId", (int)filterParams.PaymentMethodType.Value);
             }
 
             // Filter by MinAmount
@@ -130,22 +130,25 @@ public class DonationRepository : IDonationRepository
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             var offset = (pageIndex - 1) * pageSize;
-            var paginatedQuery = $"{queryBuilder} ORDER BY d.CreatedDate OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY";
+            var orderDirection = filterParams?.IsDateDesc == true ? "DESC" : "ASC"; 
+
+            var paginatedQuery = $"{queryBuilder} ORDER BY d.CreatedDate {orderDirection} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY";
 
             var items = (await connection.QueryAsync<Donation, Account, Donation>(
                 paginatedQuery,
                 (donate, account) =>
                 {
-                    donate.Account = account;
+                    donate.Account = account; // Assuming Donation has a property called Account
                     return donate;
                 },
                 parameters,
-                splitOn: "FirstName"
+                splitOn: "FirstName" // Ensure this matches the first column in the selectedColumns
             )).ToList();
 
             return new PagedResult<Donation>(items, pageIndex, pageSize, totalCount, totalPages);
         }
     }
+
 
     public Task<int> UpdateAsync(Donation entity)
     {
