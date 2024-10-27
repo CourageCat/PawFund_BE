@@ -12,6 +12,8 @@ public class EventDTO
     public string? Description { get; set; } = string.Empty;
     public string? Status { get; set; } = string.Empty;
     public int MaxAttendees { get; set; } = 1;
+    public string? ThumbHeroUrl { get; set; }
+    public string? ImagesUrl { get; set; }
 
     public BranchEventDTO Branch { get; set; }
 }

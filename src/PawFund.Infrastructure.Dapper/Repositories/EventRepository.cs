@@ -169,8 +169,12 @@ WHERE e.Status = @NotApprovedStatus";
     {
         var sql = @"
 SELECT 
-    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, e.IsDeleted, e.Status as IsEventDelete,
-    b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, b.Province, b.PostalCode, b.IsDeleted as IsBranchDeleted
+    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, 
+    e.IsDeleted, e.Status as IsEventDelete, 
+    e.ThumbHeroUrl, e.ImagesUrl,
+    b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, 
+    b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, 
+    b.Province, b.PostalCode, b.IsDeleted as IsBranchDeleted
 FROM Events e
 JOIN Branchs b ON b.Id = e.BranchId
 WHERE e.Id = @Id";
@@ -181,13 +185,14 @@ WHERE e.Id = @Id";
 
             var result = await connection.QueryAsync<Event, Branch, Event>(
                 sql,
-                (Event, Branch) =>
+                (eventObj, branch) =>
                 {
-                    Event.Branch = Branch;
-                    return Event;
+                    Console.WriteLine($"ThumbHeroUrl: {eventObj.ThumbHeroUrl}, ImagesUrl: {eventObj.ImagesUrl}");
+                    eventObj.Branch = branch;
+                    return eventObj;
                 },
                 new { Id = Id },
-                splitOn: "IsEventDelete"
+                splitOn: "Id"  // Sửa thành "Id" của Branch
             );
 
             return result.FirstOrDefault();
