@@ -117,6 +117,13 @@ public class Account : DomainEntity<Guid>
         return new Account("Admin", "", email, "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Admin);
     }
 
+    public static Account CreateStaffAssistant
+      (string email, string password)
+    {
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        return new Account("Staff assistant", "", email, "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Staff);
+    }
+
     public static Account CreateStaffAccount
        (string password, string branchName)
     {

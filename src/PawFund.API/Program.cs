@@ -10,6 +10,8 @@ using PawFund.Infrastructure.Dapper.DependencyInjection.Extensions;
 using PawFund.Persistence;
 using PawFund.Persistence.SeedData;
 using PawFund.Infrastructure.Services;
+using PawFund.Presentation.Hubs;
+using PawFund.Presentation.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,14 +78,15 @@ builder.Services.AddCors(options =>
         option =>
         {
             option.WithOrigins(clientUrl)
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
         });
 });
 
 
 var app = builder.Build();
+
 
 // Seed data
 using (var scope = app.Services.CreateScope())
@@ -100,9 +103,12 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowSpecificOrigin");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<MessageHub>("hub/message-hub");
 
 if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
     app.ConfigureSwagger();
