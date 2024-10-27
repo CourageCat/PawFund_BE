@@ -32,6 +32,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IGoogleOAuthService, GoogleOAuthService>();
         services.AddTransient<IMediaService, MediaService>();
         services.AddTransient<IPaymentService, PaymentService>();
+        services.AddTransient<IDialogflowService, DialogflowService>();
     }
 
     public static void AddConfigurationAppSetting
@@ -42,6 +43,7 @@ public static class ServiceCollectionExtensions
         services.Configure<CloudinarySetting>(configuration.GetSection(CloudinarySetting.SectionName));
         services.Configure<PayOSSetting>(configuration.GetSection(PayOSSetting.SectionName));
         services.Configure<ClientSetting>(configuration.GetSection(ClientSetting.SectionName));
+        services.Configure<DialogflowSetting>(configuration.GetSection(DialogflowSetting.SectionName));
 
     }
 }
