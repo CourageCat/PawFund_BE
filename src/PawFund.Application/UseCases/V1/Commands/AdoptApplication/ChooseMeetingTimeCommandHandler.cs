@@ -38,13 +38,28 @@ namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication
             }
             var branchName = applicationFound.Cat.Branch.Name;
             var listMeetingTime = await _responseCacheService.GetListAsync<GetMeetingTimeByAdopterResponseDTO.MeetingTimeDTO>(branchName);
+            bool isMeetingTimeExisted = false;
+            //Check if meeting time still exist
+            foreach (var meetingTime in listMeetingTime)
+            {
+                if (meetingTime.MeetingTime.Equals(request.MeetingTime))
+                {
+                    isMeetingTimeExisted = true;
+                    break;
+                }
+            }
+            if (!isMeetingTimeExisted)
+            {
+                throw new AdoptApplicationException.NotFoundMeetingTimeException();
+            }
+            //Update meeting time and staff free
             var listUpdatedMeetingTime = listMeetingTime.Select(x =>
             {
                 //Check Meeting Time Exist
-                if (x.MeetingTime.Equals(request.MeetingTime) )
+                if (x.MeetingTime.Equals(request.MeetingTime))
                 {
                     //Check Has Any Staff Free in this Meeting Time
-                    if(x.NumberOfStaffsFree > 0)
+                    if (x.NumberOfStaffsFree > 0)
                     {
                         return new GetMeetingTimeByAdopterResponseDTO.MeetingTimeDTO()
                         {
@@ -57,7 +72,11 @@ namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication
                         throw new AdoptApplicationException.NoStaffFreesForTheMeetingTimeException();
                     }
                 }
-                throw new AdoptApplicationException.NotFoundMeetingTimeException();
+                return new GetMeetingTimeByAdopterResponseDTO.MeetingTimeDTO()
+                {
+                    MeetingTime = x.MeetingTime,
+                    NumberOfStaffsFree = x.NumberOfStaffsFree
+                };
             }).ToList();
             //Find farthest time and set expired time for key in redis
             //ExpiredTime = farthestTime - DateTime.Now + 0.5Day
