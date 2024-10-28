@@ -73,7 +73,7 @@ public class BranchController : ApiController
     public async Task<IActionResult> GetBranchByStaff()
     {
         var staffId = Guid.Parse(User.FindFirstValue("UserId"));
-        var result = await Sender.Send(new Query.GetBranchByStaffQuery(staffId);
+        var result = await Sender.Send(new Query.GetBranchByStaffQuery(staffId));
         if (result.IsFailure)
             return HandlerFailure(result);
 
