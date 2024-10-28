@@ -33,10 +33,10 @@ public class BranchRepository : IBranchRepository
         throw new NotImplementedException();
     }
 
-    public async Task<Branch>? GetByIdAsync(Guid Id)
+    public async Task<Branch>? GetByIdAsync(Guid id)
     {
         var sql = @"
-        SELECT b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, b.Province, b.PostalCode, b.AccountId
+        SELECT b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, b.Province, b.PostalCode, b.AccountId, b.ImageUrl, b.PublicImageId
         FROM Branchs b
         WHERE b.Id = @Id";
 
@@ -46,7 +46,7 @@ public class BranchRepository : IBranchRepository
 
             var result = await connection.QueryAsync<Branch>(
                 sql,
-                new { Id = Id }
+                new { Id = id }
                 );
 
             return result.FirstOrDefault();
@@ -58,7 +58,7 @@ public class BranchRepository : IBranchRepository
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             // Valid columns for selecting
-            var validColumns = new HashSet<string> { "Id", "Name", "PhoneNumberOfBranch", "EmailOfBranch", "Description", "NumberHome", "StreetName", "Ward", "District", "Province", "PostalCode", "AccountId", "IsDeleted" };
+            var validColumns = new HashSet<string> { "Id", "Name", "PhoneNumberOfBranch", "EmailOfBranch", "Description", "NumberHome", "StreetName", "Ward", "District", "Province", "PostalCode", "AccountId", "ImageUrl", "PublicImageId", "IsDeleted" };
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
 
             // If no selected columns, select all

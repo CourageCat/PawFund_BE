@@ -23,11 +23,12 @@ public sealed class GetAllBranchesQueryHandler : IQueryHandler<Query.GetAllBranc
     public async Task<Result<Success<PagedResult<Response.BranchResponse>>>> Handle(Query.GetAllBranchesQuery request, CancellationToken cancellationToken)
     {
         var listBranches = await _dpUnitOfWork.BranchRepositories.GetPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
-        if(listBranches.Items.Count == 0)
-        {
-            throw new BranchException.BranchEmptyException();
-        }
         var result = _mapper.Map<PagedResult<Response.BranchResponse>>(listBranches);
+        if (listBranches.Items.Count == 0)
+        {
+            return Result.Success(new Success<PagedResult<Response.BranchResponse>>(MessagesList.BranchEmptyBranchesException.GetMessage().Code, MessagesList.BranchEmptyBranchesException.GetMessage().Message, result));
+
+        }
         return Result.Success(new Success<PagedResult<Response.BranchResponse>>(MessagesList.BranchGetAllBranchesSuccess.GetMessage().Code, MessagesList.BranchGetAllBranchesSuccess.GetMessage().Message, result));
 
     }
