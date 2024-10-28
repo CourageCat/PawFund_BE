@@ -38,11 +38,6 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
 
         var uploadImages = await _mediaService.UploadImagesAsync(new List<IFormFile> { request.ThumbHeroUrl, request.ImagesUrl });
 
-        if (uploadImages == null || uploadImages.Count < 2)
-        {
-            return Result.Success("sai");
-        }
-
         if (branch != null || branch.IsDeleted != true)
         {
             //create new event
