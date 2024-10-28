@@ -18,7 +18,7 @@ public class EventController : ApiController
     [HttpPost("create_event", Name = "CreateEvent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateEvents([FromBody] Command.CreateEventCommand CreateEvent)
+    public async Task<IActionResult> CreateEvents([FromForm] Command.CreateEventCommand CreateEvent)
     {
         var result = await Sender.Send(CreateEvent);
         if (result.IsFailure)
