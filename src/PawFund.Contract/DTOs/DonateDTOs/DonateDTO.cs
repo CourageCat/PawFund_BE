@@ -12,3 +12,5 @@ public class DonateDto
     public DateTime? CreatedDate { get; set; }
     public AccountDto? Account { get; set; }
 }
+
+

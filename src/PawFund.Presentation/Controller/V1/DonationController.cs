@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using PawFund.Contract.DTOs.Adopt.Request;
+using PawFund.Contract.DTOs.DonateDTOs;
 using PawFund.Contract.DTOs.PaymentDTOs;
 using PawFund.Contract.Services.Donate;
 using PawFund.Contract.Services.Donates;
@@ -74,4 +76,17 @@ public class DonationController : ApiController
         
         return Ok(result);
     }
+
+    [HttpPost("create_donate_cash", Name = "CreateDonateCash")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CreateDonateCash([FromForm] Command.CreateDonateCash CashDonate)
+    {
+        var result = await Sender.Send(CashDonate);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
 }

@@ -237,4 +237,7 @@ public enum MessagesList
 
     [Message("All Adopt Applications", "event_noti_success_01")]
     GetEventsSuccess,
+
+    [Message("Create cash donation successfully", "donate_noti_success_01")]
+    CreateDonateCashSuccess,
 }
