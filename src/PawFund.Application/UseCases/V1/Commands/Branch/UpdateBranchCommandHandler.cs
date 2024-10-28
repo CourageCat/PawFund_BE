@@ -31,6 +31,7 @@ public sealed class UpdateBranchCommandHandler : ICommandHandler<Command.UpdateB
 
     public async Task<Result> Handle(Command.UpdateBranchCommand request, CancellationToken cancellationToken)
     {
+        //Find Branch
         var branchFound = await _branchRepository.FindByIdAsync(request.Id);
         if (branchFound == null || branchFound.IsDeleted == true)
         {
