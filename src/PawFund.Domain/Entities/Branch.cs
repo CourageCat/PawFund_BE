@@ -8,7 +8,7 @@ public class Branch : DomainEntity<Guid>
 {
     public Branch() { }
 
-    public Branch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, Guid accountId, DateTime createdDate, DateTime modifiedDate, bool isDeleted )
+    public Branch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, string imageUrl, string publicImageId, Guid accountId, DateTime createdDate, DateTime modifiedDate, bool isDeleted )
     {
         Name = name;
         PhoneNumberOfBranch = phoneNumberOfBranch;
@@ -20,6 +20,8 @@ public class Branch : DomainEntity<Guid>
         District = district;
         Province = province;
         PostalCode = postalCode;
+        ImageUrl = imageUrl;
+        PublicImageId = publicImageId;
         AccountId = accountId;
         CreatedDate = createdDate;
         ModifiedDate = modifiedDate;
@@ -35,6 +37,8 @@ public class Branch : DomainEntity<Guid>
     public string District { get; set; } = string.Empty;
     public string Province { get; set; } = string.Empty;
     public string PostalCode { get; set; } = string.Empty;
+    public string ImageUrl { get; set; } = string.Empty;
+    public string PublicImageId { get; set; } = string.Empty;
 
     [ForeignKey("Branch_Account")]
     public Guid AccountId { get; set; }
@@ -42,12 +46,12 @@ public class Branch : DomainEntity<Guid>
     public virtual ICollection<Event> Events { get; set; }
     public virtual ICollection<Cat> Cats { get; set; }
 
-    public static Branch CreateBranch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, Guid accountId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
+    public static Branch CreateBranch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, string imageUrl, string publicImageId, Guid accountId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
     {
-        return new Branch(name, phoneNumberOfBranch, emailOfBranch, description, numberHome, streetName, ward, district, province, postalCode, accountId, createdDate, modifiedDate, isDeleted);
+        return new Branch(name, phoneNumberOfBranch, emailOfBranch, description, numberHome, streetName, ward, district, province, postalCode, imageUrl, publicImageId, accountId, createdDate, modifiedDate, isDeleted);
     }
 
-    public void UpdateBranch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, Guid accountId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
+    public void UpdateBranch(string name, string phoneNumberOfBranch, string emailOfBranch, string description, string numberHome, string streetName, string ward, string district, string province, string postalCode, string imageUrl, string publicImageId, Guid accountId, DateTime createdDate, DateTime modifiedDate, bool isDeleted)
     {
         Name = name;
         PhoneNumberOfBranch = phoneNumberOfBranch;
@@ -59,6 +63,8 @@ public class Branch : DomainEntity<Guid>
         District = district;
         Province = province;
         PostalCode = postalCode;
+        ImageUrl = imageUrl;
+        PublicImageId = publicImageId;
         AccountId = accountId;
         CreatedDate = createdDate;
         ModifiedDate = modifiedDate;

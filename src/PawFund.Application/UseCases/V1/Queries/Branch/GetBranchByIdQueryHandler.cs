@@ -20,15 +20,15 @@ public sealed class GetBranchByIdQueryHandler : IQueryHandler<Query.GetBranchByI
 
     public async Task<Result<Success<Response.BranchResponse>>> Handle(Query.GetBranchByIdQuery request, CancellationToken cancellationToken)
     {
-        var selectColumn = new[] { "Id", "Name", "PhoneNumberOfBranch", "EmailOfBranch", "Description", "NumberHome", "StreetName", "Ward", "District", "Province", "PostalCode"};
+        var selectColumn = new[] { "Id", "Name", "PhoneNumberOfBranch", "EmailOfBranch", "Description", "NumberHome", "StreetName", "Ward", "District", "Province", "PostalCode", "ImageUrl", "PublicImageId"};
         var result = await _dpUnitOfWork.BranchRepositories.GetPagedAsync(1, 1, new Filter.BranchFilter(request.Id, null, null, null, null, null, null, null, null, null, null, null), selectColumn);
         if (result.Items?.Count() == 0)
         {
             throw new BranchException.BranchNotFoundException(request.Id);
         }
-        var branchResponse = new Response.BranchResponse
-            (result.Items[0].Id, result.Items[0].Name, result.Items[0].PhoneNumberOfBranch, result.Items[0].EmailOfBranch, result.Items[0].Description, result.Items[0].NumberHome, result.Items[0].StreetName, result.Items[0].Ward, result.Items[0].District, result.Items[0].Province, result.Items[0].PostalCode);
-        return Result.Success(new Success<Response.BranchResponse>(MessagesList.BranchGetBranchByIdSuccess.GetMessage().Code, MessagesList.BranchGetBranchByIdSuccess.GetMessage().Message, branchResponse));
+        var branchResponse = new BranchResponse
+            (result.Items[0].Id, result.Items[0].Name, result.Items[0].PhoneNumberOfBranch, result.Items[0].EmailOfBranch, result.Items[0].Description, result.Items[0].NumberHome, result.Items[0].StreetName, result.Items[0].Ward, result.Items[0].District, result.Items[0].Province, result.Items[0].PostalCode, result.Items[0].ImageUrl, result.Items[0].PublicImageId);
+        return Result.Success(new Success<BranchResponse>(MessagesList.BranchGetBranchByIdSuccess.GetMessage().Code, MessagesList.BranchGetBranchByIdSuccess.GetMessage().Message, branchResponse));
     }
 }
 
