@@ -14,7 +14,7 @@ public class BranchController : ApiController
     {
     }
 
-    //[Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPost("create_branch", Name = "CreateBranch")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
