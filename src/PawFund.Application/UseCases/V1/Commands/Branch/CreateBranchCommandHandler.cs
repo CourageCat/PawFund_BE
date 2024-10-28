@@ -15,6 +15,7 @@ using PawFund.Contract.Abstractions.Services;
 using Microsoft.Extensions.Configuration;
 using PawFund.Contract.Enumarations.MessagesList;
 using Microsoft.AspNetCore.Http;
+using PawFund.Contract.DTOs.MediaDTOs;
 
 namespace PawFund.Application.UseCases.V1.Commands.Branch
 {
@@ -42,14 +43,25 @@ namespace PawFund.Application.UseCases.V1.Commands.Branch
             var staffAccountCreated = Domain.Entities.Account.CreateStaffAccount(_passwordHashService.HashPassword(_configuration["PasswordStaff"]), request.Name);
             _accountRepository.Add(staffAccountCreated);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-
-            var uploadImage = await _mediaService.UploadImagesAsync(new List<IFormFile> 
-            { 
+            ImageDTO imageCreate = new ImageDTO();
+            if (request.Image == null)
+            {
+                imageCreate.ImageUrl = "";
+                imageCreate.PublicImageId = "";
+            }
+            else
+            {
+                var uploadImage = await _mediaService.UploadImagesAsync(new List<IFormFile>
+            {
                 request.Image,
             });
+                imageCreate.ImageUrl = uploadImage[0].ImageUrl;
+                imageCreate.PublicImageId = uploadImage[0].PublicImageId;
+            }
+
 
             //Create Branch
-            var branchCreated = Domain.Entities.Branch.CreateBranch(request.Name, request.PhoneNumberOfBranch, request.EmailOfBranch, request.Description, request.NumberHome, request.StreetName, request.Ward, request.District, request.Province, request.PostalCode, uploadImage[0].ImageUrl, uploadImage[0].PublicImageId, staffAccountCreated.Id, DateTime.Now, DateTime.Now, false);
+            var branchCreated = Domain.Entities.Branch.CreateBranch(request.Name, request.PhoneNumberOfBranch, request.EmailOfBranch, request.Description, request.NumberHome, request.StreetName, request.Ward, request.District, request.Province, request.PostalCode, imageCreate.ImageUrl, imageCreate.PublicImageId, staffAccountCreated.Id, DateTime.Now, DateTime.Now, false);
             _branchRepository.Add(branchCreated);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
 

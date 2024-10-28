@@ -14,7 +14,7 @@ public class BranchController : ApiController
     {
     }
 
-    [Authorize(Policy = "AdminPolicy")]
+    //[Authorize(Policy = "AdminPolicy")]
     [HttpPost("create_branch", Name = "CreateBranch")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -73,7 +73,7 @@ public class BranchController : ApiController
     public async Task<IActionResult> GetBranchByStaff()
     {
         var staffId = Guid.Parse(User.FindFirstValue("UserId"));
-        var result = await Sender.Send(new Query.GetBranchByStaffQuery(staffId);
+        var result = await Sender.Send(new Query.GetBranchByStaffQuery(staffId));
         if (result.IsFailure)
             return HandlerFailure(result);
 
