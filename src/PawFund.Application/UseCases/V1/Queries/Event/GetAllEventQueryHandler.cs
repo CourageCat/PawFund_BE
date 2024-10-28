@@ -38,7 +38,7 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
 
             var eventDtos = _mapper.Map<List<EventDTO>>(result.Items);
 
-            return Result.Success(new Success<PagedResult<EventDTO>>("", "", new PagedResult<EventDTO>(eventDtos, result.PageIndex, result.PageSize, result.TotalCount, result.TotalPages)));
+            return Result.Success(new Success<PagedResult<EventDTO>>(MessagesList.GetEventsSuccess.GetMessage().Code, MessagesList.GetEventsSuccess.GetMessage().Message, new PagedResult<EventDTO>(eventDtos, result.PageIndex, result.PageSize, result.TotalCount, result.TotalPages)));
         }
     }
 }
