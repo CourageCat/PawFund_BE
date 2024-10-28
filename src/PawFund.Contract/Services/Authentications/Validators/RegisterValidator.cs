@@ -8,13 +8,11 @@ internal class RegisterValidator : AbstractValidator<Command.RegisterCommand>
     {
         RuleFor(x => x.FirstName)
            .NotEmpty().WithMessage("First name is required.")
-           .MinimumLength(3).WithMessage("First name must be at least 3 characters long.")
-           .MaximumLength(20).WithMessage("First name cannot exceed 20 characters.");
+           .MinimumLength(3).WithMessage("First name must be at least 3 characters long.");
 
         RuleFor(x => x.LastName)
             .NotEmpty().WithMessage("Last name is required.")
-            .MinimumLength(3).WithMessage("Last name must be at least 3 characters long.")
-            .MaximumLength(20).WithMessage("Last name cannot exceed 20 characters.");
+            .MinimumLength(3).WithMessage("Last name must be at least 3 characters long.");
 
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required.")

@@ -44,6 +44,7 @@ public static class ServiceCollectionExtensions
         services.Configure<PayOSSetting>(configuration.GetSection(PayOSSetting.SectionName));
         services.Configure<ClientSetting>(configuration.GetSection(ClientSetting.SectionName));
         services.Configure<DialogflowSetting>(configuration.GetSection(DialogflowSetting.SectionName));
-
+        services.Configure<AccountStaffAssistantSetting>(configuration.GetSection(AccountStaffAssistantSetting.SectionName));
+        services.Configure<AccountStaffBotSetting>(configuration.GetSection(AccountStaffBotSetting.SectionName));
     }
 }

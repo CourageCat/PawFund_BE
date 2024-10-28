@@ -24,6 +24,8 @@ public static class ServiceCollectionExtensions
         services.AddAutoMapper(typeof(EventProfile));
         services.AddAutoMapper(typeof(BranchProfile));
         services.AddAutoMapper(typeof(DonateProfile));
+        services.AddAutoMapper(typeof(ChatHistoryProfile));
+        services.AddAutoMapper(typeof(MessageProfile));
         return services;
     }
 }

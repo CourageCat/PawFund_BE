@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Services.Messages;
 using PawFund.Presentation.Abstractions;
@@ -8,10 +9,9 @@ namespace PawFund.Presentation.Hubs;
 
 public class MessageHub : BaseHub
 {
-
     public MessageHub
-        (ISender sender)
-        : base(sender)
+        (ISender sender, IResponseCacheService responseCacheService)
+        : base(sender, responseCacheService)
     {
     }
 
@@ -20,32 +20,78 @@ public class MessageHub : BaseHub
         try
         {
             var result = await Sender.Send(request);
-            if (_userConnections.TryGetValue(result.Value.Data.ConnectionStaff, out string connectionUserId))
+            var connectionUserIdMemory = await _responseCacheService.GetCacheResponseAsync($"memberConnection:{request.UserId.ToString()}");
+            if (connectionUserIdMemory != null)
             {
-                await Clients.Client(connectionUserId).SendAsync("onReceiveMessage", request);
-            }
-            if (_staffConnections.TryGetValue(result.Value.Data.ConnectionStaff, out string connectionStaffId))
-            {
-                await Clients.Client(connectionStaffId).SendAsync("onReceiveMessage", request);
+                var connectionUserId = JsonConvert.DeserializeObject<string>(connectionUserIdMemory);
+                await Clients.Client(connectionUserId).SendAsync("onReceiveMessageBot", result);
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Console.WriteLine(e);
         }
-      
     }
 
     public async Task SendMessageWithStaffAsync(Command.CreateMesssageWithStaffCommand request)
     {
-        var result = await Sender.Send(request);
-        if (_userConnections.TryGetValue(result.Value.Data.ConnectionStaff, out string connectionUserId))
+        try
         {
-            await Clients.Client(connectionUserId).SendAsync("onReceiveMessage", request);
+            var result = await Sender.Send(request);
+            var connectionStaffIdMemory = await _responseCacheService.GetCacheResponseAsync($"staffConnection:{result.Value.Data.ReceiverId.ToString()}");
+            if (connectionStaffIdMemory != null)
+            {
+                var connectionStaffId = JsonConvert.DeserializeObject<string>(connectionStaffIdMemory);
+                await Clients.Client(connectionStaffId).SendAsync("onReceiveMessageUser", result);
+            }
         }
-        if (_staffConnections.TryGetValue(result.Value.Data.ConnectionStaff, out string connectionStaffId))
+        catch (Exception e)
         {
-            await Clients.Client(connectionStaffId).SendAsync("onReceiveMessage", request);
+            Console.WriteLine(e);
+        }
+    }
+
+    public async Task SendMessageWithMemberAsync(Command.CreateMesssageWithUserCommand request)
+    {
+        try
+        {
+            var result = await Sender.Send(request);
+            var connectionMemberIdMemory = await _responseCacheService.GetCacheResponseAsync($"memberConnection:{result.Value.Data.ReceiverId.ToString()}");
+            if (connectionMemberIdMemory != null)
+            {
+                var connectionMemberId = JsonConvert.DeserializeObject<string>(connectionMemberIdMemory);
+                await Clients.Client(connectionMemberId).SendAsync("onReceiveMessageUser", result);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    public async Task GetListUserNeedSupport()
+    {
+        try
+        {
+            var result = await Sender.Send(new Query.GetListUserNeedSupportQuery());
+            await Clients.Caller.SendAsync("onGetListUserNeedSupport", result);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    public async Task GetMessagesSenderIdAsync(Guid senderId)
+    {
+        try
+        {
+            var result = await Sender.Send(new Query.GetMessagesSenderIdQuery(senderId));
+            await Clients.Caller.SendAsync("onGetMessagesSenderAsync", result);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
         }
     }
 }

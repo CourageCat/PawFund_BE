@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PawFund.Contract.Abstractions.Services;
 using StackExchange.Redis;
-using System.Threading;
 
 namespace PawFund.Infrastructure.Services;
 
@@ -53,6 +52,16 @@ public class ResponseCacheService : IResponseCacheService
         {
             AbsoluteExpirationRelativeToNow = timeOut,
         });
+    }
+
+    public async Task SetCacheResponseNoTimeoutAsync(string cacheKey, object response)
+    {
+        if (response == null) return;
+        var serializerResponse = JsonConvert.SerializeObject(response, new JsonSerializerSettings()
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        });
+        await _distributedCache.SetStringAsync(cacheKey, serializerResponse);
     }
 
     public async Task SetListAsync<T>(string cacheKey, List<T> list, TimeSpan timeOut)

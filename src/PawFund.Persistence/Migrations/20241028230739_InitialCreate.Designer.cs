@@ -12,8 +12,8 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241027135148_IntialCreate")]
-    partial class IntialCreate
+    [Migration("20241028230739_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,8 +49,7 @@ namespace PawFund.Persistence.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullAvatarId")
                         .HasColumnType("nvarchar(max)");
@@ -66,8 +65,7 @@ namespace PawFund.Persistence.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LoginType")
                         .HasColumnType("int");
@@ -274,6 +272,43 @@ namespace PawFund.Persistence.Migrations
                     b.ToTable("Cats", (string)null);
                 });
 
+            modelBuilder.Entity("PawFund.Domain.Entities.ChatHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ChatPartnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatPartnerId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatHistories", (string)null);
+                });
+
             modelBuilder.Entity("PawFund.Domain.Entities.Donation", b =>
                 {
                     b.Property<Guid>("Id")
@@ -476,6 +511,40 @@ namespace PawFund.Persistence.Migrations
                     b.ToTable("ImageCats");
                 });
 
+            modelBuilder.Entity("PawFund.Domain.Entities.Message", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ReceiverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages", (string)null);
+                });
+
             modelBuilder.Entity("PawFund.Domain.Entities.PaymentMethod", b =>
                 {
                     b.Property<int>("Id")
@@ -633,6 +702,25 @@ namespace PawFund.Persistence.Migrations
                     b.Navigation("Branch");
                 });
 
+            modelBuilder.Entity("PawFund.Domain.Entities.ChatHistory", b =>
+                {
+                    b.HasOne("PawFund.Domain.Entities.Account", "ChatPartner")
+                        .WithMany()
+                        .HasForeignKey("ChatPartnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PawFund.Domain.Entities.Account", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ChatPartner");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PawFund.Domain.Entities.Donation", b =>
                 {
                     b.HasOne("PawFund.Domain.Entities.Account", "Account")
@@ -704,6 +792,25 @@ namespace PawFund.Persistence.Migrations
                     b.Navigation("Cat");
                 });
 
+            modelBuilder.Entity("PawFund.Domain.Entities.Message", b =>
+                {
+                    b.HasOne("PawFund.Domain.Entities.Account", "Receiver")
+                        .WithMany("ReceivedMessages")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PawFund.Domain.Entities.Account", "Sender")
+                        .WithMany("SentMessages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("PawFund.Domain.Entities.VolunteerApplicationDetail", b =>
                 {
                     b.HasOne("PawFund.Domain.Entities.Account", "Account")
@@ -732,6 +839,10 @@ namespace PawFund.Persistence.Migrations
                     b.Navigation("Donations");
 
                     b.Navigation("HistoryCats");
+
+                    b.Navigation("ReceivedMessages");
+
+                    b.Navigation("SentMessages");
 
                     b.Navigation("VolunteerApplicationDetails");
                 });

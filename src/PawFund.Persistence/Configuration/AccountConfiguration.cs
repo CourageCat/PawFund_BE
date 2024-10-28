@@ -13,11 +13,9 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.FirstName)
-            .IsRequired()
-            .HasMaxLength(20);
+            .IsRequired();
 
         builder.Property(p => p.LastName)
-            .IsRequired()
-            .HasMaxLength(20);
+            .IsRequired();
     }
 }

@@ -93,8 +93,9 @@ public class Account : DomainEntity<Guid>
 
     public virtual ICollection<HistoryCat> HistoryCats { get; set; }
     public virtual ICollection<Donation> Donations { get; set; }
-
     public virtual ICollection<VolunteerApplicationDetail> VolunteerApplicationDetails { get; set; }
+    public virtual ICollection<Message> SentMessages { get; set; }
+    public virtual ICollection<Message> ReceivedMessages { get; set; }
 
     public static Account CreateMemberAccountLocal
         (string firstName, string lastName, string email, string phoneNumber, string password, GenderType gender)
@@ -122,6 +123,13 @@ public class Account : DomainEntity<Guid>
     {
         string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
         return new Account("Staff assistant", "", email, "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Staff);
+    }
+
+    public static Account CreateStaffBot
+    (string email, string password)
+    {
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        return new Account("Staff bot", "", email, "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Staff);
     }
 
     public static Account CreateStaffAccount

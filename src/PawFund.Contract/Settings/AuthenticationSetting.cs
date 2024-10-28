@@ -9,5 +9,4 @@ public class AuthenticationSetting
     public string RefreshSecretToken { get; set; }
     public double AccessTokenExpMinute { get; set; }
     public double RefreshTokenExpMinute { get; set; }
-
 }
