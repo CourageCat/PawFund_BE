@@ -15,5 +15,6 @@ public class CreateBranchValidator : AbstractValidator<Command.CreateBranchComma
         RuleFor(x => x.District).NotEmpty();
         RuleFor(x => x.Province).NotEmpty();
         RuleFor(x => x.PostalCode).NotEmpty();
+        RuleFor(x => x.Image).NotEmpty();
     }
 }

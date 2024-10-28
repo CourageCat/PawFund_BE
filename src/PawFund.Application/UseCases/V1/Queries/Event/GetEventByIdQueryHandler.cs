@@ -29,6 +29,8 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
                     EndDate = existEvent.EndDate,
                     MaxAttendees = existEvent.MaxAttendees,
                     Status = existEvent.Status.ToString(),
+                    ThumbHeroUrl = existEvent.ThumbHeroUrl,
+                    ImagesUrl = existEvent.ImagesUrl,
                 };
                 BranchDTO branchDTO = new BranchDTO()
                 {

@@ -69,6 +69,7 @@ JOIN Branchs b ON b.Id = e.BranchId";
             var validColumns = new HashSet<string>
         {
             "e.Id", "e.Name", "e.StartDate", "e.EndDate", "e.Description", "e.MaxAttendees",
+            "e.ImagesUrl", "e.Status", // Thêm Status từ bảng Events
             "b.Id", "b.Name", "b.PhoneNumberOfBranch", "b.EmailOfBranch",
             "b.Description", "b.NumberHome", "b.StreetName", "b.Ward", "b.District", "b.Province"
         };
@@ -77,10 +78,10 @@ JOIN Branchs b ON b.Id = e.BranchId";
             var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : string.Join(", ", validColumns);
 
             var queryBuilder = new StringBuilder($@"
-            SELECT {selectedColumnsString} 
-            FROM Events e
-            LEFT JOIN Branchs b ON e.BranchId = b.Id
-            WHERE 1=1");
+        SELECT {selectedColumnsString} 
+        FROM Events e
+        LEFT JOIN Branchs b ON e.BranchId = b.Id
+        WHERE 1=1");
 
             var parameters = new DynamicParameters();
 
@@ -88,10 +89,10 @@ JOIN Branchs b ON b.Id = e.BranchId";
             pageSize = pageSize <= 0 ? 10 : pageSize > 100 ? 100 : pageSize;
 
             var totalCountQuery = new StringBuilder($@"
-            SELECT COUNT(1) 
-            FROM Events e
-            LEFT JOIN Branchs b ON e.BranchId = b.Id
-            WHERE 1=1");
+        SELECT COUNT(1) 
+        FROM Events e
+        LEFT JOIN Branchs b ON e.BranchId = b.Id
+        WHERE 1=1");
 
             // Filter by Event Name
             if (!string.IsNullOrEmpty(filterParams.Name))
@@ -122,11 +123,22 @@ JOIN Branchs b ON b.Id = e.BranchId";
                 paginatedQuery,
                 (eventEntity, branch) =>
                 {
-                    eventEntity.Branch = branch; // Giả sử bạn có thuộc tính Branch trong Event
+                    eventEntity.Branch = branch;
+
+                    // Chuyển đổi Status từ số nguyên sang Enum EventStatus
+                    if (Enum.IsDefined(typeof(EventStatus), eventEntity.Status))
+                    {
+                        eventEntity.Status = (EventStatus)eventEntity.Status;
+                    }
+                    else
+                    {
+                        eventEntity.Status = EventStatus.NotStarted; // or a default/fallback status
+                    }
+
                     return eventEntity;
                 },
                 parameters,
-                splitOn: "Id" // Điều này phụ thuộc vào cấu trúc của bảng Branch
+                splitOn: "Id"
             )).ToList();
 
             return new PagedResult<Event>(items, pageIndex, pageSize, totalCount, totalPages);
@@ -169,8 +181,12 @@ WHERE e.Status = @NotApprovedStatus";
     {
         var sql = @"
 SELECT 
-    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, e.IsDeleted, e.Status as IsEventDelete,
-    b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, b.Province, b.PostalCode, b.IsDeleted as IsBranchDeleted
+    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, 
+    e.IsDeleted, e.Status as IsEventDelete, 
+    e.ThumbHeroUrl, e.ImagesUrl,
+    b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, 
+    b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, 
+    b.Province, b.PostalCode, b.IsDeleted as IsBranchDeleted
 FROM Events e
 JOIN Branchs b ON b.Id = e.BranchId
 WHERE e.Id = @Id";
@@ -181,13 +197,14 @@ WHERE e.Id = @Id";
 
             var result = await connection.QueryAsync<Event, Branch, Event>(
                 sql,
-                (Event, Branch) =>
+                (eventObj, branch) =>
                 {
-                    Event.Branch = Branch;
-                    return Event;
+                    Console.WriteLine($"ThumbHeroUrl: {eventObj.ThumbHeroUrl}, ImagesUrl: {eventObj.ImagesUrl}");
+                    eventObj.Branch = branch;
+                    return eventObj;
                 },
                 new { Id = Id },
-                splitOn: "IsEventDelete"
+                splitOn: "Id"  // Sửa thành "Id" của Branch
             );
 
             return result.FirstOrDefault();

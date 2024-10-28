@@ -13,6 +13,9 @@ namespace PawFund.Contract.DTOs.Event
             public string Description { get; set; }
             public int MaxAttendees { get; set; }
             public string Status { get; set; }
+            public string? ThumbHeroUrl { get; set; }
+            public string? ImagesUrl { get; set; }
+
         }
 
         public class BranchDTO
