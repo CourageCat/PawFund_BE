@@ -10,5 +10,7 @@ public interface ICatRepository : IGenericRepository<Cat>
         int pageSize,
         CatAdoptFilter filterParams,
         string[] selectedColumns);
+
+    Task<Cat> GetCatByIdAsync(Guid id);
 }
 

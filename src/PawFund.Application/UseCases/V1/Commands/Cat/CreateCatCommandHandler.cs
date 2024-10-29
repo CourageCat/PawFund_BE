@@ -15,24 +15,25 @@ namespace PawFund.Application.UseCases.V1.Commands.Cat
         private readonly IRepositoryBase<Domain.Entities.Cat, Guid> _catRepository;
         private readonly IRepositoryBase<Domain.Entities.Branch, Guid> _branchRepository;
         private readonly IRepositoryBase<Domain.Entities.ImageCat, Guid> _imageCatRepository;
+        private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
+
 
         private readonly IEFUnitOfWork _efUnitOfWork;
         private readonly IMediaService _mediaService;
 
-        public CreateCatCommandHandler(IRepositoryBase<Domain.Entities.Cat, Guid> catRepository, IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository, IEFUnitOfWork efUnitOfWork, IMediaService mediaService, IRepositoryBase<ImageCat, Guid> imageCatRepository)
+        public CreateCatCommandHandler(IRepositoryBase<Domain.Entities.Cat, Guid> catRepository, IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository, IEFUnitOfWork efUnitOfWork, IMediaService mediaService, IRepositoryBase<ImageCat, Guid> imageCatRepository, IRepositoryBase<Domain.Entities.Account, Guid> accountRepository)
         {
             _catRepository = catRepository;
             _branchRepository = branchRepository;
             _efUnitOfWork = efUnitOfWork;
             _mediaService = mediaService;
             _imageCatRepository = imageCatRepository;
+            _accountRepository = accountRepository;
         }
 
         public async Task<Result> Handle(Command.CreateCatCommand request, CancellationToken cancellationToken)
         {
-            var branchFound = await _branchRepository.FindByIdAsync(request.BranchId);
-            if (branchFound == null)
-                throw new BranchException.BranchNotFoundException(request.BranchId);
+            var account = await _accountRepository.FindByIdAsync((Guid)request.UserId);
 
             var uploadImages = await _mediaService.UploadImagesAsync(request.Images);
 
@@ -44,7 +45,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Cat
                 request.Weight,
                 request.Color,
                 request.Description,
-                request.BranchId,
+                account.Branches.FirstOrDefault().Id,
                 request.Sterilization);
 
             _catRepository.Add(cat);

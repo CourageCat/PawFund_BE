@@ -59,27 +59,36 @@ public class CatRepository : ICatRepository
     }
 
     public async Task<PagedResult<Cat>> GetAllCatsForAdoptionAsync(
-     int pageIndex,
-     int pageSize,
-     CatAdoptFilter filterParams,
-     string[] selectedColumns)
+      int pageIndex,
+      int pageSize,
+      CatAdoptFilter filterParams,
+      string[] selectedColumns)
     {
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             var validColumns = new HashSet<string>
         {
             "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Color", "c.Description", "c.Sterilization",
-            "ic.ImageUrl", "ic.PublicImageId"
+            "ImageCat.ImageUrl", "ImageCat.PublicImageId"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
             var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : string.Join(", ", validColumns);
 
             var queryBuilder = new StringBuilder($@"
-        SELECT {selectedColumnsString} 
-        FROM Cats c
-        LEFT JOIN ImageCats ic ON c.Id = ic.CatId
-        WHERE 1=1");
+            SELECT {selectedColumnsString} 
+            FROM Cats c
+            LEFT JOIN (
+                SELECT ic.CatId, ic.ImageUrl, ic.PublicImageId
+                FROM ImageCats ic
+                WHERE ic.Id = (
+                    SELECT TOP 1 ic2.Id 
+                    FROM ImageCats ic2 
+                    WHERE ic2.CatId = ic.CatId 
+                    ORDER BY ic2.CreatedDate
+                )
+            ) AS ImageCat ON c.Id = ImageCat.CatId
+            WHERE 1=1");
 
             var parameters = new DynamicParameters();
 
@@ -87,10 +96,19 @@ public class CatRepository : ICatRepository
             pageSize = pageSize <= 0 ? 10 : pageSize > 100 ? 100 : pageSize;
 
             var totalCountQuery = new StringBuilder($@"
-        SELECT COUNT(1) 
-        FROM Cats c
-        LEFT JOIN ImageCats ic ON c.Id = ic.CatId
-        WHERE 1=1");
+            SELECT COUNT(1) 
+            FROM Cats c
+            LEFT JOIN (
+                SELECT ic.CatId
+                FROM ImageCats ic
+                WHERE ic.Id = (
+                    SELECT TOP 1 ic2.Id 
+                    FROM ImageCats ic2 
+                    WHERE ic2.CatId = ic.CatId
+                    ORDER BY ic2.CreatedDate
+                )
+            ) AS ImageCat ON c.Id = ImageCat.CatId
+            WHERE 1=1");
 
             // Filter by Name
             if (!string.IsNullOrEmpty(filterParams.Name))
@@ -145,7 +163,7 @@ public class CatRepository : ICatRepository
                 paginatedQuery,
                 (cat, imageCat) =>
                 {
-                    cat.ImageCats = cat.ImageCats ?? new List<ImageCat>();
+                    cat.ImageCats = new List<ImageCat>();
                     if (imageCat != null)
                     {
                         cat.ImageCats.Add(imageCat);
@@ -160,9 +178,51 @@ public class CatRepository : ICatRepository
         }
     }
 
+
     public Task<int> UpdateAsync(Cat entity)
     {
         throw new NotImplementedException();
     }
+
+    public async Task<Cat> GetCatByIdAsync(Guid catId)
+    {
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            var query = @"
+        SELECT c.*, ic.ImageUrl, ic.PublicImageId 
+        FROM Cats c
+        LEFT JOIN ImageCats ic ON c.Id = ic.CatId
+        WHERE c.Id = @CatId";
+
+            var parameters = new { CatId = catId };
+
+            var catDictionary = new Dictionary<Guid, Cat>();
+
+            await connection.QueryAsync<Cat, ImageCat, Cat>(
+                query,
+                (cat, imageCat) =>
+                {
+                    if (!catDictionary.TryGetValue(cat.Id, out var existingCat))
+                    {
+                        existingCat = cat;
+                        existingCat.ImageCats = new List<ImageCat>();
+                        catDictionary.Add(existingCat.Id, existingCat);
+                    }
+
+                    if (imageCat != null)
+                    {
+                        existingCat.ImageCats.Add(imageCat);
+                    }
+
+                    return existingCat;
+                },
+                parameters,
+                splitOn: "ImageUrl"
+            );
+
+            return catDictionary.Values.FirstOrDefault();
+        }
+    }
+
 }
 

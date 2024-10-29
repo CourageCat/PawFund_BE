@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PawFund.Contract.Services.Cats;
 using PawFund.Presentation.Abstractions;
+using System.Security.Claims;
 using static PawFund.Contract.Services.Cats.Filter;
 using static PawFund.Contract.Services.Products.Filter;
 
@@ -13,12 +15,14 @@ public class CatController : ApiController
     {
     }
 
+    [Authorize(Policy = "StaffPolicy")]
     [HttpPost("create_cat", Name = "CreateCat")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateCat([FromForm] Command.CreateCatCommand CreateCat)
+    public async Task<IActionResult> CreateCat([FromForm] Command.CreateCatCommand request)
     {
-        var result = await Sender.Send(CreateCat);
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.CreateCatCommand(request.Sex, request.Name, request.Age, request.Breed, request.Weight, request.Color, request.Description, request.Sterilization, request.Images, Guid.Parse(userId)));
         if (result.IsFailure)
             return HandlerFailure(result);
         

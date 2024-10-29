@@ -12,7 +12,6 @@ namespace PawFund.Contract.Services.Cats.Validators
             RuleFor(x => x.Weight).NotEmpty();
             RuleFor(x => x.Color).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.BranchId).NotEmpty();
         }
     }
 }
