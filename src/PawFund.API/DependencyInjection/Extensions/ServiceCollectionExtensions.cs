@@ -12,10 +12,10 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSignalR()
-           .AddJsonProtocol(options =>
-           {
-               options.PayloadSerializerOptions.PropertyNamingPolicy = null;
-           });
+          .AddJsonProtocol(options =>
+          {
+              options.PayloadSerializerOptions.PropertyNamingPolicy = null;
+          });
 
         var authenticationSetting = new AuthenticationSetting();
         configuration.GetSection(AuthenticationSetting.SectionName).Bind(authenticationSetting);
@@ -59,7 +59,7 @@ public static class ServiceCollectionExtensions
             // Admin Policy
             options.AddPolicy("AdminPolicy", policy =>
                 policy.RequireClaim(ClaimTypes.Role, ((int)RoleType.Admin).ToString()));
-            
+
             // Staff Policy
             options.AddPolicy("StaffPolicy", policy =>
                 policy.RequireClaim(ClaimTypes.Role, ((int)RoleType.Staff).ToString()));

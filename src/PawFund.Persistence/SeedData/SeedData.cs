@@ -50,7 +50,9 @@ public static class SeedData
         if (!context.Accounts.Any())
         {
             context.Accounts.AddRange(
-                Account.CreateAdminAccount(configuration["AccountAdmin:Email"], passwordHashService.HashPassword(configuration["AccountAdmin:Password"]))
+                Account.CreateAdminAccount(configuration["AccountAdmin:Email"], passwordHashService.HashPassword(configuration["AccountAdmin:Password"])),
+                Account.CreateStaffAssistant(configuration["AccountStaffAssistant:Email"], passwordHashService.HashPassword(configuration["AccountStaffAssistant:Password"])),
+                Account.CreateStaffBot(configuration["AccountStaffBot:Email"], passwordHashService.HashPassword(configuration["AccountStaffBot:Password"]))
             );
         }
         context.SaveChanges();

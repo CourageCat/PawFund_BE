@@ -15,4 +15,6 @@ public interface IDPUnitOfWork
     IRoleUser RoleUserRepository { get; }
     IVolunteerApplicationDetail VolunteerApplicationDetailRepository { get; }
     IDonationRepository DonationRepository { get; }
+    IChatHistoryRepository ChatHistoryRepository { get; }
+    IMessageRepository MessageRepository { get; }
 }

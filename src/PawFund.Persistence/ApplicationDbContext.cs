@@ -24,4 +24,6 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Donation> Donations { get; set; }
     public DbSet<ImageCat> ImageCats { get; set; }
     public DbSet<PaymentMethod> PaymentMethods { get; set; }
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<ChatHistory> ChatHistories { get; set; }
 }
