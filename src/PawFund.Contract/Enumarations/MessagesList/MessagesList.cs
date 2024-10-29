@@ -139,13 +139,13 @@ public enum MessagesList
     [Message("Create event successfully", "event_noti_01")]
     CreateEventSuccessfully,
 
-    [Message("Approve event successfully", "approve_event_noti_01")]
+    [Message("Approve event successfully", "approve_event_noti_02")]
     ApproveEventSuccessfully,
 
-    [Message("Delete event successfully", "delete_event_noti_01")]
+    [Message("Delete event successfully", "delete_event_noti_03")]
     DeleteEventSuccessfully,
 
-    [Message("Update event successfully", "update_event_noti_01")]
+    [Message("Update event successfully", "update_event_noti_04")]
     UpdateEventSuccessfully,
 
     [Message("Create event activity successfully", "create_event_activity_noti_01")]
@@ -230,5 +230,14 @@ public enum MessagesList
     AccountChangePasswordSuccess,
 
     [Message("Change password successfully", "account_noti_10")]
-    ChangePasswordSuccess
+    ChangePasswordSuccess,
+
+    [Message("Can not found any event!", "event_noti_exception_01")]
+    GetEventsEmptyException,
+
+    [Message("All Adopt Applications", "event_noti_success_01")]
+    GetEventsSuccess,
+
+    [Message("Create cash donation successfully", "donate_noti_success_01")]
+    CreateDonateCashSuccess,
 }

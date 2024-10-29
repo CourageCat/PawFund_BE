@@ -18,7 +18,7 @@ public class BranchController : ApiController
     [HttpPost("create_branch", Name = "CreateBranch")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateBranch([FromBody] Command.CreateBranchCommand CreateBranch)
+    public async Task<IActionResult> CreateBranch([FromForm] Command.CreateBranchCommand CreateBranch)
     {
         var result = await Sender.Send(CreateBranch);
         if (result.IsFailure)
@@ -31,7 +31,7 @@ public class BranchController : ApiController
     [HttpPut("update_branch", Name = "UpdateBranch")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateBranch([FromBody] Command.UpdateBranchCommand UpdateBranch)
+    public async Task<IActionResult> UpdateBranch([FromForm] Command.UpdateBranchCommand UpdateBranch)
     {
         var result = await Sender.Send(UpdateBranch);
         if (result.IsFailure)

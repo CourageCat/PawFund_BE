@@ -11,6 +11,7 @@ using PawFund.Contract.Services.Branchs;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Domain.Entities;
+using PawFund.Contract.Abstractions.Services;
 
 namespace PawFund.Application.UseCases.V1.Commands.Branch;
 public sealed class DeleteBranchCommandHandler : ICommandHandler<Command.DeleteBranchCommand>
@@ -24,16 +25,19 @@ public sealed class DeleteBranchCommandHandler : ICommandHandler<Command.DeleteB
     private readonly IRepositoryBase<Domain.Entities.AdoptPetApplication, Guid> _adoptPetApplicationRepository;
     private readonly IRepositoryBase<Domain.Entities.HistoryCat, Guid> _historyCatRepository;
     private readonly IEFUnitOfWork _efUnitOfWork;
+    private readonly IMediaService _mediaService;
 
-    public DeleteBranchCommandHandler(IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository,
-        IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IRepositoryBase<Domain.Entities.Cat, Guid> catRepository, IRepositoryBase<AdoptPetApplication, Guid> adoptPetApplicationRepository, IRepositoryBase<Domain.Entities.HistoryCat, Guid> historyCatRepository, IEFUnitOfWork efUnitOfWork)
+    public DeleteBranchCommandHandler(IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository, IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IRepositoryBase<Domain.Entities.EventActivity, Guid> eventActivityRepository, IRepositoryBase<Domain.Entities.VolunteerApplicationDetail, Guid> volunteerApplicationDetailRepository, IRepositoryBase<Domain.Entities.Cat, Guid> catRepository, IRepositoryBase<AdoptPetApplication, Guid> adoptPetApplicationRepository, IRepositoryBase<Domain.Entities.HistoryCat, Guid> historyCatRepository, IEFUnitOfWork efUnitOfWork, IMediaService mediaService)
     {
         _branchRepository = branchRepository;
         _eventRepository = eventRepository;
+        _eventActivityRepository = eventActivityRepository;
+        _volunteerApplicationDetailRepository = volunteerApplicationDetailRepository;
         _catRepository = catRepository;
         _adoptPetApplicationRepository = adoptPetApplicationRepository;
         _historyCatRepository = historyCatRepository;
         _efUnitOfWork = efUnitOfWork;
+        _mediaService = mediaService;
     }
 
     public async Task<Result> Handle(Command.DeleteBranchCommand request, CancellationToken cancellationToken)
@@ -44,8 +48,10 @@ public sealed class DeleteBranchCommandHandler : ICommandHandler<Command.DeleteB
         {
             throw new BranchException.BranchNotFoundException(request.Id);
         }
+        //Delete Image in Cloudinary
+        await _mediaService.DeleteFileAsync(branchFound.PublicImageId);
         //Update Status is IsDeleted of Branch to true
-        branchFound.UpdateBranch(branchFound.Name, branchFound.PhoneNumberOfBranch, branchFound.EmailOfBranch, branchFound.Description, branchFound.NumberHome, branchFound.StreetName, branchFound.Ward, branchFound.District, branchFound.Province, branchFound.PostalCode, branchFound.AccountId, (DateTime)branchFound.CreatedDate, DateTime.Now, true);
+        branchFound.UpdateBranch(branchFound.Name, branchFound.PhoneNumberOfBranch, branchFound.EmailOfBranch, branchFound.Description, branchFound.NumberHome, branchFound.StreetName, branchFound.Ward, branchFound.District, branchFound.Province, branchFound.PostalCode, branchFound.ImageUrl, branchFound.PublicImageId, branchFound.AccountId, (DateTime)branchFound.CreatedDate, DateTime.Now, true);
         _branchRepository.Update(branchFound);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         //Update Status is IsDeleted of each event of Branch to true
@@ -83,6 +89,8 @@ public sealed class DeleteBranchCommandHandler : ICommandHandler<Command.DeleteB
                 await _efUnitOfWork.SaveChangesAsync(cancellationToken);
             }
         }
+
+        //Return Result
         return Result.Success(new Success(MessagesList.BranchDeleteBranchSuccess.GetMessage().Code, MessagesList.BranchDeleteBranchSuccess.GetMessage().Message));
     }
 }
