@@ -46,6 +46,34 @@ public class DonationRepository : IDonationRepository
         }
     }
 
+    public async Task<Donation> GetDonationByOrderIdAsync(long orderId)
+    {
+        const string sql = @"
+            SELECT 
+                d.Id, d.Amount, d.Description, d.OrderId, d.PaymentMethodId, d.AccountId,
+                a.FirstName, a.LastName
+            FROM Donations d
+            INNER JOIN Accounts a ON d.AccountId = a.Id
+            WHERE d.OrderId = @OrderId";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.QueryAsync<Donation, Account, Donation>(
+                sql,
+                (donation, account) =>
+                {
+                    donation.Account = account;
+                    return donation;
+                },
+                new { OrderId = orderId },
+                splitOn: "FirstName"
+            );
+
+            return result.FirstOrDefault();
+        }
+    }
+
     public async Task<Donation> GetLatestDonationAsync()
     {
         var sql = @"

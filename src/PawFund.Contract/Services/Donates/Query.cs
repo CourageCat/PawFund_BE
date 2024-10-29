@@ -2,7 +2,6 @@
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.DTOs.DonateDTOs;
 using PawFund.Contract.Services.Donates;
-using static PawFund.Contract.Services.Donate.Response;
 
 namespace PawFund.Contract.Services.Donate;
 
@@ -15,4 +14,6 @@ public static class Query
         int PageSize,
         Filter.DonateFilter FilterParams,
         string[] SelectedColumns) : IQuery<Success<PagedResult<DonateDto>>>;
+
+    public record GetDonateByOrderIdQuery(long OrderId) : IQuery<Success<DonateDto>>;
 }

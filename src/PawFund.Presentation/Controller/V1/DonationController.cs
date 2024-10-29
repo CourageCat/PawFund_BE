@@ -89,4 +89,15 @@ public class DonationController : ApiController
         return Ok(result);
     }
 
+    [HttpGet("get_donate", Name = "GetDonate")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetDonate([FromQuery] long orderId)
+    {
+        var result = await Sender.Send(new Query.GetDonateByOrderIdQuery(orderId));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+        
+        return Ok(result);
+    }
 }
