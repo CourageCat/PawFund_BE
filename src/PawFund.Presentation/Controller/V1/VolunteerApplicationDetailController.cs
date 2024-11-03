@@ -50,5 +50,16 @@ namespace PawFund.Presentation.Controller.V1
                 return HandlerFailure(result);
             return Ok(result);
         }
+
+        [HttpGet("get_volunteer_application_by_id", Name = "GetVolunteerApplicationByIdCommand")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetVolunteerApplicationById([FromQuery] Guid id)
+        {
+            var result = await Sender.Send(new Query.GetVolunteerApplicationByIdQuery(id));
+            if (result.IsFailure)
+                return HandlerFailure(result);
+            return Ok(result);
+        }
     }
 }

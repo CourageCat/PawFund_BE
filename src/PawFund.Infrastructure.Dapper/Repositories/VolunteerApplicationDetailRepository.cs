@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
+using PawFund.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,10 +35,37 @@ public class VolunteerApplicationDetailRepository : IVolunteerApplicationDetail
         throw new NotImplementedException();
     }
 
-    public Task<Domain.Entities.VolunteerApplicationDetail>? GetByIdAsync(Guid Id)
+    public async Task<VolunteerApplicationDetail?> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var sql = @"
+        SELECT 
+            vad.Id, vad.Status, vad.Description, vad.ReasonReject, vad.EventId, 
+            vad.EventActivityId, vad.AccountId, vad.CreatedDate, vad.ModifiedDate, vad.IsDeleted,
+            acc.Id AS AccountId, acc.FirstName, acc.LastName, acc.Email, acc.PhoneNumber, acc.Status
+        FROM VolunteerApplicationDetails vad
+        JOIN Accounts acc ON vad.AccountId = acc.Id
+        WHERE vad.Id = @Id";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.QueryAsync<VolunteerApplicationDetail, Account, VolunteerApplicationDetail>(
+                sql,
+                (volunteerApplicationDetail, account) =>
+                {
+                    volunteerApplicationDetail.Account = account;
+                    return volunteerApplicationDetail;
+                },
+                new { Id = id },
+                splitOn: "FirstName" // Thay đổi splitOn để tránh trùng lặp với Id
+            );
+
+            return result.FirstOrDefault();
+        }
     }
+
+
 
     public Task<PagedResult<Domain.Entities.VolunteerApplicationDetail>> GetPagedAsync()
     {

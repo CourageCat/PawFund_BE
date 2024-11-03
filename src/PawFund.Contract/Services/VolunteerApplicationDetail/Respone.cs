@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace PawFund.Contract.Services.VolunteerApplicationDetail
 {
-    internal class Respone
+    public static class Respone
     {
+        public record VolunteerApplicationResponse(DTOs.VolunteerApplicationDTOs.GetVolunteerApplicationById.VolunteerApplicationDTO VolunteerApplicationDTO, DTOs.VolunteerApplicationDTOs.GetVolunteerApplicationById.AccountDTO AccountDTO);
     }
 }
