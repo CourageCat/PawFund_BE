@@ -14,7 +14,7 @@ namespace PawFund.Presentation.Controller.V1
         {
         }
 
-        [Authorize]
+        [Authorize(Policy = "Member")]
         [HttpPost("create_volunteer_application", Name = "CreateVolunteerApplication")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

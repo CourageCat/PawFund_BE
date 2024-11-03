@@ -6,6 +6,7 @@ using PawFund.Contract.Shared;
 using PawFund.Domain.Exceptions;
 using PawFund.Contract.Enumarations.VolunteerApplication;
 using PawFund.Contract.Enumarations.MessagesList;
+using PawFund.Domain.Abstractions.Dappers;
 
 namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
 {
@@ -14,12 +15,14 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
         private readonly IRepositoryBase<PawFund.Domain.Entities.VolunteerApplicationDetail, Guid> _volunteerApplicationDetailRepository;
         private readonly IRepositoryBase<PawFund.Domain.Entities.Event, Guid> _eventRepository;
         private readonly IEFUnitOfWork _efUnitOfWork;
+        private readonly IDPUnitOfWork _dpUnitOfWork;
 
-        public CreateVolunteerApplicationDetailCommandHandler(IRepositoryBase<Domain.Entities.VolunteerApplicationDetail, Guid> volunteerApplicationDetailRepository, IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IEFUnitOfWork efUnitOfWork)
+        public CreateVolunteerApplicationDetailCommandHandler(IRepositoryBase<Domain.Entities.VolunteerApplicationDetail, Guid> volunteerApplicationDetailRepository, IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dpUnitOfWork)
         {
             _volunteerApplicationDetailRepository = volunteerApplicationDetailRepository;
             _eventRepository = eventRepository;
             _efUnitOfWork = efUnitOfWork;
+            _dpUnitOfWork = dpUnitOfWork;
         }
 
         public async Task<Result> Handle(Command.CreateVolunteerApplicationDetailCommand request, CancellationToken cancellationToken)
@@ -30,8 +33,21 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
             {
                 throw new EventException.EventNotFoundException(request.form.eventId);
             }
-            
+
+            //check if volunteer already regist to this event
+            var existApplication = await _dpUnitOfWork.VolunteerApplicationDetailRepository.CheckVolunteerApplicationExists(request.form.eventId, request.userId);
+            if (existApplication)
+            {
+                throw new VolunteerApplicationException.VolunteerApplicationAlreadyRegistException();
+            }
+
+
             var listActivity = request.form.listActivity.Split(',');
+            if (listActivity.Length > 2)
+            {
+                throw new VolunteerApplicationException.VolunteerApplicationMaximumException();
+            }
+
             foreach (var item in listActivity)
             {
                 var newVolunteerApplication = Domain.Entities.VolunteerApplicationDetail.createVolunteerApplication(VolunteerApplicationStatus.Pending, request.form.description, null, Guid.Parse(item), request.form.eventId, request.userId, DateTime.Now, DateTime.Now, false);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PawFund.Contract.Enumarations.MessagesList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,8 @@ namespace PawFund.Domain.Exceptions
     {
         public class EventNotFoundException : NotFoundException
         {
-            public EventNotFoundException(Guid Id) : base($"Can not found event with ID: {Id}")
-            {
-            }
+            public EventNotFoundException(Guid Id) : base(string.Format(MessagesList.EventNotFoundException.GetMessage().Message, Id), MessagesList.EventNotFoundException.GetMessage().Code)
+            { }
         }
     }
 }

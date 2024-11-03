@@ -240,4 +240,17 @@ public enum MessagesList
 
     [Message("Create cash donation successfully", "donate_noti_success_01")]
     CreateDonateCashSuccess,
+
+    [Message("Can not found event activity with ID: {0}", "event_activity_noti_exception_1")]
+    EventActivityNotFoundException,
+
+    [Message("Can not find event with id: {0}", "event_noti_exception_1")]
+    EventNotFoundException,
+
+    [Message("Maximum activity you can choose is 2","volunteer_noti_exception_1")]
+    VolunteerApplicationMaximumException,
+
+    [Message("You already regist to this event by volunteer role", "volunteer_noti_exception_2")]
+    VolunteerApplicationAlreadyRegistException,
+
 }
