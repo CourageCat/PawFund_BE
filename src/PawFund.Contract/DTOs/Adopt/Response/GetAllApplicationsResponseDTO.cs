@@ -1,4 +1,6 @@
-﻿namespace PawFund.Contract.DTOs.Adopt.Response;
+﻿using PawFund.Contract.Enumarations.AdoptPetApplication;
+
+namespace PawFund.Contract.DTOs.Adopt.Response;
 
 public static class GetAllApplicationsResponseDTO
 {
@@ -7,7 +9,7 @@ public static class GetAllApplicationsResponseDTO
         public Guid Id { get; set; }
         public DateTime? MeetingDate { get; set; }
         public string? ReasonReject { get; set; }
-        public string Status { get; set; }
+        public AdoptPetApplicationStatus Status { get; set; }
         public bool IsFinalized { get; set; }
 
         public string Description { get; set; }
