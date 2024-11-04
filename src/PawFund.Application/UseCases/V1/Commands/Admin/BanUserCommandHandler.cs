@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Admin;
 using PawFund.Contract.Services.Admins;
 using PawFund.Contract.Shared;
@@ -30,14 +31,12 @@ namespace PawFund.Application.UseCases.V1.Commands.Admin
             var user = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.Id, cancellationToken);
             if (user == null)
             {
-                return Result.Failure(Error.NullValue);
+                throw new AccountException.AccountNotFoundException();
             }
-
             if (user.Status)
             {
                 throw new UserException.UserHasAlreadyBannedException();
             }
-
             user.Status = true;
             _efUnitOfWork.AccountRepository.Update(user);
             await _efUnitOfWork.SaveChangesAsync();
@@ -46,8 +45,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Admin
             await Task.WhenAll(
                _publisher.Publish(new DomainEvent.UserBan(Guid.NewGuid(), user.Email, request.Reason), cancellationToken)
            );
-
-            return Result.Success("Ban User Successfully");
+            return Result.Success(new Success(MessagesList.BanUserSuccess.GetMessage().Code, MessagesList.BanUserSuccess.GetMessage().Message));
         }
     }
 }

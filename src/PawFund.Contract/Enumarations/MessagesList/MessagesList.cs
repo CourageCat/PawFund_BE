@@ -240,4 +240,17 @@ public enum MessagesList
 
     [Message("Create cash donation successfully", "donate_noti_success_01")]
     CreateDonateCashSuccess,
+
+    [Message("Ban user successfully", "ban_noti_01")]
+    BanUserSuccess,
+
+    [Message("Unban user successfully", "unban_noti_01")]
+    UnbanUserSuccess,
+
+    [Message("Can not find any user", "user_noti_exception_01")]
+    UserEmptyUsersException,
+
+    [Message("All User", "user_noti_success_02")]
+    GetUsersSuccess,
+
 }

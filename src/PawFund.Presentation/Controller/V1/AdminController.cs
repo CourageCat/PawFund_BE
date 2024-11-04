@@ -40,7 +40,7 @@ namespace PawFund.Presentation.Controller.V1
         [HttpGet("get_list_user", Name = "GetListUserAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetProduct([FromQuery] AccountFilter filterParams,
+        public async Task<IActionResult> GetUsers([FromQuery] AccountsFilter filterParams,
         [FromQuery] int pageIndex = 1,
         [FromQuery] int pageSize = 10,
         [FromQuery] string[] selectedColumns = null)
