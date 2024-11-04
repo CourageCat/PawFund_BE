@@ -90,4 +90,12 @@ public static class AuthenticationException
                   MessagesList.AuthAccountRegisteredAnotherMethod.GetMessage().Code)
         { }
     }
+
+    public sealed class AccountBanned : BadRequestException
+    {
+        public AccountBanned()
+           : base(MessagesList.AccountBanned.GetMessage().Message,
+                  MessagesList.AccountBanned.GetMessage().Code)
+        { }
+    }
 }

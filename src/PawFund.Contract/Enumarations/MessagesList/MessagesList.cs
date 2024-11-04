@@ -253,4 +253,6 @@ public enum MessagesList
     [Message("All User", "user_noti_success_02")]
     GetUsersSuccess,
 
+    [Message("Your account has been banned", "account_ban_01")]
+    AccountBanned,
 }

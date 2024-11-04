@@ -31,9 +31,11 @@ public sealed class LoginQueryHandler : IQueryHandler<Query.LoginQuery, Response
         // If account == null => Exception
         if (account == null) throw new EmailNotFoundException();
         // If account have login type != Local => Exception
-        if(account.LoginType != LoginType.Local)
+        if (account.LoginType != LoginType.Local)
             throw new AccountRegisteredAnotherMethodException();
-        
+
+        if (account.IsDeleted == true) throw new AccountBanned();
+
         // Check password have equal with password hashed
         var isVerifyPassword = _passwordHashService.VerifyPassword(request.Password, account.Password);
         // If password not equal

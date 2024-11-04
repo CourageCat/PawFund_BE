@@ -9,7 +9,7 @@ public static class Response
     string LastName,
     string Email,
     string PhoneNumber,
-    bool Status,
+    bool IsDeleted,
     LoginType LoginType,
     GenderType Gender,
     string? CropAvatarUrl,

@@ -12,7 +12,7 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241104131053_Initial")]
+    [Migration("20241104223635_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -83,9 +83,6 @@ namespace PawFund.Persistence.Migrations
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

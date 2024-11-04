@@ -31,12 +31,12 @@ namespace PawFund.Application.UseCases.V1.Commands.Admin
                 throw new AccountException.AccountNotFoundException();
             }
 
-            if (!user.Status)
+            if (!user.IsDeleted == false)
             {
                 throw new UserException.UserHasAlreadyUnbannedException();
             }
 
-            user.Status = false;
+            user.ChangeUserIsDelete(false);
             _adminRepository.Update(user);
             await _unitOfWork.SaveChangesAsync();
 
