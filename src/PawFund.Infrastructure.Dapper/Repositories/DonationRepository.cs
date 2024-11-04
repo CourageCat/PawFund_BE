@@ -96,7 +96,7 @@ public class DonationRepository : IDonationRepository
             var validColumns = new HashSet<string>
         {
             "d.Id", "d.Amount", "d.Description", "d.OrderId", "d.PaymentMethodId", "d.CreatedDate", "d.ModifiedDate", "d.IsDeleted",
-            "ac.FirstName", "ac.LastName"
+            "ac.FirstName", "ac.LastName", "ac.Id"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
@@ -176,7 +176,6 @@ public class DonationRepository : IDonationRepository
             return new PagedResult<Donation>(items, pageIndex, pageSize, totalCount, totalPages);
         }
     }
-
 
     public Task<int> UpdateAsync(Donation entity)
     {

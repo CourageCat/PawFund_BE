@@ -11,7 +11,6 @@ public static class Response
     string PhoneNumber,
     bool Status,
     LoginType LoginType,
-    string Password,
     GenderType Gender,
     string? CropAvatarUrl,
     string? CropAvatarId,
