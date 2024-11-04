@@ -10,6 +10,8 @@ public interface IAccountRepository : IGenericRepository<Domain.Entities.Account
     Task<bool> EmailExistSystemAsync(string email);
     Task<bool>? AccountExistSystemAsync(Guid userId);
     Task<Account> GetByEmailAsync(string email);
-    Task<List<Account>> GetListUserAsync();
+    //Task<PagedResult<Account>> GetListUserAsync();
     Task<PagedResult<Account>> GetPagedAsync(int pageIndex, int pageSize, Filter.AccountFilter filterParams, string[] selectedColumns);
+
+    Task<PagedResult<Account>> GetUsersPagedAsync(int pageIndex, int pageSize, Filter.AccountsFilter filterParams, string[] selectedColumns);
 }

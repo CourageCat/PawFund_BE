@@ -22,8 +22,9 @@ public sealed class GetCatByIdQueryHandler : IQueryHandler<Query.GetCatByIdQuery
         {
             throw new CatException.CatNotFoundException(request.Id);
         }
+        bool hasAccountRegisteredWithCat = await _dpUnitOfWork.AdoptRepositories.HasAccountRegisterdWithPetAsync(request.AccountId, request.Id);
         var catImages = catFound.ImageCats.Select(item => item.ImageUrl).ToList();
-        var result = new Response.CatResponse(catFound.Id, catFound.Sex.ToString(), catFound.Name, catFound.Age, catFound.Breed, catFound.Weight, catFound.Color, catFound.Description, catImages);
+        var result = new Response.CatResponse(catFound.Id, catFound.Sex.ToString(), catFound.Name, catFound.Age, catFound.Breed, catFound.Weight, catFound.Color, catFound.Description, catImages, hasAccountRegisteredWithCat);
         return Result.Success(new Success<Response.CatResponse>("", "", result));
     }
 }

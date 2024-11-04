@@ -10,8 +10,8 @@ namespace PawFund.Contract.Services.Accounts
 
         public record GetUsersQueryHandler(int PageIndex,
          int PageSize,
-         Filter.AccountFilter FilterParams,
+         Filter.AccountsFilter FilterParams,
          string[] SelectedColumns)
-         : IQuery<PagedResult<UsersResponse>>;
+         : IQuery<Success<PagedResult<UsersResponse>>>;
     }
 }
