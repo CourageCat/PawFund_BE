@@ -4,6 +4,7 @@ using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Accounts;
 using PawFund.Contract.Shared;
+using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
 using static PawFund.Domain.Exceptions.AccountException;
 
@@ -12,25 +13,25 @@ namespace PawFund.Application.UseCases.V1.Commands.Account;
 public sealed class ChangePasswordCommandHandler : ICommandHandler<Command.ChangePasswordCommand, Success>
 {
     private readonly IResponseCacheService _responseCacheService;
-    private readonly IDPUnitOfWork _dpUnitOfWork;
+    private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IPasswordHashService _passwordHashService;
     private readonly IPublisher _publisher;
 
     public ChangePasswordCommandHandler
         (IResponseCacheService responseCacheService,
-        IDPUnitOfWork dpUnitOfWork,
         IPasswordHashService passwordHashService,
-        IPublisher publisher)
+        IPublisher publisher,
+        IEFUnitOfWork efUnitOfWork)
     {
         _responseCacheService = responseCacheService;
-        _dpUnitOfWork = dpUnitOfWork;
         _passwordHashService = passwordHashService;
         _publisher = publisher;
+        _efUnitOfWork = efUnitOfWork;
     }
 
     public async Task<Result<Success>> Handle(Command.ChangePasswordCommand request, CancellationToken cancellationToken)
     {
-        var result = await _dpUnitOfWork.AccountRepositories.GetByIdAsync(request.UserId);
+        var result = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.UserId);
         if (result.LoginType != Contract.Enumarations.Authentication.LoginType.Local)
             throw new AccountNotLoginLocalException();
 

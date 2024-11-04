@@ -8,33 +8,26 @@ using PawFund.Contract.Services.Accounts;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
-using PawFund.Domain.Abstractions.Repositories;
 using static PawFund.Domain.Exceptions.AccountException;
 
 namespace PawFund.Application.UseCases.V1.Commands.Account;
 
 public sealed class UpdateAvatarProfileCommandHandler : ICommandHandler<Command.UpdateAvatarCommand, Success<AccountAvatarDto>>
 {
-    private readonly IRepositoryBase<PawFund.Domain.Entities.Account, Guid> _accountRepository;
-    private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IMediaService _mediaService;
 
     public UpdateAvatarProfileCommandHandler
-        (IRepositoryBase<Domain.Entities.Account, Guid> accountRepository,
-        IDPUnitOfWork dpUnitOfWork,
-        IEFUnitOfWork efUnitOfWork,
+        (IEFUnitOfWork efUnitOfWork,
         IMediaService mediaService)
     {
-        _accountRepository = accountRepository;
-        _dpUnitOfWork = dpUnitOfWork;
         _efUnitOfWork = efUnitOfWork;
         _mediaService = mediaService;
     }
 
     public async Task<Result<Success<AccountAvatarDto>>> Handle(Command.UpdateAvatarCommand request, CancellationToken cancellationToken)
     {
-        var account = await _accountRepository.FindByIdAsync(request.UserId);
+        var account = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.UserId);
         if (account == null) throw new AccountNotFoundException();
         if((!string.IsNullOrEmpty(account.CropAvatarId) && !string.IsNullOrEmpty(account.FullAvatarId)) == true)
         {
@@ -50,8 +43,6 @@ public sealed class UpdateAvatarProfileCommandHandler : ICommandHandler<Command.
 
         account.UpdateAvatarProfileUser(uploadImages[0].ImageUrl, uploadImages[0].PublicImageId, uploadImages[1].ImageUrl, uploadImages[1].PublicImageId);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-
-        
 
         return Result.Success(new Success<AccountAvatarDto>
             (MessagesList.AccountUploadAvatarSuccess.GetMessage().Code,

@@ -5,6 +5,7 @@ using PawFund.Contract.Enumarations.Authentication;
 using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Accounts;
 using PawFund.Contract.Shared;
+using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
 using static PawFund.Domain.Exceptions.AccountException;
 
@@ -14,24 +15,24 @@ public sealed class UpdateEmailCommandHandler : ICommandHandler<Command.UpdateEm
 {
     private readonly IPublisher _publisher;
     private readonly IResponseCacheService _responseCacheService;
-    private readonly IDPUnitOfWork _dpUnitOfWork;
+    private readonly IEFUnitOfWork _efUnitOfWork;
 
     public UpdateEmailCommandHandler(IPublisher publisher,
         IResponseCacheService responseCacheService,
-        IDPUnitOfWork dpUnitOfWork)
+        IEFUnitOfWork efUnitOfWork)
     {
         _publisher = publisher;
         _responseCacheService = responseCacheService;
-        _dpUnitOfWork = dpUnitOfWork;
+        _efUnitOfWork = efUnitOfWork;
     }
 
     public async Task<Result<Success>> Handle(Command.UpdateEmailCommand request, CancellationToken cancellationToken)
     {
-        var isCheckMail = await _dpUnitOfWork.AccountRepositories.EmailExistSystemAsync(request.Email);
+        var isCheckMail = await _efUnitOfWork.AccountRepository.AnyAsync(account => account.Email == request.Email);
         if (isCheckMail == true)
             throw new AccountUpdateEmailExit();
 
-        var account = await _dpUnitOfWork.AccountRepositories.GetByIdAsync(request.UserId);
+        var account = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.UserId);
         if (account == null)
             throw new AccountEmailDuplicateException();
 

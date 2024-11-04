@@ -4,30 +4,28 @@ using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Accounts;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
-using PawFund.Domain.Abstractions.Repositories;
+using PawFund.Persistence;
 using static PawFund.Domain.Exceptions.AccountException;
 
 namespace PawFund.Application.UseCases.V1.Commands.Account;
 
 public sealed class UpdateInfoProfileCommandHandler : ICommandHandler<Command.UpdateInfoCommand, Success<Response.UserResponse>>
 {
-    private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
     private readonly IEFUnitOfWork _efUnitOfWork;
 
-    public UpdateInfoProfileCommandHandler(IRepositoryBase<Domain.Entities.Account, Guid> accountRepository, IEFUnitOfWork efUnitOfWork)
+    public UpdateInfoProfileCommandHandler(IEFUnitOfWork efUnitOfWork)
     {
-        _accountRepository = accountRepository;
         _efUnitOfWork = efUnitOfWork;
     }
 
     public async Task<Result<Success<Response.UserResponse>>> Handle(Command.UpdateInfoCommand request, CancellationToken cancellationToken)
     {
-        var result = await _accountRepository.FindByIdAsync(request.UserId);
+        var result = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.UserId);
         if (result == null)
             throw new AccountNotFoundException();
         
         result.UpdateInfoProfileUser(request.FirstName, request.LastName, request.PhoneNumber, request.Gender);
-        _accountRepository.Update(result);
+        _efUnitOfWork.AccountRepository.Update(result);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
 
         var response = new Response.UserResponse(result.Id, result.FirstName, result.LastName, result.Email, result.PhoneNumber, result.Gender);

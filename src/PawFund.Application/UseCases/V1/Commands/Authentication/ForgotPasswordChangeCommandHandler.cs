@@ -7,7 +7,6 @@ using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
-using PawFund.Domain.Entities;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 using PawFund.Contract.Enumarations.MessagesList;
 
@@ -17,21 +16,18 @@ public sealed class ForgotPasswordChangeCommandHandler : ICommandHandler<Command
 {
     private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IEFUnitOfWork _efUnitOfWork;
-    private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
     private readonly IPasswordHashService _passwordHashService;
     private readonly IPublisher _publisher;
     private readonly IResponseCacheService _responseCacheService;
     public ForgotPasswordChangeCommandHandler
         (IDPUnitOfWork dpUnitOfWork,
         IEFUnitOfWork efUnitOfWork,
-        IRepositoryBase<Domain.Entities.Account, Guid> accountRepository,
         IPasswordHashService passwordHashService,
         IPublisher publisher,
         IResponseCacheService responseCacheService)
     {
         _dpUnitOfWork = dpUnitOfWork;
         _efUnitOfWork = efUnitOfWork;
-        _accountRepository = accountRepository;
         _passwordHashService = passwordHashService;
         _publisher = publisher;
         _responseCacheService = responseCacheService;
@@ -60,7 +56,7 @@ public sealed class ForgotPasswordChangeCommandHandler : ICommandHandler<Command
 
         var newPassword = _passwordHashService.HashPassword(request.Password);
         account.Password = newPassword;
-        _accountRepository.Update(account);
+        _efUnitOfWork.AccountRepository.Update(account);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         
         // Send email

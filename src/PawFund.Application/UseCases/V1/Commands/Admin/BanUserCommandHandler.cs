@@ -9,26 +9,25 @@ using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Entities;
 using PawFund.Domain.Exceptions;
+using PawFund.Persistence;
 
 
 namespace PawFund.Application.UseCases.V1.Commands.Admin
 {
     public sealed class BanUserCommandHandler : ICommandHandler<Command.BanUserCommand>
     {
-        private readonly IRepositoryBase<PawFund.Domain.Entities.Account, Guid> _adminRepository;
-        private readonly IEFUnitOfWork _unitOfWork;
+        private readonly IEFUnitOfWork _efUnitOfWork;
         private readonly IPublisher _publisher;
 
-        public BanUserCommandHandler(IRepositoryBase<Domain.Entities.Account, Guid> adminRepository, IEFUnitOfWork unitOfWork, IPublisher publisher)
+        public BanUserCommandHandler(IEFUnitOfWork efUnitOfWork, IPublisher publisher)
         {
-            _adminRepository = adminRepository;
-            _unitOfWork = unitOfWork;
+            _efUnitOfWork = efUnitOfWork;
             _publisher = publisher;
         }
 
         public async Task<Result> Handle(Command.BanUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _adminRepository.FindByIdAsync(request.Id, cancellationToken);
+            var user = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.Id, cancellationToken);
             if (user == null)
             {
                 return Result.Failure(Error.NullValue);
@@ -40,9 +39,9 @@ namespace PawFund.Application.UseCases.V1.Commands.Admin
             }
 
             user.Status = true;
-            _adminRepository.Update(user);
-            await _unitOfWork.SaveChangesAsync();
-
+            _efUnitOfWork.AccountRepository.Update(user);
+            await _efUnitOfWork.SaveChangesAsync();
+            
             //Send Ban Mail
             await Task.WhenAll(
                _publisher.Publish(new DomainEvent.UserBan(Guid.NewGuid(), user.Email, request.Reason), cancellationToken)

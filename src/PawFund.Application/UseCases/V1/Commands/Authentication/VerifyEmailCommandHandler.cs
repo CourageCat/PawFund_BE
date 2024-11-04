@@ -14,7 +14,6 @@ namespace PawFund.Application.UseCases.V1.Commands.Authentication;
 
 public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEmailCommand>
 {
-    private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
     private readonly IResponseCacheService _responseCacheService;
     private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IDPUnitOfWork _dbUnitOfWork;
@@ -29,7 +28,6 @@ public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEm
         IPasswordHashService passwordHashService,
         IPublisher publisher)
     {
-        _accountRepository = accountRepository;
         _responseCacheService = responseCacheService;
         _efUnitOfWork = unitOfWork;
         _dbUnitOfWork = dbUnitOfWork;
@@ -58,8 +56,8 @@ public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEm
         // Create object account with type register local
         var accountMember = Domain.Entities.Account.CreateMemberAccountLocal
             (user.FirstName, user.LastName, user.Email, user.PhoneNumber, passwordHash, user.Gender);
-        
-        _accountRepository.Add(accountMember);
+
+        _efUnitOfWork.AccountRepository.Add(accountMember);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
 
         // Delete object saved in memory
