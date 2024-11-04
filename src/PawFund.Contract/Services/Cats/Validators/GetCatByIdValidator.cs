@@ -13,6 +13,7 @@ namespace PawFund.Contract.Services.Cats.Validator
         public GetCatByIdValidator() 
         {
             RuleFor(x => x.Id).NotEmpty();
+            RuleFor(x => x.AccountId).NotEmpty();
         }
     }
 }
