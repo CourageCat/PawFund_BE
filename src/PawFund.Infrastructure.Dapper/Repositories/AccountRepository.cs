@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.Enumarations.Authentication;
 using PawFund.Contract.Services.Accounts;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
@@ -173,18 +174,14 @@ public class AccountRepository : IAccountRepository
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
-
-            // If no selected columns, select all
             var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : "*";
 
-
             // Start building the query
-            var queryBuilder = new StringBuilder($"SELECT {selectedColumnsString} FROM Accounts WHERE IsDeleted IS NULL");
-            var totalCountQuery = new StringBuilder("SELECT COUNT(1) FROM Accounts WHERE IsDeleted IS NULL");
+            var queryBuilder = new StringBuilder($"SELECT {selectedColumnsString} FROM Accounts WHERE IsDeleted IS NULL AND RoleId = @MemberRoleId");
+            var totalCountQuery = new StringBuilder("SELECT COUNT(1) FROM Accounts WHERE IsDeleted IS NULL AND RoleId = @MemberRoleId");
 
             var parameters = new DynamicParameters();
-
-            parameters.Add("AccountId", filterParams.Id);
+            parameters.Add("MemberRoleId", (int)RoleType.Member);  // Set RoleType.Member (value = 3)
 
             // Pagination logic
             pageIndex = pageIndex <= 0 ? 1 : pageIndex;
@@ -236,6 +233,7 @@ public class AccountRepository : IAccountRepository
             return new PagedResult<Account>(items, pageIndex, pageSize, totalCount, totalPages);
         }
     }
+
 
 
 }
