@@ -159,4 +159,5 @@ public class AccountRepository : IAccountRepository
             return await PagedResult<Account>.CreateAsync(connection, queryBuilder.ToString(), parameters, pageIndex, pageSize);
         }
     }
+
 }

@@ -8,10 +8,12 @@ using PawFund.Contract.Abstractions.Shared;
 using static PawFund.Contract.Services.Accounts.Response;
 using AutoMapper;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
+using MediatR;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Queries.User
 {
-    public sealed class GetUsersQueryHandler : IQueryHandler<Query.GetUsersQueryHandler, PagedResult<UsersResponse>>
+    public sealed class GetUsersQueryHandler : IQueryHandler<Query.GetUsersQueryHandler, Success<PagedResult<UserResponse>>>
     {
         private readonly IDPUnitOfWork _dPUnitOfWork;
         private readonly IAccountRepository _accountRepository;
@@ -25,14 +27,19 @@ namespace PawFund.Application.UseCases.V1.Queries.User
             _accountRepository = accountRepository;
         }
 
-        public async Task<Result<PagedResult<UsersResponse>>> Handle(Query.GetUsersQueryHandler request, CancellationToken cancellationToken)
+        public async Task<Result<Success<PagedResult<UserResponse>>>>Handle(Query.GetUsersQueryHandler request, CancellationToken cancellationToken)
         {
-            List<AccountDto> listAccountDto = new List<AccountDto>();
-            var listUser = await _dPUnitOfWork.AccountRepositories.GetListUserAsync() ?? throw new UserException.ListUserNotFoundException();
+            //List<AccountDto> listAccountDto = new List<AccountDto>();
+            //var listUser = await _dPUnitOfWork.AccountRepositories.GetListUserAsync() ?? throw new UserException.ListUserNotFoundException();
 
             var accountPagedResult = await _accountRepository.GetPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
-            var result = _mapper.Map<PagedResult<UsersResponse>>(accountPagedResult);
-            return Result.Success(result);
+            var result = _mapper.Map<PagedResult<UserResponse>>(accountPagedResult);
+            if (result.Items.Count == 0)
+            {
+                return Result.Success(new Success<PagedResult<Response.UserResponse>>(MessagesList.UserEmptyUsersException.GetMessage().Code, MessagesList.UserEmptyUsersException.GetMessage().Message, result));
+
+            }
+            return Result.Success(new Success<PagedResult<Response.UserResponse>>(MessagesList.GetUsersSuccess.GetMessage().Code, MessagesList.GetUsersSuccess.GetMessage().Message, result));
         }
     }
 }

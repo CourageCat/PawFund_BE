@@ -12,6 +12,6 @@ namespace PawFund.Contract.Services.Accounts
          int PageSize,
          Filter.AccountFilter FilterParams,
          string[] SelectedColumns)
-         : IQuery<PagedResult<UsersResponse>>;
+         : IQuery<Success<PagedResult<UserResponse>>>;
     }
 }
