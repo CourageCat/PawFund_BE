@@ -53,12 +53,14 @@ public class CatController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Policy = "MemberPolicy")]
     [HttpGet("get_cat_by_id", Name = "GetCatById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCatById([FromQuery] Guid Id)
     {
-        var result = await Sender.Send(new Query.GetCatByIdQuery(Id));
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Query.GetCatByIdQuery(Id, Guid.Parse(userId)));
         if (result.IsFailure)
             return HandlerFailure(result);
 

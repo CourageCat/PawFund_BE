@@ -5,7 +5,7 @@ namespace PawFund.Contract.Services.Cats;
 
 public static class Query
 {
-    public record GetCatByIdQuery(Guid Id) : IQuery<Success<Response.CatResponse>>;
+    public record GetCatByIdQuery(Guid Id, Guid AccountId) : IQuery<Success<Response.CatResponse>>;
     public record GetCats(int PageIndex,
         int PageSize,
         Filter.CatAdoptFilter FilterParams,
