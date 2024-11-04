@@ -168,7 +168,7 @@ public class AccountRepository : IAccountRepository
             // Valid columns for selecting
             var validColumns = new HashSet<string>
         {
-            "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Password", "Status",
+            "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Status",
             "Gender", "CropAvatarUrl", "CropAvatarId", "FullAvatarUrl", "FullAvatarId",
             "LoginType", "RoleId", "IsDeleted"
         };
@@ -233,7 +233,4 @@ public class AccountRepository : IAccountRepository
             return new PagedResult<Account>(items, pageIndex, pageSize, totalCount, totalPages);
         }
     }
-
-
-
 }

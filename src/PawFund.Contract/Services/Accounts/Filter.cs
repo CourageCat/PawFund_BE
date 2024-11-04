@@ -7,4 +7,6 @@ public static class Filter
 
     public record AccountsFilter(Guid? Id, string? FirstName, string?LastName, bool? Status);
 
+    public record AccountsDonateFilter(Guid? Id, string? FirstName, string? LastName, bool? Status);
+
 }

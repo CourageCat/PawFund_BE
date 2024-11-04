@@ -29,8 +29,6 @@ namespace PawFund.Application.UseCases.V1.Queries.User
 
         public async Task<Result<Success<PagedResult<UsersResponse>>>>Handle(Query.GetUsersQueryHandler request, CancellationToken cancellationToken)
         {
-            //List<AccountDto> listAccountDto = new List<AccountDto>();
-            //var listUser = await _dPUnitOfWork.AccountRepositories.GetListUserAsync() ?? throw new UserException.ListUserNotFoundException();
 
             var accountPagedResult = await _accountRepository.GetUsersPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
             var result = _mapper.Map<PagedResult<UsersResponse>>(accountPagedResult);
