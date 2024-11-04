@@ -30,6 +30,7 @@ public class RefreshTokenQueryHandler : IQueryHandler<Query.RefreshTokenQuery, R
         var userId = _tokenGeneratorService.ValidateAndGetUserIdFromRefreshToken(request.Token);
         // If return == null => Exception
         if (userId == null) throw new RefreshTokenNullException();
+
         var account = await _accountRepository.GetByIdAsync(Guid.Parse(userId));    
 
         // Generate accesssToken and refreshToken

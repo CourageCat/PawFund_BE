@@ -22,7 +22,7 @@ namespace PawFund.Presentation.Controller.V1
         [HttpPost("ban_user", Name = "BanUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> BanUserById([FromForm] Contract.Services.Admins.Command.BanUserCommand ChangeStatus)
+        public async Task<IActionResult> BanUserById([FromBody] Contract.Services.Admins.Command.BanUserCommand ChangeStatus)
         {
             var result = await Sender.Send(ChangeStatus);
             if (result.IsFailure)
@@ -34,7 +34,7 @@ namespace PawFund.Presentation.Controller.V1
         [HttpPost("unban_user", Name = "UnbanUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UnbanUserById([FromForm] Contract.Services.Admins.Command.UnBanUserCommand ChangeStatus)
+        public async Task<IActionResult> UnbanUserById([FromBody] Contract.Services.Admins.Command.UnBanUserCommand ChangeStatus)
         {
             var result = await Sender.Send(ChangeStatus);
             if (result.IsFailure)

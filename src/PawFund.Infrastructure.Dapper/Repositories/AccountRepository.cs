@@ -177,11 +177,17 @@ public class AccountRepository : IAccountRepository
             var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : "*";
 
             // Start building the query
-            var queryBuilder = new StringBuilder($"SELECT {selectedColumnsString} FROM Accounts WHERE IsDeleted IS NULL AND RoleId = @MemberRoleId");
-            var totalCountQuery = new StringBuilder("SELECT COUNT(1) FROM Accounts WHERE IsDeleted IS NULL AND RoleId = @MemberRoleId");
+            var queryBuilder = new StringBuilder($"SELECT {selectedColumnsString} FROM Accounts WHERE RoleId = @MemberRoleId");
+            var totalCountQuery = new StringBuilder("SELECT COUNT(1) FROM Accounts WHERE RoleId = @MemberRoleId");
 
             var parameters = new DynamicParameters();
             parameters.Add("MemberRoleId", (int)RoleType.Member);  // Set RoleType.Member (value = 3)
+
+            // Apply IsDeleted filter (default to false if not specified in filterParams)
+            bool isDeleted = filterParams?.IsDeleted ?? false;
+            queryBuilder.Append(" AND IsDeleted = @IsDeleted");
+            totalCountQuery.Append(" AND IsDeleted = @IsDeleted");
+            parameters.Add("IsDeleted", isDeleted);
 
             // Pagination logic
             pageIndex = pageIndex <= 0 ? 1 : pageIndex;
@@ -211,14 +217,6 @@ public class AccountRepository : IAccountRepository
                 parameters.Add("LastName", $"%{filterParams.LastName}%");
             }
 
-            // Filter by Status
-            if (filterParams?.Status.HasValue == true)
-            {
-                queryBuilder.Append(" AND Status = @Status");
-                totalCountQuery.Append(" AND Status = @Status");
-                parameters.Add("Status", filterParams.Status);
-            }
-
             // Count Total Records
             var totalCount = await connection.ExecuteScalarAsync<int>(totalCountQuery.ToString(), parameters);
             var totalPages = Math.Ceiling(totalCount / (double)pageSize);
@@ -233,4 +231,5 @@ public class AccountRepository : IAccountRepository
             return new PagedResult<Account>(items, pageIndex, pageSize, totalCount, totalPages);
         }
     }
+
 }

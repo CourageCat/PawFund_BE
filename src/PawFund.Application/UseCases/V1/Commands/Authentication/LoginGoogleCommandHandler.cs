@@ -75,6 +75,9 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
             // If have account, check account not type Google
             if (account.LoginType != LoginType.Google) throw new AccountRegisteredAnotherMethodException();
 
+            // If account banned
+            if (account.IsDeleted == true) throw new AccountBanned();
+
             // Generate accessToken and refreshToken
             var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, (int)account.RoleId);
             var refrehsToken = _tokenGeneratorService.GenerateRefreshToken(account.Id, (int)account.RoleId);
