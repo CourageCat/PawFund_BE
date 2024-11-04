@@ -58,7 +58,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet("get_list_user_donate", Name = "GetListUserDonateAsync")]
+        [HttpGet("get_list_users_donate", Name = "GetListUserDonateAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUsersDonate([FromQuery] DonateFilter filterParams,

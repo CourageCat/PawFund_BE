@@ -8,7 +8,7 @@ public static class Response
         (Guid Id,
         DateTime? MeetingDate,
         string? ReasonReject,
-        string Status,
+        AdoptPetApplicationStatus Status,
         string Description,
         bool IsFinalized,
         GetApplicationByIdResponseDTO.AccountDto Account,

@@ -38,7 +38,7 @@ public sealed class GetAllApplicationQueryByAdopterHandler : IQueryHandler<Query
                 Id = adoptApplication.Id,
                 MeetingDate = adoptApplication.MeetingDate,
                 ReasonReject = adoptApplication.ReasonReject,
-                Status = adoptApplication.Status.ToString(),
+                Status = adoptApplication.Status,
                 IsFinalized = adoptApplication.IsFinalized,
                 Description = adoptApplication.Description,
                 CreatedDate = (DateTime)adoptApplication.CreatedDate,
