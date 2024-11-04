@@ -33,7 +33,7 @@ public sealed class GetApplicationByIdQueryHandler : IQueryHandler<Query.GetAppl
         }
 
         //Convert Entity to DTO
-        var result = new Response.GetApplicationByIdResponse(applicationById.Id, applicationById.MeetingDate, applicationById.ReasonReject, applicationById.Status.ToString(), applicationById.Description, applicationById.IsFinalized,
+        var result = new Response.GetApplicationByIdResponse(applicationById.Id, applicationById.MeetingDate, applicationById.ReasonReject, applicationById.Status, applicationById.Description, applicationById.IsFinalized,
             new GetApplicationByIdResponseDTO.AccountDto
             {
                 Id = applicationById.Account.Id,
