@@ -12,7 +12,7 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241105000512_InitialCreate")]
+    [Migration("20241105033212_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

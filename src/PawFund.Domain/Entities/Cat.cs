@@ -19,6 +19,7 @@ namespace PawFund.Domain.Entities
             Description = description;
             BranchId = branchId;
             Sterilization = sterilization;
+            IsDeleted = false;
         }
 
         public CatSex Sex { get; set; } = CatSex.Male;

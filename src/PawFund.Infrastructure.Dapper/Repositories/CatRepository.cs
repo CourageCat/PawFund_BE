@@ -68,7 +68,7 @@ public class CatRepository : ICatRepository
         {
             var validColumns = new HashSet<string>
         {
-            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Color", "c.Description", "c.Sterilization",
+            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Color", "c.Description", "c.Sterilization", "c.IsDeleted",
             "ImageCat.ImageUrl", "ImageCat.PublicImageId"
         };
 
@@ -109,6 +109,13 @@ public class CatRepository : ICatRepository
                 )
             ) AS ImageCat ON c.Id = ImageCat.CatId
             WHERE 1=1");
+
+            // Filter by Deleted
+            if (filterParams?.IsDeleted.HasValue == true)
+            {
+                queryBuilder.Append(" AND c.IsDeleted = @IsDeleted");
+                parameters.Add("IsDeleted", filterParams.IsDeleted.Value);
+            }
 
             // Filter by Name
             if (!string.IsNullOrEmpty(filterParams.Name))
