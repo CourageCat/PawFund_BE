@@ -83,7 +83,6 @@ public class AccountRepository : IAccountRepository
             [LastName],
             [Email],
             [PhoneNumber],
-            [Status],
             [LoginType],
             [Password],
             [CropAvatarUrl],
@@ -119,7 +118,7 @@ public class AccountRepository : IAccountRepository
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             // Valid columns for selecting
-            var validColumns = new HashSet<string> { "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Password", "Status", "RoleId", "Gender", "LoginType", "IsDeleted" };
+            var validColumns = new HashSet<string> { "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Password", "RoleId", "Gender", "LoginType", "IsDeleted" };
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
 
             // If no selected columns, select all
@@ -144,11 +143,11 @@ public class AccountRepository : IAccountRepository
                 parameters.Add("FirstName", $"%{filterParams.FirstName}%");
             }
 
-            // Filter by Status (e.g., true/false)
-            if (filterParams?.Status.HasValue == true)
+            // Filter by IsDeleted (e.g., true/false)
+            if (filterParams?.IsDeleted.HasValue == true)
             {
-                queryBuilder.Append(" AND Status = @Status");
-                parameters.Add("Status", filterParams.Status.Value);
+                queryBuilder.Append(" AND IsDeleted = @IsDeleted");
+                parameters.Add("IsDeleted", filterParams.IsDeleted.Value);
             }
 
             if (filterParams?.RoleType.HasValue == true)
@@ -168,7 +167,7 @@ public class AccountRepository : IAccountRepository
             // Valid columns for selecting
             var validColumns = new HashSet<string>
         {
-            "Id", "FirstName", "LastName", "Email", "PhoneNumber", "Status",
+            "Id", "FirstName", "LastName", "Email", "PhoneNumber",
             "Gender", "CropAvatarUrl", "CropAvatarId", "FullAvatarUrl", "FullAvatarId",
             "LoginType", "RoleId", "IsDeleted"
         };

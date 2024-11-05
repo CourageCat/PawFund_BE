@@ -4,6 +4,7 @@ using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using static PawFund.Domain.Exceptions.AuthenticationException;
+using PawFund.Domain.Abstractions.Dappers;
 
 namespace PawFund.Application.UseCases.V1.Queries.Authentication;
 
@@ -11,16 +12,16 @@ public class RefreshTokenQueryHandler : IQueryHandler<Query.RefreshTokenQuery, R
 {
     private readonly IResponseCacheService _responseCacheService;
     private readonly ITokenGeneratorService _tokenGeneratorService;
-    private readonly IAccountRepository _accountRepository;
+    private readonly IDPUnitOfWork _dPUnitOfWork;
 
     public RefreshTokenQueryHandler
         (IResponseCacheService responseCacheService,
         ITokenGeneratorService tokenGeneratorService,
-        IAccountRepository accountRepository)
+        IDPUnitOfWork dPUnitOfWork)
     {
         _responseCacheService = responseCacheService;
         _tokenGeneratorService = tokenGeneratorService;
-        _accountRepository = accountRepository;
+        _dPUnitOfWork = dPUnitOfWork;
     }
 
     public async Task<Result<Response.RefreshTokenResponse>> Handle
@@ -31,7 +32,9 @@ public class RefreshTokenQueryHandler : IQueryHandler<Query.RefreshTokenQuery, R
         // If return == null => Exception
         if (userId == null) throw new RefreshTokenNullException();
 
-        var account = await _accountRepository.GetByIdAsync(Guid.Parse(userId));    
+        var account = await _dPUnitOfWork.AccountRepositories.GetByIdAsync(Guid.Parse(userId));
+        // Ban account
+        if (account.IsDeleted == true) throw new AccountBanned();
 
         // Generate accesssToken and refreshToken
         var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, (int)account.RoleId);
