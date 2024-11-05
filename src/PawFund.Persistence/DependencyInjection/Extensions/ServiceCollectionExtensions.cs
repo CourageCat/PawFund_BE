@@ -46,7 +46,8 @@ public static class ServiceCollectionExtensions
             .AddTransient<IProductRepository, ProductRepository>()
             .AddTransient<IDonationRepository, DonationRepository>()
             .AddTransient<IChatHistoryRepository, ChatHistoryRepository>()
-            .AddTransient<IMessageRepository, MessageRepository>();
+            .AddTransient<IMessageRepository, MessageRepository>()
+            .AddTransient<IImageCatRepository, ImageCatRepository>();
 
     }
 

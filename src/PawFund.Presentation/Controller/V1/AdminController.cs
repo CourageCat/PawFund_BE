@@ -2,13 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PawFund.Presentation.Abstractions;
-using PawFund.Contract.Services.Accounts;
-using PawFund.Contract.Services.Donate;
-
-
 using static PawFund.Contract.Services.Accounts.Filter;
 using static PawFund.Contract.Services.Donates.Filter;
-using PawFund.Contract.Services.Donate;
+
 
 
 namespace PawFund.Presentation.Controller.V1
