@@ -53,10 +53,10 @@ public class AuthenticationController : ApiController
 
         Response.Cookies.Append("refreshToken", value.RefreshToken, new CookieOptions
         {
-            HttpOnly = false,
-            Secure = false,
+            HttpOnly = true,
+            Secure = true,
             Path = "/",
-            SameSite = SameSiteMode.None,
+            SameSite = SameSiteMode.Strict,
             Expires = DateTime.Now.AddMinutes(131400),
         });
 
@@ -100,7 +100,7 @@ public class AuthenticationController : ApiController
         Response.Cookies.Append("refreshToken", value.RefreshToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = false,
+            Secure = true,
             Path = "/",
             SameSite = SameSiteMode.Strict,
             Expires = DateTime.Now.AddMinutes(131400),
@@ -163,7 +163,7 @@ public class AuthenticationController : ApiController
         Response.Cookies.Append("refreshToken", value.RefreshToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = false,
+            Secure = true,
             Path = "/",
             SameSite = SameSiteMode.Strict,
             Expires = DateTime.Now.AddMinutes(131400),

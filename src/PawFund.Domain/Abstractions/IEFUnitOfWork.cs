@@ -17,4 +17,5 @@ public interface IEFUnitOfWork : IAsyncDisposable
     IMessageRepository MessageRepository { get; }
     IProductRepository ProductRepository { get; }
     IVolunteerApplicationDetail VolunteerApplicationDetail { get; }
+    IImageCatRepository ImageCatRepository { get; }
 }

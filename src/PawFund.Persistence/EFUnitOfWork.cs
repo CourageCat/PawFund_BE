@@ -19,13 +19,26 @@ public class EFUnitOfWork : IEFUnitOfWork
     private readonly IMessageRepository _messageRepository;
     private readonly IProductRepository _productRepository;
     private readonly IVolunteerApplicationDetail _volunteerApplicationDetailRepository;
+    private readonly IImageCatRepository _imageCatRepository;
 
-    public EFUnitOfWork(ApplicationDbContext context, IAccountRepository accountRepository)
+    public EFUnitOfWork(ApplicationDbContext context, IAccountRepository accountRepository, IAdoptRepository adoptRepository, IBranchRepository branchRepository, ICatRepository catRepository, IChatHistoryRepository chatHistoryRepository, IDonationRepository donationRepository, IEventActivityRepository eventActivityRepository, IEventRepository eventRepository, IHistoryCatRepository historyCatRepository, IMessageRepository messageRepository, IProductRepository productRepository, IVolunteerApplicationDetail volunteerApplicationDetailRepository, IImageCatRepository imageCatRepository)
     {
         _context = context;
         _accountRepository = accountRepository;
+        _adoptRepository = adoptRepository;
+        _branchRepository = branchRepository;
+        _catRepository = catRepository;
+        _chatHistoryRepository = chatHistoryRepository;
+        _donationRepository = donationRepository;
+        _eventActivityRepository = eventActivityRepository;
+        _eventRepository = eventRepository;
+        _historyCatRepository = historyCatRepository;
+        _messageRepository = messageRepository;
+        _productRepository = productRepository;
+        _volunteerApplicationDetailRepository = volunteerApplicationDetailRepository;
+        _imageCatRepository = imageCatRepository;
     }
-     
+
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
      =>   await _context.SaveChangesAsync();
 
@@ -44,4 +57,5 @@ public class EFUnitOfWork : IEFUnitOfWork
     public IMessageRepository MessageRepository => _messageRepository;
     public IProductRepository ProductRepository => _productRepository;
     public IVolunteerApplicationDetail VolunteerApplicationDetail => _volunteerApplicationDetailRepository;
+    public IImageCatRepository ImageCatRepository => _imageCatRepository;
 }
