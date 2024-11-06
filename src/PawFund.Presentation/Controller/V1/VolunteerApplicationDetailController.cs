@@ -6,6 +6,8 @@ using PawFund.Contract.DTOs.VolunteerApplicationDTOs.Request;
 using PawFund.Contract.Services.VolunteerApplicationDetail;
 using PawFund.Presentation.Abstractions;
 using System.Security.Claims;
+using static PawFund.Contract.Services.Event.Filter;
+using static PawFund.Contract.Services.VolunteerApplicationDetail.Filter;
 
 namespace PawFund.Presentation.Controller.V1
 {
@@ -58,6 +60,21 @@ namespace PawFund.Presentation.Controller.V1
         public async Task<IActionResult> GetVolunteerApplicationById([FromQuery] Guid id)
         {
             var result = await Sender.Send(new Query.GetVolunteerApplicationByIdQuery(id));
+            if (result.IsFailure)
+                return HandlerFailure(result);
+            return Ok(result);
+        }
+
+        [HttpGet("get_volunteer_application_by_activity_id", Name = "GetVolunteerApplicationByActivityIdCommand")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetVolunteerApplicationByActivityId([FromQuery] Guid id,
+        [FromQuery] VolunteerApplicationFilter filterParams,
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string[] selectedColumns = null)
+        {
+            var result = await Sender.Send(new Query.GetVolunteerApplicationByActivityQuery(id, pageIndex, pageSize, filterParams, selectedColumns));
             if (result.IsFailure)
                 return HandlerFailure(result);
             return Ok(result);
