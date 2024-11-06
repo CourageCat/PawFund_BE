@@ -9,9 +9,11 @@ namespace PawFund.Application.Mapper
     {
         public VolunteerApplicationProfile()
         {
-            CreateMap<VolunteerApplicationProfile, GetVolunteerApplicationById.VolunteerApplicationDTO>();
+            CreateMap<VolunteerApplicationDetail, GetVolunteerApplicationById.VolunteerApplicationDTO>();
+           
+            CreateMap<VolunteerApplicationDetail, VolunteerApplicationsDTO>();
+
             CreateMap<Account, GetVolunteerApplicationById.AccountDTO>();
-            CreateMap<VolunteerApplicationProfile, VolunteerApplicationsDTO>();
         }
     }
 }
