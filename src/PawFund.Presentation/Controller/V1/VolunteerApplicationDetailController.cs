@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PawFund.Contract.DTOs.VolunteerApplicationDTOs.Request;
 using PawFund.Contract.Services.VolunteerApplicationDetail;
 using PawFund.Presentation.Abstractions;
 using System.Security.Claims;
@@ -18,11 +19,11 @@ namespace PawFund.Presentation.Controller.V1
         [HttpPost("create_volunteer_application", Name = "CreateVolunteerApplication")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateVolunteerApplication([FromBody] Command.FormRegisterVolunteerCommand form)
+        public async Task<IActionResult> CreateVolunteerApplication([FromBody] CreateVolunteerApplicationDTO form)
         {
             var userId = User.FindFirstValue("UserId");
 
-            var result = await Sender.Send(new Command.CreateVolunteerApplicationDetailCommand(form,Guid.Parse(userId)));
+            var result = await Sender.Send(new Command.CreateVolunteerApplicationDetailCommand(form.eventId,form.listActivity,form.description,Guid.Parse(userId)));
 
             if (result.IsFailure)
                 return HandlerFailure(result);

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PawFund.Contract.DTOs.VolunteerApplicationDTOs.Respone;
 
 namespace PawFund.Contract.Services.VolunteerApplicationDetail
 {
     public static class Respone
     {
-        public record VolunteerApplicationResponse(DTOs.VolunteerApplicationDTOs.GetVolunteerApplicationById.VolunteerApplicationDTO VolunteerApplicationDTO, DTOs.VolunteerApplicationDTOs.GetVolunteerApplicationById.AccountDTO AccountDTO);
+        public record VolunteerApplicationResponse(GetVolunteerApplicationById.VolunteerApplicationDTO VolunteerApplicationDTO, GetVolunteerApplicationById.AccountDTO AccountDTO);
     }
 }

@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static PawFund.Contract.DTOs.VolunteerApplicationDTOs.GetVolunteerApplicationById;
+using static PawFund.Contract.DTOs.VolunteerApplicationDTOs.Respone.GetVolunteerApplicationById;
 using static PawFund.Contract.Services.VolunteerApplicationDetail.Respone;
 
 namespace PawFund.Application.UseCases.V1.Queries.VolunteerApplication

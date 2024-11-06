@@ -28,29 +28,29 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
         public async Task<Result> Handle(Command.CreateVolunteerApplicationDetailCommand request, CancellationToken cancellationToken)
         {
             //check if event exist
-            var existEvent = await _eventRepository.FindByIdAsync(request.form.eventId, cancellationToken);
+            var existEvent = await _eventRepository.FindByIdAsync(request.eventId, cancellationToken);
             if (existEvent == null)
             {
-                throw new EventException.EventNotFoundException(request.form.eventId);
+                throw new EventException.EventNotFoundException(request.eventId);
             }
 
             //check if volunteer already regist to this event
-            var existApplication = await _dpUnitOfWork.VolunteerApplicationDetailRepository.CheckVolunteerApplicationExists(request.form.eventId, request.userId);
+            var existApplication = await _dpUnitOfWork.VolunteerApplicationDetailRepository.CheckVolunteerApplicationExists(request.eventId, request.userId);
             if (existApplication)
             {
                 throw new VolunteerApplicationException.VolunteerApplicationAlreadyRegistException();
             }
 
+            List<string> listActivity = request.listActivity;
 
-            var listActivity = request.form.listActivity.Split(',');
-            if (listActivity.Length > 2)
+            if (listActivity.Count > 2)
             {
                 throw new VolunteerApplicationException.VolunteerApplicationMaximumException();
             }
 
             foreach (var item in listActivity)
             {
-                var newVolunteerApplication = Domain.Entities.VolunteerApplicationDetail.createVolunteerApplication(VolunteerApplicationStatus.Pending, request.form.description, null, Guid.Parse(item), request.form.eventId, request.userId, DateTime.Now, DateTime.Now, false);
+                var newVolunteerApplication = Domain.Entities.VolunteerApplicationDetail.createVolunteerApplication(VolunteerApplicationStatus.Pending, request.description, null, Guid.Parse(item), request.eventId, request.userId, DateTime.Now, DateTime.Now, false);
                 _volunteerApplicationDetailRepository.Add(newVolunteerApplication);
                 await _efUnitOfWork.SaveChangesAsync();
             }

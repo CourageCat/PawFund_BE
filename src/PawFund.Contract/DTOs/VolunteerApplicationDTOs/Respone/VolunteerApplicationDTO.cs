@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PawFund.Contract.DTOs.VolunteerApplicationDTOs
+namespace PawFund.Contract.DTOs.VolunteerApplicationDTOs.Respone
 {
     public class VolunteerApplicationDTO
     {
