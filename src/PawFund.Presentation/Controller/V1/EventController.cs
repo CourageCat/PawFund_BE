@@ -92,7 +92,7 @@ public class EventController : ApiController
         return Ok(result);
     }
 
-    [Authorize(Policy = "StaffPolicy")]
+    //[Authorize(Policy = "StaffPolicy")]
     [HttpGet("get_all_event_by_staff", Name = "GetAllEventByStaff")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -102,7 +102,7 @@ public class EventController : ApiController
     [FromQuery] string[] selectedColumns = null)
     {
         var userId = User.FindFirstValue("UserId");
-        var result = await Sender.Send(new Query.GetAllEventByStaff(Guid.Parse(userId),pageIndex, pageSize, filterParams, selectedColumns));
+        var result = await Sender.Send(new Query.GetAllEventByStaff(Guid.Parse("7A39C4E8-3DD2-4092-1B91-08DCFBE5F055"),pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
 

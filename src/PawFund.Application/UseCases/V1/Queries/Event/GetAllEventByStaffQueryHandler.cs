@@ -16,10 +16,12 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
     public sealed class GetAllEventByStaffQueryHandler : IQueryHandler<Query.GetAllEventByStaff, Success<PagedResult<EventDTO>>>
     {
         private readonly IDPUnitOfWork _dpUnitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetAllEventByStaffQueryHandler(IDPUnitOfWork dpUnitOfWork)
+        public GetAllEventByStaffQueryHandler(IDPUnitOfWork dpUnitOfWork, IMapper mapper)
         {
             _dpUnitOfWork = dpUnitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<Success<PagedResult<EventDTO>>>> Handle(Query.GetAllEventByStaff request, CancellationToken cancellationToken)
@@ -36,32 +38,34 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
 
             if (result != null && result.Items != null && result.Items.Count > 0)
             {
-                var eventDtos = result.Items
-                    .Where(item => item != null)
-                    .Select(item => new EventDTO
-                    {
-                        Id = item.Id,
-                        Name = item.Name,
-                        StartDate = item.StartDate,
-                        EndDate = item.EndDate,
-                        Description = item.Description,
-                        Status = item.Status.ToString(),
-                        MaxAttendees = item.MaxAttendees,
-                        ImagesUrl = item.ImagesUrl,
-                        Branch = item.Branch != null ? new BranchEventDTO
-                        {
-                            Id = item.Branch.Id,
-                            Name = item.Branch.Name,
-                            PhoneNumberOfBranch = item.Branch.PhoneNumberOfBranch,
-                            Description = item.Branch.Description,
-                            EmailOfBranch = item.Branch.EmailOfBranch,
-                            NumberHome = item.Branch.NumberHome,
-                            StreetName = item.Branch.StreetName,
-                            Ward = item.Branch.Ward,
-                            District = item.Branch.District,
-                            Province = item.Branch.Province,
-                        } : null
-                     }).ToList();
+                //var eventDtos = result.Items
+                //    .Where(item => item != null)
+                //    .Select(item => new EventDTO
+                //    {
+                //        Id = item.Id,
+                //        Name = item.Name,
+                //        StartDate = item.StartDate,
+                //        EndDate = item.EndDate,
+                //        Description = item.Description,
+                //        Status = item.Status.ToString(),
+                //        MaxAttendees = item.MaxAttendees,
+                //        ImagesUrl = item.ImagesUrl,
+                //        Branch = item.Branch != null ? new BranchEventDTO
+                //        {
+                //            Id = item.Branch.Id,
+                //            Name = item.Branch.Name,
+                //            PhoneNumberOfBranch = item.Branch.PhoneNumberOfBranch,
+                //            Description = item.Branch.Description,
+                //            EmailOfBranch = item.Branch.EmailOfBranch,
+                //            NumberHome = item.Branch.NumberHome,
+                //            StreetName = item.Branch.StreetName,
+                //            Ward = item.Branch.Ward,
+                //            District = item.Branch.District,
+                //            Province = item.Branch.Province,
+                //        } : null
+                //     }).ToList();
+
+                var eventDtos = _mapper.Map<List<EventDTO>>(result.Items);
                 return Result.Success(new Success<PagedResult<EventDTO>>(
                     MessagesList.GetAllEventByStaffSuccess.GetMessage().Code,
                     MessagesList.GetAllEventByStaffSuccess.GetMessage().Message,
