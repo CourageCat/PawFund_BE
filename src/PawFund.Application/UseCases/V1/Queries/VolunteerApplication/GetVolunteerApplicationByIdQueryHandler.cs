@@ -22,11 +22,13 @@ namespace PawFund.Application.UseCases.V1.Queries.VolunteerApplication
     {
         private readonly IRepositoryBase<VolunteerApplicationDetail, Guid> _volunteerApplicationRepository;
         private readonly IDPUnitOfWork _dpUnitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetVolunteerApplicationByIdQueryHandler(IRepositoryBase<VolunteerApplicationDetail, Guid> volunteerApplicationRepository, IDPUnitOfWork dpUnitOfWork)
+        public GetVolunteerApplicationByIdQueryHandler(IRepositoryBase<VolunteerApplicationDetail, Guid> volunteerApplicationRepository, IDPUnitOfWork dpUnitOfWork, IMapper mapper)
         {
             _volunteerApplicationRepository = volunteerApplicationRepository;
             _dpUnitOfWork = dpUnitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<Success<VolunteerApplicationResponse>>> Handle(Query.GetVolunteerApplicationByIdQuery request, CancellationToken cancellationToken)
@@ -35,15 +37,15 @@ namespace PawFund.Application.UseCases.V1.Queries.VolunteerApplication
 
             if (volunteerApplication != null)
             {
-                VolunteerApplicationDTO volunteerApplicationDTO = new VolunteerApplicationDTO()
-                {
-                    Id = request.Id,
-                    Description = volunteerApplication.Description,
-                    Status = volunteerApplication.Status.ToString(),
-                    ReasonReject = volunteerApplication.ReasonReject,
-                    EventId = volunteerApplication.EventId,
-                    EventActivityId = volunteerApplication.EventActivityId,
-                };
+                //VolunteerApplicationDTO volunteerApplicationDTO = new VolunteerApplicationDTO()
+                //{
+                //    Id = request.Id,
+                //    Description = volunteerApplication.Description,
+                //    Status = volunteerApplication.Status.ToString(),
+                //    ReasonReject = volunteerApplication.ReasonReject,
+                //    EventId = volunteerApplication.EventId,
+                //    EventActivityId = volunteerApplication.EventActivityId,
+                //};
                 AccountDTO accountDTO = new AccountDTO()
                 {
                     Id = volunteerApplication.Account.Id,
@@ -52,6 +54,9 @@ namespace PawFund.Application.UseCases.V1.Queries.VolunteerApplication
                     LastName = volunteerApplication.Account.LastName,
                     PhoneNumber = volunteerApplication.Account.PhoneNumber,
                 };
+
+                VolunteerApplicationDTO volunteerApplicationDTO = _mapper.Map<VolunteerApplicationDTO>(volunteerApplication);
+
                 var result = new Respone.VolunteerApplicationResponse(volunteerApplicationDTO, accountDTO);
 
                 return Result.Success(new Success<Respone.VolunteerApplicationResponse>("", "", result));
