@@ -28,7 +28,7 @@ namespace PawFund.Application.UseCases.V1.Queries.VolunteerApplication
             var result = await _dpUnitOfWork.VolunteerApplicationDetailRepository
     .GetAllVolunteerAppicationByActivityIdAsync(request.Id, request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
 
-            if (result != null && result.Items != null)
+            if (result != null && result.Items != null && result.Items.Count > 0)
             {
                 var volunteerApplicationDto = result.Items
                     .Where(item => item != null) // Ensure item is not null
