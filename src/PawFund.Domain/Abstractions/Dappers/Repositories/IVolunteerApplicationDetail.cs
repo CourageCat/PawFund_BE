@@ -1,14 +1,16 @@
-﻿using PawFund.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.Enumarations.VolunteerApplication;
+using PawFund.Domain.Entities;
+using static PawFund.Contract.Services.VolunteerApplicationDetail.Filter;
 
 namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 
 public interface IVolunteerApplicationDetail : IGenericRepository<VolunteerApplicationDetail>
 {
     public Task<bool> CheckVolunteerApplicationExists(Guid eventId, Guid accountId);
+
+
+    Task<PagedResult<VolunteerApplicationDetail>> GetAllVolunteerAppicationByActivityIdAsync(Guid id ,int pageIndex, int pageSize, VolunteerApplicationFilter filterParams, string[] selectedColumns);
+
 }
 

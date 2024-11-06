@@ -26,5 +26,11 @@ namespace PawFund.Domain.Exceptions
             public VolunteerApplicationNotFoundException(Guid Id) : base(string.Format(MessagesList.VolunteerApplicationNotFound.GetMessage().Message, Id), MessagesList.VolunteerApplicationNotFound.GetMessage().Code)
             { }
         }
+
+        public class VolunteerApplicationNotFoundByActivityIdException : NotFoundException
+        {
+            public VolunteerApplicationNotFoundByActivityIdException(Guid Id) : base(string.Format(MessagesList.VolunteerApplicationNotFound.GetMessage().Message, Id), MessagesList.VolunteerApplicationNotFound.GetMessage().Code)
+            { }
+        }
     }
 }

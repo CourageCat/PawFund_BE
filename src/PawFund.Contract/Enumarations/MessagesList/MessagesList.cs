@@ -273,4 +273,10 @@ public enum MessagesList
 
     [Message("Can not find volunteer application detail with id: {0}", "volunteer_noti_exception_3")]
     VolunteerApplicationNotFound,
+
+    [Message("All volunteer application", "volunteer_application_noti_success_01")]
+    GetVolunteerApplicationSuccess,
+
+    [Message("Can not find any volunteer application", "volunteer_application_noti_exception_01")]
+    GetVolunteerApplicationException,
 }
