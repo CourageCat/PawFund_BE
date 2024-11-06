@@ -1,9 +1,4 @@
-﻿
-
-
-
-
-using AutoMapper;
+﻿using AutoMapper;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.DTOs.Account;

@@ -2,7 +2,7 @@
 
 namespace PawFund.Contract.Services.VolunteerApplicationDetail.Validators
 {
-    public class CreateVolunteerApplicationDetailValidator : AbstractValidator<Command.FormRegisterVolunteerCommand> 
+    public class CreateVolunteerApplicationDetailValidator : AbstractValidator<Command.CreateVolunteerApplicationDetailCommand> 
     {
         public CreateVolunteerApplicationDetailValidator()
         {

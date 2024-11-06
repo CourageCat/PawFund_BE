@@ -9,5 +9,6 @@ namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 
 public interface IVolunteerApplicationDetail : IGenericRepository<VolunteerApplicationDetail>
 {
+    public Task<bool> CheckVolunteerApplicationExists(Guid eventId, Guid accountId);
 }
 

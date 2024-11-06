@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PawFund.Contract.DTOs.VolunteerApplicationDTOs.Request;
 using PawFund.Contract.Services.VolunteerApplicationDetail;
 using PawFund.Presentation.Abstractions;
 using System.Security.Claims;
@@ -14,15 +15,15 @@ namespace PawFund.Presentation.Controller.V1
         {
         }
 
-        [Authorize]
+        [Authorize(Policy = "Member")]
         [HttpPost("create_volunteer_application", Name = "CreateVolunteerApplication")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateVolunteerApplication([FromBody] Command.FormRegisterVolunteerCommand form)
+        public async Task<IActionResult> CreateVolunteerApplication([FromBody] CreateVolunteerApplicationDTO form)
         {
             var userId = User.FindFirstValue("UserId");
 
-            var result = await Sender.Send(new Command.CreateVolunteerApplicationDetailCommand(form,Guid.Parse(userId)));
+            var result = await Sender.Send(new Command.CreateVolunteerApplicationDetailCommand(form.eventId,form.listActivity,form.description,Guid.Parse(userId)));
 
             if (result.IsFailure)
                 return HandlerFailure(result);
@@ -46,6 +47,17 @@ namespace PawFund.Presentation.Controller.V1
         public async Task<IActionResult> RejectVolunteerApplication([FromBody] Command.RejectVolunteerApplicationCommand reject)
         {
             var result = await Sender.Send(reject);
+            if (result.IsFailure)
+                return HandlerFailure(result);
+            return Ok(result);
+        }
+
+        [HttpGet("get_volunteer_application_by_id", Name = "GetVolunteerApplicationByIdCommand")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetVolunteerApplicationById([FromQuery] Guid id)
+        {
+            var result = await Sender.Send(new Query.GetVolunteerApplicationByIdQuery(id));
             if (result.IsFailure)
                 return HandlerFailure(result);
             return Ok(result);

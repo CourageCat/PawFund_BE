@@ -255,4 +255,22 @@ public enum MessagesList
 
     [Message("Your account has been banned", "account_ban_01")]
     AccountBanned,
+
+    [Message("Can not found event activity with ID: {0}", "event_activity_noti_exception_1")]
+    EventActivityNotFoundException,
+
+    [Message("Can not find event with id: {0}", "event_noti_exception_1")]
+    EventNotFoundException,
+
+    [Message("Maximum activity you can choose is 2","volunteer_noti_exception_1")]
+    VolunteerApplicationMaximumException,
+
+    [Message("You already regist to this event by volunteer role", "volunteer_noti_exception_2")]
+    VolunteerApplicationAlreadyRegistException,
+
+    [Message("Get volunteer application by id success", "volunteer_noti_success_1")]
+    GetVolunteerApplicationByIdSuccess,
+
+    [Message("Can not find volunteer application detail with id: {0}", "volunteer_noti_exception_3")]
+    VolunteerApplicationNotFound,
 }

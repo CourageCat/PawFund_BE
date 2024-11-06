@@ -8,7 +8,7 @@ using static PawFund.Contract.DTOs.Event.GetEventByIdDTO;
 
 namespace PawFund.Application.UseCases.V1.Queries.Event
 {
-    public class GetEventByIdQueryHandler : IQueryHandler<Query.GetEventByIdQuery, Success<Respone.EventResponse>>
+    public sealed class GetEventByIdQueryHandler : IQueryHandler<Query.GetEventByIdQuery, Success<Respone.EventResponse>>
     {
         private readonly IDPUnitOfWork _dPUnitOfWork;
         public GetEventByIdQueryHandler(IDPUnitOfWork dPUnitOfWork)
