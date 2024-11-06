@@ -101,20 +101,22 @@ WHERE EventId = @EventId AND AccountId = @AccountId";
         {
             // Define the valid columns for selection
             var validColumns = new HashSet<string>
-        {
-            "vad.Id", "vad.Status", "vad.Description", "vad.ReasonReject", "vad.EventId",
-            "vad.EventActivityId", "vad.AccountId", "vad.CreatedDate", "vad.ModifiedDate", "vad.IsDeleted"
-        };
+    {
+        "vad.Id", "vad.Status", "vad.Description", "vad.ReasonReject", "vad.EventId",
+        "vad.EventActivityId", "vad.AccountId", "vad.CreatedDate", "vad.ModifiedDate", "vad.IsDeleted",
+        "acc.Id AS AccountId", "acc.FirstName", "acc.LastName", "acc.Email", "acc.PhoneNumber"
+    };
 
             // Select columns based on user input or use all valid columns by default
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
             var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : string.Join(", ", validColumns);
 
-            // Build the main query with filtering by EventActivityId
+            // Build the main query with filtering by EventActivityId and joining the Account table
             var queryBuilder = new StringBuilder($@"
-            SELECT {selectedColumnsString}
-            FROM VolunteerApplicationDetails vad
-            WHERE vad.EventActivityId = @EventActivityId");
+    SELECT {selectedColumnsString}
+    FROM VolunteerApplicationDetails vad
+    LEFT JOIN Accounts acc ON vad.AccountId = acc.Id
+    WHERE vad.EventActivityId = @EventActivityId");
 
             var parameters = new DynamicParameters();
             parameters.Add("EventActivityId", id);
@@ -125,9 +127,9 @@ WHERE EventId = @EventId AND AccountId = @AccountId";
 
             // Build the query to count total records matching the filter
             var totalCountQuery = new StringBuilder($@"
-            SELECT COUNT(1)
-            FROM VolunteerApplicationDetails vad
-            WHERE vad.EventActivityId = @EventActivityId");
+    SELECT COUNT(1)
+    FROM VolunteerApplicationDetails vad
+    WHERE vad.EventActivityId = @EventActivityId");
 
             // Optional filter for Status if provided
             if (filterParams.Status.HasValue)
@@ -147,15 +149,22 @@ WHERE EventId = @EventId AND AccountId = @AccountId";
             var offset = (pageIndex - 1) * pageSize;
             var paginatedQuery = $"{queryBuilder} ORDER BY vad.CreatedDate {(filterParams.IsAscCreatedDate ? "ASC" : "DESC")} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY";
 
-            // Fetch paginated data
-            var items = (await connection.QueryAsync<VolunteerApplicationDetail>(
+            // Fetch paginated data with mapping for complex objects
+            var items = (await connection.QueryAsync<VolunteerApplicationDetail, Account, VolunteerApplicationDetail>(
                 paginatedQuery,
-                parameters
+                (vad, acc) =>
+                {
+                    vad.Account = acc;
+                    return vad;
+                },
+                parameters,
+                splitOn: "AccountId"
             )).ToList();
 
             // Return the paginated result
             return new PagedResult<VolunteerApplicationDetail>(items, pageIndex, pageSize, totalCount, totalPages);
         }
+
     }
 }
 
