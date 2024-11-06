@@ -23,13 +23,13 @@ public class Account : DomainEntity<Guid>
         string fullAvatarUrl,
         string fullAvatarId,
         LoginType loginType,
-        RoleType roleId)
+        RoleType roleId
+        )
     {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         PhoneNumber = phoneNumber;
-        Status = status;
         Password = password;
         Gender = gender;
         CropAvatarUrl = cropAvatarUrl;
@@ -38,6 +38,7 @@ public class Account : DomainEntity<Guid>
         FullAvatarId = fullAvatarId;
         LoginType = loginType;
         RoleId = roleId;
+        IsDeleted = false;
     }
 
     public Account
@@ -61,7 +62,6 @@ public class Account : DomainEntity<Guid>
         LastName = lastName;
         Email = email;
         PhoneNumber = phoneNumber;
-        Status = status;
         Password = password;
         Gender = gender;
         CropAvatarUrl = cropAvatarUrl;
@@ -70,13 +70,13 @@ public class Account : DomainEntity<Guid>
         FullAvatarId = fullAvatarId;
         LoginType = loginType;
         RoleId = roleId;
+        IsDeleted = false;
     }
 
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
-    public bool Status { get; set; } = false;
     public LoginType LoginType { get; set; }
     public string Password { get; set; } = string.Empty;
     public GenderType Gender { get; set; }
@@ -103,6 +103,7 @@ public class Account : DomainEntity<Guid>
         string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
         return new Account(firstName, lastName, email, phoneNumber, false, password, gender, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Member);
     }
+
 
     public static Account CreateMemberAccountGoogle
         (string firstName, string lastName, string email, GenderType gender)
@@ -163,5 +164,10 @@ public class Account : DomainEntity<Guid>
     public void UpdatePassword(string password)
     {
         Password = password;
+    }
+
+    public void ChangeUserIsDelete(bool isDelete)
+    {
+        IsDeleted = isDelete;
     }
 }

@@ -3,15 +3,10 @@ using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Services.Admins;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PawFund.Domain.Entities;
 using PawFund.Contract.Shared;
 using PawFund.Contract.Services.Admin;
 using PawFund.Domain.Exceptions;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Commands.Admin
 {
@@ -33,15 +28,15 @@ namespace PawFund.Application.UseCases.V1.Commands.Admin
             var user = await _adminRepository.FindByIdAsync(request.Id, cancellationToken);
             if (user == null)
             {
-                return Result.Failure(Error.NullValue);
+                throw new AccountException.AccountNotFoundException();
             }
 
-            if (!user.Status)
+            if (!user.IsDeleted == false)
             {
                 throw new UserException.UserHasAlreadyUnbannedException();
             }
 
-            user.Status = false;
+            user.ChangeUserIsDelete(false);
             _adminRepository.Update(user);
             await _unitOfWork.SaveChangesAsync();
 
@@ -50,8 +45,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Admin
                _publisher.Publish(new DomainEvent.UserUnBan(Guid.NewGuid(), user.Email), cancellationToken)
            );
 
-
-            return Result.Success("UnBan User Successfully");
+            return Result.Success(new Success(MessagesList.UnbanUserSuccess.GetMessage().Code, MessagesList.UnbanUserSuccess.GetMessage().Message));
         }
     }
 }

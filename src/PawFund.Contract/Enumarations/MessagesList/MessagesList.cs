@@ -241,6 +241,21 @@ public enum MessagesList
     [Message("Create cash donation successfully", "donate_noti_success_01")]
     CreateDonateCashSuccess,
 
+    [Message("Ban user successfully", "ban_noti_01")]
+    BanUserSuccess,
+
+    [Message("Unban user successfully", "unban_noti_01")]
+    UnbanUserSuccess,
+
+    [Message("Can not find any user", "user_noti_exception_01")]
+    UserEmptyUsersException,
+
+    [Message("All User", "user_noti_success_02")]
+    GetUsersSuccess,
+
+    [Message("Your account has been banned", "account_ban_01")]
+    AccountBanned,
+
     [Message("Can not found event activity with ID: {0}", "event_activity_noti_exception_1")]
     EventActivityNotFoundException,
 

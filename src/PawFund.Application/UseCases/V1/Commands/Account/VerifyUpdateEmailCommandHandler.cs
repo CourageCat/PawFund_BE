@@ -15,18 +15,15 @@ public sealed class VerifyUpdateEmailCommandHandler : ICommandHandler<Command.Ve
 {
     private readonly IResponseCacheService _responseCacheService;
     private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
-    private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IEFUnitOfWork _efUnitOfWork;
 
     public VerifyUpdateEmailCommandHandler
         (IResponseCacheService responseCacheService,
         IRepositoryBase<Domain.Entities.Account, Guid> accountRepository,
-        IDPUnitOfWork dpUnitOfWork,
         IEFUnitOfWork efUnitOfWork)
     {
         _responseCacheService = responseCacheService;
         _accountRepository = accountRepository;
-        _dpUnitOfWork = dpUnitOfWork;
         _efUnitOfWork = efUnitOfWork;
     }
 

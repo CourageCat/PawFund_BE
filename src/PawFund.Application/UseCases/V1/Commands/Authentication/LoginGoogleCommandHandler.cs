@@ -5,7 +5,6 @@ using PawFund.Contract.Services.Authentications;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
-using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Contract.Enumarations.Authentication;
 using static PawFund.Domain.Exceptions.AuthenticationException;
 
@@ -16,7 +15,6 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
     private readonly IGoogleOAuthService _googleOAuthService;
     private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IEFUnitOfWork _efUnitOfWork;
-    private readonly IRepositoryBase<Domain.Entities.Account, Guid> _accountRepository;
     private readonly IPublisher _publisher;
     private readonly ITokenGeneratorService _tokenGeneratorService;
 
@@ -24,14 +22,12 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
         (IGoogleOAuthService googleOAuthService,
         IDPUnitOfWork dPUnitOfWork,
         IEFUnitOfWork efUnitOfWork,
-        IRepositoryBase<Domain.Entities.Account, Guid> accountRepository,
         IPublisher publisher,
         ITokenGeneratorService tokenGeneratorService)
     {
         _googleOAuthService = googleOAuthService;
         _dpUnitOfWork = dPUnitOfWork;
         _efUnitOfWork = efUnitOfWork;
-        _accountRepository = accountRepository;
         _publisher = publisher;
         _tokenGeneratorService = tokenGeneratorService;
     }
@@ -50,8 +46,7 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
             // Create object account member
             var accountMember = Domain.Entities.Account.CreateMemberAccountGoogle
                 (googleUserInfo.Name, googleUserInfo.Name, googleUserInfo.Email, GenderType.Male);
-            _accountRepository.Add(accountMember);
-
+            _efUnitOfWork.AccountRepository.Add(accountMember);
             // Save account
             await _efUnitOfWork.SaveChangesAsync();
             // Send mail when created success
@@ -79,6 +74,9 @@ public sealed class LoginGoogleCommandHandler : ICommandHandler<Command.LoginGoo
         {
             // If have account, check account not type Google
             if (account.LoginType != LoginType.Google) throw new AccountRegisteredAnotherMethodException();
+
+            // If account banned
+            if (account.IsDeleted == true) throw new AccountBanned();
 
             // Generate accessToken and refreshToken
             var accessToken = _tokenGeneratorService.GenerateAccessToken(account.Id, (int)account.RoleId);

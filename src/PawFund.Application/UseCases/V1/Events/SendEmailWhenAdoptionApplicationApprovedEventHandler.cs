@@ -27,7 +27,7 @@ public class SendEmailWhenAdoptionApplicationApprovedEventHandler
                     "EmailAdoptApplicationApproved.html", new Dictionary<string, string> {
                     { "ToEmail", notification.Email},
                     {"CatName", notification.CatName },
-                    {"Link", $"https://www.google.com"}
+                    {"Link", $"http://localhost:3000/choosemeetingtime/{notification.Id}"}
                      });
     }
 

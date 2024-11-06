@@ -42,6 +42,7 @@ public sealed class CompleteAdoptionCommandHandler : ICommandHandler<Command.Com
         }
         //Update Status for Application
         applicationFound.Status = AdoptPetApplicationStatus.ApprovedAndCompleted;
+        applicationFound.Cat.IsDeleted = true;
         _adoptPetApplicationRepository.Update(applicationFound);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         //Send email to Adopter Completed

@@ -20,9 +20,9 @@ namespace PawFund.Application.UseCases.V1.Commands.Donate
     {
         private readonly IEFUnitOfWork _efUnitOfWork;
         private readonly IRepositoryBase<Donation, Guid> _donationRepository;
-        private readonly IAccountRepository _accountRepository;
+        private readonly Domain.Abstractions.Dappers.Repositories.IAccountRepository _accountRepository;
 
-        public CreateDonationCashCommand(IEFUnitOfWork efUnitOfWork, IRepositoryBase<Donation, Guid> donationRepository, IAccountRepository accountRepository)
+        public CreateDonationCashCommand(IEFUnitOfWork efUnitOfWork, IRepositoryBase<Donation, Guid> donationRepository, Domain.Abstractions.Dappers.Repositories.IAccountRepository accountRepository)
         {
             _efUnitOfWork = efUnitOfWork;
             _donationRepository = donationRepository;

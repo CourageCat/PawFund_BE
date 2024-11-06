@@ -32,8 +32,23 @@ public static class ServiceCollectionExtensions
 
     public static void AddRepositoryBaseConfiguration(this IServiceCollection services)
     {
-        services.AddTransient(typeof(IEFUnitOfWork), typeof(EFUnitOfWork));
-        services.AddTransient(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>));
+        services
+            .AddTransient(typeof(IEFUnitOfWork), typeof(EFUnitOfWork))
+            .AddTransient(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>))
+            .AddTransient<IAccountRepository, AccountRepository>()
+            .AddTransient<IAdoptRepository, AdoptRepository>()
+            .AddTransient<ICatRepository, CatRepository>()
+            .AddTransient<IBranchRepository, BranchRepository>()
+            .AddTransient<IEventActivityRepository, EventActivityRepository>()
+            .AddTransient<IEventRepository, EventRepository>()
+            .AddTransient<IHistoryCatRepository, HistoryCatRepository>()
+            .AddTransient<IVolunteerApplicationDetail, VolunteerApplicationDetail>()
+            .AddTransient<IProductRepository, ProductRepository>()
+            .AddTransient<IDonationRepository, DonationRepository>()
+            .AddTransient<IChatHistoryRepository, ChatHistoryRepository>()
+            .AddTransient<IMessageRepository, MessageRepository>()
+            .AddTransient<IImageCatRepository, ImageCatRepository>();
+
     }
 
     public static OptionsBuilder<SqlServerRetryOptions> ConfigureSqlServerRetryOptions
