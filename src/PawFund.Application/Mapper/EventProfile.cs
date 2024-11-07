@@ -10,9 +10,9 @@ public class EventProfile : Profile
     {
 
         {
-            CreateMap<Event, GetEventByIdDTO.EventDTO>();
-            CreateMap<Branch, GetEventByIdDTO.BranchDTO>();
-            CreateMap<Event, EventDTO>();
+            CreateMap<Event, EventForUserDTO.EventDTO>();
+            CreateMap<Branch, EventForUserDTO.BranchDTO>();
+            CreateMap<Event, EventForAdminStaffDTO>();
         }
     }
 }

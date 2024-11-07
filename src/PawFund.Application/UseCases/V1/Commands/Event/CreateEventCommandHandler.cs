@@ -8,6 +8,8 @@ using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Exceptions;
+using PawFund.Persistence;
+using static PawFund.Domain.Exceptions.EventException;
 
 namespace PawFund.Application.UseCases.V1.Commands.Event;
 
@@ -24,6 +26,11 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
 
     public async Task<Result> Handle(Command.CreateEventCommand request, CancellationToken cancellationToken)
     {
+        if(request.StartDate >= request.EndDate)
+        {
+            throw new EventDateException();
+        }
+
         //check branch for event
         var branch = await _efUnitOfWork.BranchRepository.FindByIdAsync(request.BranchId);
 
@@ -31,8 +38,9 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
 
         if (branch != null || branch.IsDeleted != true)
         {
+            List<string> nullReason = new List<string>();
             //create new event
-            var newEvent = Domain.Entities.Event.CreateEvent(request.Name, request.StartDate, request.EndDate, request.Description, request.MaxAttendees, request.BranchId, uploadImages[0].ImageUrl, uploadImages[0].PublicImageId, uploadImages[1].ImageUrl, uploadImages[1].PublicImageId, DateTime.Now, DateTime.Now, false);
+            var newEvent = Domain.Entities.Event.CreateEvent(request.Name, request.StartDate, request.EndDate, request.Description, request.MaxAttendees, request.BranchId, uploadImages[0].ImageUrl, uploadImages[0].PublicImageId, uploadImages[1].ImageUrl, uploadImages[1].PublicImageId, DateTime.Now, DateTime.Now, false, null);
             newEvent.Status = Contract.Enumarations.Event.EventStatus.NotApproved;
             _efUnitOfWork.EventRepository.Add(newEvent);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);

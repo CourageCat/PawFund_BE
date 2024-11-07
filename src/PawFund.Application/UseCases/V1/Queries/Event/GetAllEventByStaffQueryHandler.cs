@@ -13,7 +13,7 @@ using static PawFund.Domain.Exceptions.EventException;
 
 namespace PawFund.Application.UseCases.V1.Queries.Event
 {
-    public sealed class GetAllEventByStaffQueryHandler : IQueryHandler<Query.GetAllEventByStaff, Success<PagedResult<EventDTO>>>
+    public sealed class GetAllEventByStaffQueryHandler : IQueryHandler<Query.GetAllEventByStaff, Success<PagedResult<EventForAdminStaffDTO>>>
     {
         private readonly IDPUnitOfWork _dpUnitOfWork;
         private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
             _mapper = mapper;
         }
 
-        public async Task<Result<Success<PagedResult<EventDTO>>>> Handle(Query.GetAllEventByStaff request, CancellationToken cancellationToken)
+        public async Task<Result<Success<PagedResult<EventForAdminStaffDTO>>>> Handle(Query.GetAllEventByStaff request, CancellationToken cancellationToken)
         {
             //get all branchId from accountId and check
             List<Guid> listBranchId = await _dpUnitOfWork.BranchRepositories.GetAllBranchByAccountId(request.staffId);
@@ -65,11 +65,11 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
                 //        } : null
                 //     }).ToList();
 
-                var eventDtos = _mapper.Map<List<EventDTO>>(result.Items);
-                return Result.Success(new Success<PagedResult<EventDTO>>(
+                var eventDtos = _mapper.Map<List<EventForAdminStaffDTO>>(result.Items);
+                return Result.Success(new Success<PagedResult<EventForAdminStaffDTO>>(
                     MessagesList.GetAllEventByStaffSuccess.GetMessage().Code,
                     MessagesList.GetAllEventByStaffSuccess.GetMessage().Message,
-                    new PagedResult<EventDTO>(eventDtos, result.PageIndex, result.PageSize, result.TotalCount, result.TotalPages)
+                    new PagedResult<EventForAdminStaffDTO>(eventDtos, result.PageIndex, result.PageSize, result.TotalCount, result.TotalPages)
                 ));
             }
             else
