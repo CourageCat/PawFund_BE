@@ -1,7 +1,7 @@
 ﻿
 namespace PawFund.Contract.DTOs.Event
 {
-    public class GetEventByIdDTO
+    public class EventForUserDTO
     {
 
         public class EventDTO
@@ -15,6 +15,7 @@ namespace PawFund.Contract.DTOs.Event
             public string Status { get; set; }
             public string? ThumbHeroUrl { get; set; }
             public string? ImagesUrl { get; set; }
+            public BranchDTO Branch { get; set; }
 
         }
 

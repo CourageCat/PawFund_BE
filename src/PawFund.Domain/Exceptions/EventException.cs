@@ -26,5 +26,11 @@ namespace PawFund.Domain.Exceptions
             public EventDateException() : base(MessagesList.CreateEventDateException.GetMessage().Message, MessagesList.CreateEventDateException.GetMessage().Code)
             { }
         }
+
+        public class EventNotFoundByAdminException : NotFoundException
+        {
+            public EventNotFoundByAdminException() : base((MessagesList.EventNotFoundByAdminException.GetMessage().Message), MessagesList.EventNotFoundByAdminException.GetMessage().Code)
+            { }
+        }
     }
 }

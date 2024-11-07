@@ -80,12 +80,17 @@ public class EventController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("get_all_event_not_approved", Name = "GetAllEventNotApproved")]
+    //[Authorize(Policy = "Admin")]
+    [HttpGet("get_all_event_by_admin", Name = "GetAllEventByAdmin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllEventNotApproved()
+    public async Task<IActionResult> GetAllEventNotApproved([FromQuery] Guid? StaffId,
+    [FromQuery] EventFilter filterParams,
+    [FromQuery] int pageIndex = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string[] selectedColumns = null)
     {
-        var result = await Sender.Send(new Query.GetAllEventNotApproved());
+        var result = await Sender.Send(new Query.GetAllEventByAdmin(StaffId, pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
 
