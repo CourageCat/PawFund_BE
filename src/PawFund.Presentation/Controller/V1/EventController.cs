@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 using PawFund.Contract.Services.Event;
 using PawFund.Presentation.Abstractions;
 using System.Security.Claims;
-using static PawFund.Contract.Services.AdoptApplications.Filter;
 using static PawFund.Contract.Services.Event.Filter;
 
 namespace PawFund.Presentation.Controller.V1;

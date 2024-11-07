@@ -6,7 +6,6 @@ using PawFund.Contract.Services.Cats;
 using PawFund.Presentation.Abstractions;
 using System.Security.Claims;
 using static PawFund.Contract.Services.Cats.Filter;
-using static PawFund.Contract.Services.Products.Filter;
 
 namespace PawFund.Presentation.Controller.V1;
 public class CatController : ApiController
