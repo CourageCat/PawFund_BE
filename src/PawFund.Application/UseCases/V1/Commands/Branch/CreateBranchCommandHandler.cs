@@ -40,7 +40,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Branch
 
         public async Task<Result> Handle(Command.CreateBranchCommand request, CancellationToken cancellationToken)
         {
-            var staffAccountCreated = Domain.Entities.Account.CreateStaffAccount(_passwordHashService.HashPassword(_configuration["AccountStaffAssistant:Password"]), request.Name);
+            var staffAccountCreated = Domain.Entities.Account.CreateStaffAccount(_passwordHashService.HashPassword(_configuration["AccountStaffAssistant:Password"]), request.EmailOfBranch, request.Name);
             _accountRepository.Add(staffAccountCreated);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
             ImageDTO imageCreate = new ImageDTO();
