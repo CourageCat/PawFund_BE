@@ -13,10 +13,11 @@ namespace PawFund.Contract.Services.Admin
 {
     public static class Query
     {
-       // public record GetUsersQueryHandler(int PageIndex,
-       //int PageSize,
-       //Filter.AccountsDonateFilter FilterParams,
-       //string[] SelectedColumns)
-       //: IQuery<Success<PagedResult<UsersResponse>>>;
+        // public record GetUsersQueryHandler(int PageIndex,
+        //int PageSize,
+        //Filter.AccountsDonateFilter FilterParams,
+        //string[] SelectedColumns)
+        //: IQuery<Success<PagedResult<UsersResponse>>>;
+        public record GetDashboardQuery(int Year) : IQuery<Success<DashboardResponse>>;
     }
 }
