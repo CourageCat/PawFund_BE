@@ -24,15 +24,6 @@ namespace PawFund.Application.UseCases.V1.Queries.EventActivity
             var existActivity = await _dPUnitOfWork.EventActivityRepositories.GetByIdAsync(request.Id);
             if (existActivity != null)
             {
-                ActivityDTO activityDTO = new ActivityDTO()
-                {
-                    Id = request.Id,
-                    Description = existActivity.Description,
-                    Name = existActivity.Name,
-                    Quantity = existActivity.Quantity,
-                    StartDate = existActivity.StartDate,
-                    Status = existActivity.Status
-                };
                 GetEventActivityByIdDTO.EventDTO eventDTO = new GetEventActivityByIdDTO.EventDTO()
                 {
                     Id = existActivity.Event.Id,
@@ -43,7 +34,18 @@ namespace PawFund.Application.UseCases.V1.Queries.EventActivity
                     MaxAttendees = existActivity.Event.MaxAttendees,
                     Status = existActivity.Event.Status.ToString()
                 };
-                var result = new Respone.EventActivityResponse(activityDTO, eventDTO);
+                ActivityDTO activityDTO = new ActivityDTO()
+                {
+                    Id = request.Id,
+                    Description = existActivity.Description,
+                    Name = existActivity.Name,
+                    Quantity = existActivity.Quantity,
+                    StartDate = existActivity.StartDate,
+                    Status = existActivity.Status,
+                    Event = eventDTO,
+                };
+                
+                var result = new Respone.EventActivityResponse(activityDTO);
                 return Result.Success(new Success<Respone.EventActivityResponse>(MessagesList.GetEventActivityByIdSuccess.GetMessage().Code, MessagesList.GetEventActivityByIdSuccess.GetMessage().Message, result));
             }
             else

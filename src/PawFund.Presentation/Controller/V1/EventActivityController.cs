@@ -8,8 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static PawFund.Contract.Services.AdoptApplications.Filter;
-using static PawFund.Contract.Services.VolunteerApplicationDetail.Filter;
+using static PawFund.Contract.Services.EventActivity.Filter;
 
 namespace PawFund.Presentation.Controller.V1
 {
@@ -67,12 +66,16 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet(Name = "GetAllEventActivityByEventId")]
+        [HttpGet("get_event_activities_by_eventId",Name = "GetAllEventActivityByEventId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAllEvent([FromQuery] Guid id)
+        public async Task<IActionResult> GetAllEvent([FromQuery] Guid EventId,
+        [FromQuery] EventActivityFilter filterParams,
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string[] selectedColumns = null)
         {
-            var result = await Sender.Send(new Query.GetAllEventActivity(id));
+            var result = await Sender.Send(new Query.GetAllEventActivity(EventId, pageIndex, pageSize, filterParams, selectedColumns));
             if (result.IsFailure)
                 return HandlerFailure(result);
 

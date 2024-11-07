@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using PawFund.Contract.Enumarations.Event;
 
 namespace PawFund.Contract.Services.EventActivity
 {
-    internal class Filter
+    public class Filter
     {
+        public record EventActivityFilter(string? Name, bool? Status, bool IsAscCreatedDate);
     }
 }

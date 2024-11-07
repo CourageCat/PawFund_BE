@@ -17,14 +17,14 @@ public class EventController : ApiController
     {
     }
 
-    //[Authorize(Policy = "StaffPolicy")]
+    [Authorize(Policy = "StaffPolicy")]
     [HttpPost("create_event", Name = "CreateEvent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateEvents([FromForm] CreateEventFormDTO form)
     {
         var userId = User.FindFirstValue("UserId");
-        var result = await Sender.Send(new Command.CreateEventCommand(Guid.Parse("009C1C93-315D-4B18-BB4A-08DCFF488BBB"), form.Name, form.StartDate, form.EndDate, form.Description, form.MaxAttendees, form.ThumbHeroUrl, form.ImagesUrl));
+        var result = await Sender.Send(new Command.CreateEventCommand(Guid.Parse(userId), form.Name, form.StartDate, form.EndDate, form.Description, form.MaxAttendees, form.ThumbHeroUrl, form.ImagesUrl));
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -119,7 +119,7 @@ public class EventController : ApiController
         return Ok(result);
     }
 
-    //[Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPut("approved_by_admin", Name = "ApprovedEventByAdmin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
