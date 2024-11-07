@@ -134,10 +134,10 @@ public class Account : DomainEntity<Guid>
     }
 
     public static Account CreateStaffAccount
-       (string password, string branchName)
+       (string password, string emailOfBranch, string branchName)
     {
         string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
-        return new Account(Guid.NewGuid(), "Staff", $"{branchName}", $"{branchName.ToLower().Replace(" ", "")}staff@pawfund.com", "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Staff);
+        return new Account(Guid.NewGuid(), "Staff", $"{branchName}", $"{emailOfBranch.ToLower().Substring(0, emailOfBranch.IndexOf("@"))}staff@pawfund.com", "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Staff);
     }
 
     public void UpdateAvatarProfileUser(string cropAvatarUrl, string cropAvatarId, string fullAvatarUrl, string fullAvatarId)
