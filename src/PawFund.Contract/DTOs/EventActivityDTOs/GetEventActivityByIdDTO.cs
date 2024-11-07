@@ -11,6 +11,7 @@ public class GetEventActivityByIdDTO
         public DateTime StartDate { get; set; }
         public string Description { get; set; } = string.Empty;
         public bool Status { get; set; } = false;
+        public EventDTO Event { get; set; }
     }
     public class EventDTO
     {

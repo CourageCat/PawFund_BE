@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PawFund.Contract.DTOs.Event;
+using PawFund.Contract.DTOs.EventDTOs.Respone;
 using PawFund.Domain.Entities;
 
 namespace PawFund.Application.Mapper;

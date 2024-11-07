@@ -13,8 +13,6 @@ namespace PawFund.Application.Mapper
             {
                 CreateMap<EventActivity, GetEventActivityByIdDTO.ActivityDTO>();
                 CreateMap<Event, GetEventActivityByIdDTO.EventDTO>();
-                CreateMap<GetEventActivityByIdDTO.ActivityDTO, EventActivityResponse>()
-                    .ConstructUsing(src => new EventActivityResponse(src, new GetEventActivityByIdDTO.EventDTO()));
             }
         }
     }

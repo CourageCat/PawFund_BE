@@ -1,5 +1,4 @@
-﻿
-namespace PawFund.Contract.DTOs.Event
+﻿namespace PawFund.Contract.DTOs.EventDTOs.Respone
 {
     public class EventForUserDTO
     {

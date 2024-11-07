@@ -303,11 +303,25 @@ public class AdoptRepository : IAdoptRepository
                     adoptPetApplication.Cat = cat;
                     return adoptPetApplication;
                 },
-                new {CatId = catId ,
-                    AdoptId = adoptId},
+                new
+                {
+                    CatId = catId,
+                    AdoptId = adoptId
+                },
                 splitOn: "IsAdoptDeleted,IsAccountDeleted"
             );
 
+            return result;
+        }
+    }
+
+    public async Task<int> CountAllAdoptApplications()
+    {
+        var sql = "SELECT COUNT(*) FROM AdoptPetApplications";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.ExecuteScalarAsync<int>(sql);
             return result;
         }
     }

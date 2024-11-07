@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static PawFund.Contract.DTOs.Event.EventForUserDTO;
+using static PawFund.Contract.DTOs.EventDTOs.Respone.EventForUserDTO;
 using static PawFund.Contract.Services.Event.Filter;
 using static PawFund.Contract.Services.Event.Respone;
 
@@ -28,6 +28,17 @@ public class EventRepository : IEventRepository
     public Task<int> AddAsync(Event entity)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<int> CountAllEvents()
+    {
+        var sql = "SELECT COUNT(*) FROM Events";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.ExecuteScalarAsync<int>(sql);
+            return result;
+        }
     }
 
     public Task<int> DeleteAsync(Event entity)
@@ -69,7 +80,7 @@ JOIN Branchs b ON b.Id = e.BranchId";
         {
             var validColumns = new HashSet<string>
         {
-            "e.Id", "e.Name", "e.StartDate", "e.EndDate", "e.Description", "e.MaxAttendees", "e.ReasonReject", 
+            "e.Id", "e.Name", "e.StartDate", "e.EndDate", "e.Description", "e.MaxAttendees", "e.ReasonReject",
             "e.ImagesUrl", "e.Status", // Thêm Status từ bảng Events
             "b.Id", "b.Name", "b.PhoneNumberOfBranch", "b.EmailOfBranch",
             "b.Description", "b.NumberHome", "b.StreetName", "b.Ward", "b.District", "b.Province"
