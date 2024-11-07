@@ -16,12 +16,17 @@ namespace PawFund.Application.UseCases.V1.Commands.Event;
 
 public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEventCommand>
 {
+    private readonly IRepositoryBase<PawFund.Domain.Entities.Branch, Guid> _branchRepository;
+    private readonly IRepositoryBase<PawFund.Domain.Entities.Event, Guid> _eventRepository;
     private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IDPUnitOfWork _dPUnitOfWork;
     private readonly IMediaService _mediaService;
 
+    public CreateEventCommandHandler(IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository, IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dPUnitOfWork, IMediaService mediaService)
     public CreateEventCommandHandler(IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dPUnitOfWork, IMediaService mediaService)
     {
+        _branchRepository = branchRepository;
+        _eventRepository = eventRepository;
         _efUnitOfWork = efUnitOfWork;
         _dPUnitOfWork = dPUnitOfWork;
         _mediaService = mediaService;
@@ -35,6 +40,17 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
         }
 
         //check branch for event
+        var branchId = await _dPUnitOfWork.BranchRepositories.GetAllBranchByAccountId(request.userId);
+
+        Domain.Entities.Branch branch;
+        if (branchId.Count != 0)
+        {
+            branch = await _branchRepository.FindByIdAsync(branchId[0]);
+        }
+        else
+        {
+            throw new BranchNotFoundOfStaffException(request.userId);
+        }
         var branchId = await _dPUnitOfWork.BranchRepositories.GetAllBranchByAccountId(request.userId);
 
         Domain.Entities.Branch branch;
@@ -54,7 +70,7 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
             //create new event
             var newEvent = Domain.Entities.Event.CreateEvent(request.Name, request.StartDate, request.EndDate, request.Description, request.MaxAttendees, branchId[0], uploadImages[0].ImageUrl, uploadImages[0].PublicImageId, uploadImages[1].ImageUrl, uploadImages[1].PublicImageId, DateTime.Now, DateTime.Now, false, null);
             newEvent.Status = Contract.Enumarations.Event.EventStatus.NotApproved;
-            _efUnitOfWork.EventRepository.Add(newEvent);
+            _eventRepository.Add(newEvent);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
 
             //Return result

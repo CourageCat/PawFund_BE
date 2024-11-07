@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PawFund.Contract.DTOs.EventDTOs.Request;
 using Microsoft.Identity.Client;
 using PawFund.Contract.DTOs.EventDTOs.Request;
 using PawFund.Contract.Services.Event;
