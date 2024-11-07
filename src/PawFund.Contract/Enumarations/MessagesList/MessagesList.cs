@@ -297,4 +297,7 @@ public enum MessagesList
 
     [Message("Can not find event", "event_noti_exception_5")]
     EventNotFoundByAdminException,
+
+    [Message("Dashboard: ", "get_dashboard_noti_success_1")]
+    GetDashboardForTotalSuccess,
 }

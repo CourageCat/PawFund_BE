@@ -9,4 +9,6 @@ public interface IDonationRepository : IGenericRepository<Donation>
     Task<Donation> GetLatestDonationAsync();
     Task<PagedResult<Donation>> GetPagedDonatesAsync(int pageIndex, int pageSize, Filter.DonateFilter filterParams, string[] selectedColumns);
     Task<Donation> GetDonationByOrderIdAsync(long orderId);
+    Task<double> GetTotalAmountOfDonation();
+    Task<List<double>> CountAmountInYear(int year);
 }
