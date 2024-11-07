@@ -8,9 +8,7 @@ using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Abstractions.Dappers;
 using PawFund.Domain.Abstractions.Repositories;
-using PawFund.Domain.Entities;
 using PawFund.Domain.Exceptions;
-using PawFund.Persistence;
 using static PawFund.Domain.Exceptions.BranchException;
 using static PawFund.Domain.Exceptions.EventException;
 
@@ -25,6 +23,7 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
     private readonly IMediaService _mediaService;
 
     public CreateEventCommandHandler(IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository, IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dPUnitOfWork, IMediaService mediaService)
+    public CreateEventCommandHandler(IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dPUnitOfWork, IMediaService mediaService)
     {
         _branchRepository = branchRepository;
         _eventRepository = eventRepository;
@@ -35,7 +34,7 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
 
     public async Task<Result> Handle(Command.CreateEventCommand request, CancellationToken cancellationToken)
     {
-        if(request.StartDate >= request.EndDate)
+        if (request.StartDate >= request.EndDate)
         {
             throw new EventDateException();
         }
@@ -44,9 +43,20 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
         var branchId = await _dPUnitOfWork.BranchRepositories.GetAllBranchByAccountId(request.userId);
 
         Domain.Entities.Branch branch;
-        if(branchId.Count != 0)
+        if (branchId.Count != 0)
         {
             branch = await _branchRepository.FindByIdAsync(branchId[0]);
+        }
+        else
+        {
+            throw new BranchNotFoundOfStaffException(request.userId);
+        }
+        var branchId = await _dPUnitOfWork.BranchRepositories.GetAllBranchByAccountId(request.userId);
+
+        Domain.Entities.Branch branch;
+        if (branchId.Count != 0)
+        {
+            branch = await _efUnitOfWork.BranchRepository.FindByIdAsync(branchId[0]);
         }
         else
         {

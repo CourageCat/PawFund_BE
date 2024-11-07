@@ -24,6 +24,25 @@ public class DonationRepository : IDonationRepository
         throw new NotImplementedException();
     }
 
+    public async Task<List<double>> CountAmountInYear(int year)
+    {
+        var sql = @"
+        SELECT SUM(Amount) AS Amount
+        FROM Donations
+        WHERE YEAR(CreatedDate) = @Year
+        GROUP BY MONTH(CreatedDate)
+        ORDER BY MONTH(CreatedDate)";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.QueryAsync<double>(sql, new { Year = year });
+            return result.ToList();
+        }
+    }
+
+
+
     public Task<int> DeleteAsync(Donation entity)
     {
         throw new NotImplementedException();
@@ -158,7 +177,7 @@ public class DonationRepository : IDonationRepository
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             var offset = (pageIndex - 1) * pageSize;
-            var orderDirection = filterParams?.IsDateDesc == true ? "DESC" : "ASC"; 
+            var orderDirection = filterParams?.IsDateDesc == true ? "DESC" : "ASC";
 
             var paginatedQuery = $"{queryBuilder} ORDER BY d.CreatedDate {orderDirection} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY";
 
@@ -176,6 +195,18 @@ public class DonationRepository : IDonationRepository
             return new PagedResult<Donation>(items, pageIndex, pageSize, totalCount, totalPages);
         }
     }
+
+    public async Task<double> GetTotalAmountOfDonation()
+    {
+        var sql = "SELECT SUM(Amount) FROM Donations";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.ExecuteScalarAsync<double>(sql);
+            return result;
+        }
+    }
+
 
     public Task<int> UpdateAsync(Donation entity)
     {

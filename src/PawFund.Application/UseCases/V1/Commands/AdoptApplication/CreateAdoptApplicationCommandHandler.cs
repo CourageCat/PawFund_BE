@@ -40,7 +40,7 @@ public sealed class CreateAdoptApplicationCommandHandler : ICommandHandler<Comma
         var catFound = await _catRepository.FindByIdAsync(request.CatId);
         if (catFound == null)
         {
-            throw new CatException.CatNotFoundException(request.CatId);
+            throw new CatException.CatNotFoundException();
         }
         //Check Account has already register with Cat
         var hasAccountRegisteredWithCat = await _dbUnitOfWork.AdoptRepositories.HasAccountRegisterdWithPetAsync(request.AccountId, request.CatId);

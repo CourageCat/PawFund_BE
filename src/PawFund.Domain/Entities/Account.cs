@@ -100,7 +100,7 @@ public class Account : DomainEntity<Guid>
     public static Account CreateMemberAccountLocal
         (string firstName, string lastName, string email, string phoneNumber, string password, GenderType gender)
     {
-        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1730774633/pawfund/yreeouhlcp33op9pesbz.png";
         return new Account(firstName, lastName, email, phoneNumber, false, password, gender, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Member);
     }
 
@@ -108,28 +108,28 @@ public class Account : DomainEntity<Guid>
     public static Account CreateMemberAccountGoogle
         (string firstName, string lastName, string email, GenderType gender)
     {
-        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1730774633/pawfund/yreeouhlcp33op9pesbz.png";
         return new Account(firstName, lastName, email, "", false, "", gender, avatarUrl, "", avatarUrl, "", LoginType.Google, RoleType.Member);
     }
 
     public static Account CreateAdminAccount
        (string email, string password)
     {
-        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1730774633/pawfund/yreeouhlcp33op9pesbz.png";
         return new Account("Admin", "", email, "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Admin);
     }
 
     public static Account CreateStaffAssistant
       (string email, string password)
     {
-        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1730774633/pawfund/yreeouhlcp33op9pesbz.png";
         return new Account("Staff assistant", "", email, "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Staff);
     }
 
     public static Account CreateStaffBot
     (string email, string password)
     {
-        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1730774633/pawfund/yreeouhlcp33op9pesbz.png";
         return new Account("Staff bot", "", email, "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Staff);
     }
 
@@ -137,6 +137,8 @@ public class Account : DomainEntity<Guid>
        (string password, string emailOfBranch, string branchName)
     {
         string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1728878878/pawfund/unknown_avatar.png";
+        return new Account(Guid.NewGuid(), "Staff", $"{branchName}", $"{emailOfBranch.ToLower().Substring(0, emailOfBranch.IndexOf("@"))}staff@pawfund.com", "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Staff);
+        string avatarUrl = "https://res.cloudinary.com/dilv5n8yb/image/upload/v1730774633/pawfund/yreeouhlcp33op9pesbz.png";
         return new Account(Guid.NewGuid(), "Staff", $"{branchName}", $"{emailOfBranch.ToLower().Substring(0, emailOfBranch.IndexOf("@"))}staff@pawfund.com", "", false, password, GenderType.Male, avatarUrl, "", avatarUrl, "", LoginType.Local, RoleType.Staff);
     }
 

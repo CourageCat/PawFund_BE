@@ -9,6 +9,5 @@ public interface IBranchRepository : IGenericRepository<Branch>
     Task<PagedResult<Branch>> GetPagedAsync(int pageIndex, int pageSize, BranchFilter filterParams, string[] selectedColumns);
 
     Task<List<Guid>> GetAllBranchByAccountId(Guid id);
-
 }
 

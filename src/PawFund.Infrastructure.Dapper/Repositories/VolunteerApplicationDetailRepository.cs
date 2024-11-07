@@ -164,7 +164,17 @@ WHERE EventId = @EventId AND AccountId = @AccountId";
             // Return the paginated result
             return new PagedResult<VolunteerApplicationDetail>(items, pageIndex, pageSize, totalCount, totalPages);
         }
+    }
 
+    public async Task<int> CountAllVolunteerApplications()
+    {
+        var sql = "SELECT COUNT(*) FROM VolunteerApplicationDetails";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.ExecuteScalarAsync<int>(sql);
+            return result;
+        }
     }
 }
 

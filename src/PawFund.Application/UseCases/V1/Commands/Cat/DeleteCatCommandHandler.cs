@@ -2,13 +2,9 @@
 using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Abstractions;
 using PawFund.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PawFund.Contract.Services.Cats;
 using PawFund.Contract.Abstractions.Message;
+using PawFund.Contract.Enumarations.MessagesList;
 
 namespace PawFund.Application.UseCases.V1.Commands.Cat;
     public sealed class DeleteCatCommandHandler : ICommandHandler<Command.DeleteCatCommand> 
@@ -27,12 +23,13 @@ namespace PawFund.Application.UseCases.V1.Commands.Cat;
             var catFound = await _catRepository.FindByIdAsync(request.Id);
             if (catFound == null || catFound.IsDeleted == true)
             {
-                throw new CatException.CatNotFoundException(request.Id);
+                throw new CatException.CatNotFoundException();
             }
-            catFound.UpdateCat(catFound.Sex, catFound.Name, catFound.Age, catFound.Breed, catFound.Weight, catFound.Color, catFound.Description);
+            catFound.DeleteCat();
             _catRepository.Update(catFound);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Success("Delete Pet successfully.");
+            return Result.Success(new Success(MessagesList.DeleteCatSuccessfully.GetMessage().Code,
+            MessagesList.DeleteCatSuccessfully.GetMessage().Message));
         }
     }
 

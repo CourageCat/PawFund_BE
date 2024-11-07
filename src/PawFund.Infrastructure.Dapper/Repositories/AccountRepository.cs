@@ -62,7 +62,7 @@ public class AccountRepository : IAccountRepository
             return (List<Account>)result;
         }
     }
-    
+
     public async Task<Account> GetByEmailAsync(string email)
     {
         var sql = "SELECT Id, FirstName, LastName, Email, PhoneNumber, Password, RoleId, LoginType, CropAvatarUrl, FullAvatarUrl, IsDeleted FROM Accounts WHERE Email = @Email";
@@ -94,7 +94,7 @@ public class AccountRepository : IAccountRepository
             [ModifiedDate],
             [IsDeleted]
         FROM [Accounts]
-        WHERE [Id] = @id"; 
+        WHERE [Id] = @id";
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();
@@ -231,4 +231,62 @@ public class AccountRepository : IAccountRepository
         }
     }
 
+    public async Task<int> CountAllUsers()
+    {
+        var sql = "SELECT COUNT(*) FROM Accounts WHERE RoleId = 3";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.ExecuteScalarAsync<int>(sql);
+            return result;
+        }
+    }
+
+    public async Task<List<Account>> GetAccountDonated()
+    {
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            var query = @"
+        WITH Top5Accounts AS (
+            SELECT TOP 5 a.Id, a.Email, a.CreatedDate, a.CropAvatarUrl
+            FROM Accounts a
+            ORDER BY a.CreatedDate DESC
+        )
+        SELECT a.*, d.Description as AmountDescription, d.Amount, d.CreatedDate
+        FROM Top5Accounts a
+        JOIN Donations d ON a.Id = d.AccountId
+        WHERE d.IsDeleted = 0
+        ORDER BY d.CreatedDate DESC";
+
+            var accountList = new List<Account>();
+
+            await connection.QueryAsync<Account, Donation, Account>(
+                query,
+                (account, donation) =>
+                {
+                    // Find the existing account in the list (if any)
+                    var existingAccount = accountList.FirstOrDefault(a => a.Id == account.Id);
+
+                    if (existingAccount == null)
+                    {
+                        // If the account doesn't exist, add it to the list and initialize donations list
+                        account.Donations = new List<Donation> { donation };
+                        accountList.Add(account);
+                    }
+                    else
+                    {
+                        // If the account exists, add the donation to the existing account
+                        existingAccount.Donations.Add(donation);
+                    }
+
+                    return account;
+                },
+                splitOn: "AmountDescription"
+            );
+
+            return accountList;
+        }
+    }
 }
+
+

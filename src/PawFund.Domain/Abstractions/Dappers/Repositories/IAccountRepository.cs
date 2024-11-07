@@ -14,4 +14,6 @@ public interface IAccountRepository : IGenericRepository<Domain.Entities.Account
     Task<PagedResult<Account>> GetPagedAsync(int pageIndex, int pageSize, Filter.AccountFilter filterParams, string[] selectedColumns);
 
     Task<PagedResult<Account>> GetUsersPagedAsync(int pageIndex, int pageSize, Filter.AccountsFilter filterParams, string[] selectedColumns);
+    Task<int> CountAllUsers();
+    Task<List<Account>> GetAccountDonated();
 }
