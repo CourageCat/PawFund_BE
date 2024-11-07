@@ -247,7 +247,7 @@ public enum MessagesList
     [Message("Can not found any event!", "event_noti_exception_01")]
     GetEventsEmptyException,
 
-    [Message("All Adopt Applications", "event_noti_success_01")]
+    [Message("Get all event success", "event_noti_success_01")]
     GetEventsSuccess,
 
     [Message("Create cash donation successfully", "donate_noti_success_01")]

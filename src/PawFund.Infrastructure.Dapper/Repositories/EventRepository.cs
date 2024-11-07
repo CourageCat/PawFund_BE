@@ -93,7 +93,7 @@ JOIN Branchs b ON b.Id = e.BranchId";
         SELECT {selectedColumnsString} 
         FROM Events e
         LEFT JOIN Branchs b ON e.BranchId = b.Id
-        WHERE 1=1");
+        WHERE e.IsDeleted = 0");
 
             var parameters = new DynamicParameters();
 
@@ -176,7 +176,7 @@ JOIN Branchs b ON b.Id = e.BranchId";
             SELECT {selectedColumnsString} 
             FROM Events e
             LEFT JOIN Branchs b ON e.BranchId = b.Id
-            WHERE 1=1");
+            WHERE e.IsDeleted = 0");
 
             var parameters = new DynamicParameters();
 

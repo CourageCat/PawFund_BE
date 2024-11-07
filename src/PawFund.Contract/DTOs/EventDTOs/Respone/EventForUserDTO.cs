@@ -15,7 +15,6 @@
             public string? ThumbHeroUrl { get; set; }
             public string? ImagesUrl { get; set; }
             public BranchDTO Branch { get; set; }
-
         }
 
         public class BranchDTO
