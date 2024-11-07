@@ -66,7 +66,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet(Name = "GetAllEventActivityByEventId")]
+        [HttpGet("get_event_activities_by_eventId",Name = "GetAllEventActivityByEventId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllEvent([FromQuery] Guid EventId,
