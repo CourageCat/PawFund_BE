@@ -11,7 +11,7 @@ namespace PawFund.Contract.Services.EventActivity.Validators
     {
         public GetAllEventActivityValidator()
         {
-            RuleFor(x => x.Id).NotEmpty();
+            RuleFor(x => x.EventId).NotEmpty();
         }
 
     }
