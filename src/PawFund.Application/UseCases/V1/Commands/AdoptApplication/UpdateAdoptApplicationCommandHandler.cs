@@ -47,7 +47,7 @@ public sealed class UpdateAdoptApplicationCommandHandler : ICommandHandler<Comma
             var catFound = await _catRepository.FindByIdAsync((Guid)request.CatId);
             if (catFound == null)
             {
-                throw new CatException.CatNotFoundException((Guid)request.CatId);
+                throw new CatException.CatNotFoundException();
             }
             //Check Account has already register with Cat
             var hasAccountRegisteredWithCat = await _dbUnitOfWork.AdoptRepositories.HasAccountRegisterdWithPetAsync(adoptApplicationFound.AccountId, (Guid)request.CatId);

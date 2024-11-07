@@ -42,7 +42,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpPut("update_event_activity_by_id",Name = "UpdateEventActivityById")]
+        [HttpPut("update_event_activity_by_id", Name = "UpdateEventActivityById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateEventById([FromBody] Command.UpdateEventActivityCommand updateEventActivityCommand)
@@ -54,7 +54,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpDelete("delete_event_activity_by_id",Name = "DeleteEventActivityById")]
+        [HttpDelete("delete_event_activity_by_id", Name = "DeleteEventActivityById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteEventById([FromBody] Command.DeleteEventActivityCommand Id)
@@ -66,7 +66,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet("get_event_activities_by_eventId",Name = "GetAllEventActivityByEventId")]
+        [HttpGet("get_event_activities_by_eventId", Name = "GetAllEventActivityByEventId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllEvent([FromQuery] Guid EventId,
@@ -82,7 +82,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet("get_approved_events_activity",Name = "GetEventsActivityApproved")]
+        [HttpGet("get_approved_events_activity", Name = "GetEventsActivityApproved")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetApprovedEventsActivity([FromQuery] Guid id)

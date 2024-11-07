@@ -136,6 +136,12 @@ public enum MessagesList
     [Message("Create cat successfully", "cat_noti_01")]
     CreateCatSuccessfully,
 
+    [Message("Update cat fail", "cat_noti_02")]
+    UpdateCatFail,
+
+    [Message("Update cat successfully", "cat_noti_03")]
+    UpdateCatSuccessFully,
+
     [Message("Create event successfully", "event_noti_01")]
     CreateEventSuccessfully,
 
@@ -300,4 +306,10 @@ public enum MessagesList
 
     [Message("Dashboard: ", "get_dashboard_noti_success_1")]
     GetDashboardForTotalSuccess,
+
+    [Message("Cat not found", "cat_noti_04")]
+    CatNotFoundException,
+
+    [Message("Delete cat successfully", "cat_noti_05")]
+    DeleteCatSuccessfully,
 }

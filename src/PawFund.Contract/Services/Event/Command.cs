@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using PawFund.Contract.Abstractions.Message;
 
 namespace PawFund.Contract.Services.Event

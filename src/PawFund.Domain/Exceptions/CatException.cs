@@ -1,18 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PawFund.Contract.Enumarations.MessagesList;
 
-namespace PawFund.Domain.Exceptions
+namespace PawFund.Domain.Exceptions;
+
+public static class CatException
 {
-    public static class CatException
+
+    public class CatNotFoundException : NotFoundException
     {
-        public class CatNotFoundException : NotFoundException
+        public CatNotFoundException() : base(MessagesList.CatNotFoundException.GetMessage().Message,
+               MessagesList.CatNotFoundException.GetMessage().Code)
         {
-            public CatNotFoundException(Guid Id) : base($"Can not found Cat with Id: {Id}")
-            {
-            }
+        }
+    }
+
+    public class UpdateCatFailException : BadRequestException
+    {
+        public UpdateCatFailException() : base(MessagesList.UpdateCatFail.GetMessage().Message,
+               MessagesList.UpdateCatFail.GetMessage().Code)
+        {
         }
     }
 }

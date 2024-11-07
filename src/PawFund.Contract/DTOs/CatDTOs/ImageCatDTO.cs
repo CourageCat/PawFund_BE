@@ -2,6 +2,7 @@
 
 public class ImageCatDto
 {
-    public string ImageUrl { get; set; }
-    public string PublicImageId { get; set; }
+    public Guid? Id { get; set; }
+    public string? ImageUrl { get; set; }
+    public string? PublicImageId { get; set; }
 }
