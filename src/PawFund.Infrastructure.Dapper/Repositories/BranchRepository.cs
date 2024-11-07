@@ -33,6 +33,17 @@ public class BranchRepository : IBranchRepository
         throw new NotImplementedException();
     }
 
+    public async Task<List<Guid>> GetAllBranchByAccountId(Guid id)
+    {
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            string query = "SELECT Id FROM Branchs WHERE AccountId = @AccountId";
+
+            var branchIds = await connection.QueryAsync<Guid>(query, new { AccountId = id });
+            return branchIds.ToList();
+        }
+    }
+
     public async Task<Branch>? GetByIdAsync(Guid id)
     {
         var sql = @"

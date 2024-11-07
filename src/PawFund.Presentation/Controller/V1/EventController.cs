@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using PawFund.Contract.Services.Event;
 using PawFund.Presentation.Abstractions;
+using System.Security.Claims;
 using static PawFund.Contract.Services.AdoptApplications.Filter;
 using static PawFund.Contract.Services.Event.Filter;
 
@@ -85,6 +86,23 @@ public class EventController : ApiController
     public async Task<IActionResult> GetAllEventNotApproved()
     {
         var result = await Sender.Send(new Query.GetAllEventNotApproved());
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    //[Authorize(Policy = "StaffPolicy")]
+    [HttpGet("get_all_event_by_staff", Name = "GetAllEventByStaff")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllEventByStaff([FromQuery] EventFilter filterParams,
+    [FromQuery] int pageIndex = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string[] selectedColumns = null)
+    {
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Query.GetAllEventByStaff(Guid.Parse("7A39C4E8-3DD2-4092-1B91-08DCFBE5F055"),pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
 

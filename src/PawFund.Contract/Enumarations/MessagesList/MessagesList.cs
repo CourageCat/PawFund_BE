@@ -279,4 +279,10 @@ public enum MessagesList
 
     [Message("Can not find any volunteer application", "volunteer_application_noti_exception_01")]
     GetVolunteerApplicationException,
+
+    [Message("Can not find event with this staff id: {}", "event_noti_exception_3")]
+    EventNotFoundByStaffException,
+
+    [Message("This is all your event in your branch", "event_noti_success_5")]
+    GetAllEventByStaffSuccess,
 }

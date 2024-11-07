@@ -10,6 +10,6 @@ namespace PawFund.Contract.Services.VolunteerApplicationDetail
 {
     public class Filter
     {
-        public record VolunteerApplicationFilter(string? Name, VolunteerApplicationStatus? Status, bool IsAscCreatedDate);
+        public record VolunteerApplicationFilter(VolunteerApplicationStatus? Status, bool IsAscCreatedDate);
     }
 }

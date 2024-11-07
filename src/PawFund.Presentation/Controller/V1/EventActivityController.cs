@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static PawFund.Contract.Services.AdoptApplications.Filter;
+using static PawFund.Contract.Services.VolunteerApplicationDetail.Filter;
 
 namespace PawFund.Presentation.Controller.V1
 {
@@ -66,7 +67,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
-        [HttpGet(Name = "GetAllEventActivity")]
+        [HttpGet(Name = "GetAllEventActivityByEventId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllEvent([FromQuery] Guid id)

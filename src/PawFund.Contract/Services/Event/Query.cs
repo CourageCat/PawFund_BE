@@ -18,5 +18,11 @@ namespace PawFund.Contract.Services.Event
          : IQuery<Success<PagedResult<EventDTO>>>;
 
         public record GetAllEventNotApproved() : IQuery<List<Respone.EventResponse>>;
+
+        public record GetAllEventByStaff(Guid staffId,int PageIndex,
+         int PageSize,
+         Filter.EventFilter FilterParams,
+         string[] SelectedColumns)
+         : IQuery<Success<PagedResult<EventDTO>>>;
     }
 }
