@@ -38,7 +38,7 @@ namespace PawFund.Application.UseCases.V1.Commands.Event
             existEvent.IsDeleted = true;
             _eventRepository.Update(existEvent);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Success(new Success(MessagesList.ApproveEventSuccessfully.GetMessage().Code, MessagesList.ApproveEventSuccessfully.GetMessage().Message));
+            return Result.Success(new Success(MessagesList.RejectEventSuccessfully.GetMessage().Code, MessagesList.RejectEventSuccessfully.GetMessage().Message));
         
         }
     }
