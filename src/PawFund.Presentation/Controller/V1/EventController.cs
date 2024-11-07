@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
+using PawFund.Contract.DTOs.EventDTOs.Request;
 using PawFund.Contract.Services.Event;
 using PawFund.Presentation.Abstractions;
 using System.Security.Claims;
+using static PawFund.Contract.Services.AdoptApplications.Filter;
 using static PawFund.Contract.Services.Event.Filter;
 
 namespace PawFund.Presentation.Controller.V1;
@@ -14,12 +17,14 @@ public class EventController : ApiController
     {
     }
 
+    [Authorize(Policy = "StaffPolicy")]
     [HttpPost("create_event", Name = "CreateEvent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateEvents([FromForm] Command.CreateEventCommand CreateEvent)
+    public async Task<IActionResult> CreateEvents([FromForm] CreateEventFormDTO form)
     {
-        var result = await Sender.Send(CreateEvent);
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.CreateEventCommand(Guid.Parse(userId), form.Name, form.StartDate, form.EndDate, form.Description, form.MaxAttendees, form.ThumbHeroUrl, form.ImagesUrl));
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -38,6 +43,7 @@ public class EventController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Policy = "StaffPolicy")]
     [HttpPut("update_event_by_id", Name = "UpdateEventById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -50,6 +56,7 @@ public class EventController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Policy = "StaffPolicy")]
     [HttpDelete("delete_event_by_id", Name = "DeleteEventById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,7 +85,7 @@ public class EventController : ApiController
         return Ok(result);
     }
 
-    //[Authorize(Policy = "Admin")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpGet("get_all_event_by_admin", Name = "GetAllEventByAdmin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -105,20 +112,33 @@ public class EventController : ApiController
     [FromQuery] string[] selectedColumns = null)
     {
         var userId = User.FindFirstValue("UserId");
-        var result = await Sender.Send(new Query.GetAllEventByStaff(Guid.Parse(userId),pageIndex, pageSize, filterParams, selectedColumns));
+        var result = await Sender.Send(new Query.GetAllEventByStaff(Guid.Parse(userId), pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
 
         return Ok(result);
     }
 
-    [Authorize(Policy = "Admin")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPut("approved_by_admin", Name = "ApprovedEventByAdmin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ApprovedEventByAdmin([FromBody] Command.ApprovedEventByAdmin approveEvent)
     {
         var result = await Sender.Send(approveEvent);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [Authorize(Policy = "AdminPolicy")]
+    [HttpPut("rejected_by_admin", Name = "RejectedEventByAdmin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RejectedEventByAdmin([FromBody] Command.RejectedEventByAdmin rejectEvent)
+    {
+        var result = await Sender.Send(rejectEvent);
         if (result.IsFailure)
             return HandlerFailure(result);
 

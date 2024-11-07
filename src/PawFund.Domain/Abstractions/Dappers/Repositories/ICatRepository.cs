@@ -5,6 +5,7 @@ using static PawFund.Contract.Services.Cats.Filter;
 namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 public interface ICatRepository : IGenericRepository<Cat>
 {
+    Task<int> CountAllCats();
     Task<PagedResult<Cat>> GetAllCatsForAdoptionAsync(
         int pageIndex,
         int pageSize,

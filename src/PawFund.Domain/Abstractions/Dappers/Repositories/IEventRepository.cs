@@ -11,8 +11,8 @@ using static PawFund.Contract.Services.Event.Respone;
 
 namespace PawFund.Domain.Abstractions.Dappers.Repositories;
 
-    public interface IEventRepository : IGenericRepository<Event>
-    {
+public interface IEventRepository : IGenericRepository<Event>
+{
     public Task<IEnumerable<Event>> GetAll();
 
     public Task<IEnumerable<Event>> GetAllNotApproved();
@@ -20,6 +20,7 @@ namespace PawFund.Domain.Abstractions.Dappers.Repositories;
     Task<PagedResult<Event>> GetAllEventAsync(int pageIndex, int pageSize, EventFilter filterParams, string[] selectedColumns);
 
     Task<PagedResult<Event>> GetAllEventByStaff(List<Guid> listsBranchId, int pageIndex, int pageSize, EventFilter filterParams, string[] selectedColumns);
+    Task<int> CountAllEvents();
 
 }
 

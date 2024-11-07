@@ -27,7 +27,7 @@ public sealed class GetApprovedEventsActivityQueryHandler : IQueryHandler<Query.
         {
             var activityDTO = _mapper.Map<GetEventActivityByIdDTO.ActivityDTO>(eventActivity);
             var eventDTO = _mapper.Map<GetEventActivityByIdDTO.EventDTO>(eventActivity.Event);
-            return new EventActivityResponse(activityDTO, eventDTO);
+            return new EventActivityResponse(activityDTO);
         }).ToList();
 
         return Result.Success(new Success<List<EventActivityResponse>> ("", "", responses));

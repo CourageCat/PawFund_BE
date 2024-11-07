@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Hangfire;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PawFund.Contract.Abstractions.Services;
 using PawFund.Contract.Settings;
 using PawFund.Infrastructure.Services;
+using PawFund.Infrastructure.Worker;
 using StackExchange.Redis;
 
 namespace PawFund.Infrastructure.DependencyInjection.Extensions;
@@ -46,5 +48,17 @@ public static class ServiceCollectionExtensions
         services.Configure<DialogflowSetting>(configuration.GetSection(DialogflowSetting.SectionName));
         services.Configure<AccountStaffAssistantSetting>(configuration.GetSection(AccountStaffAssistantSetting.SectionName));
         services.Configure<AccountStaffBotSetting>(configuration.GetSection(AccountStaffBotSetting.SectionName));
+    }
+
+    public static void AddHangfireConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        // Cấu hình Hangfire sử dụng SQL Server hoặc một backend lưu trữ khác
+        services.AddHangfire(config =>
+            config.UseSqlServerStorage(configuration.GetConnectionString("ConnectionStrings")));
+
+        services.AddHangfireServer();
+
+        // Đăng ký dịch vụ IBackgroundJobService
+        services.AddTransient<IBackgroundJobService, HangfireBackgroundJobService>();
     }
 }

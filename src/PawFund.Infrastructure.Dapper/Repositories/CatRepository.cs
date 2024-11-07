@@ -240,5 +240,15 @@ public class CatRepository : ICatRepository
         }
     }
 
+    public async Task<int> CountAllCats()
+    {
+        var sql = "SELECT COUNT(*) FROM Cats";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.ExecuteScalarAsync<int>(sql);
+            return result;
+        }
+    }
 }
 
