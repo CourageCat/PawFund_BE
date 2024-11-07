@@ -11,6 +11,7 @@ using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Entities;
 using PawFund.Domain.Exceptions;
 using PawFund.Persistence;
+using static PawFund.Domain.Exceptions.EventException;
 
 namespace PawFund.Application.UseCases.V1.Commands.Event;
 
@@ -33,6 +34,11 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
 
     public async Task<Result> Handle(Command.CreateEventCommand request, CancellationToken cancellationToken)
     {
+        if(request.StartDate >= request.EndDate)
+        {
+            throw new EventDateException();
+        }
+
         //check branch for event
         var branch = await _dPUnitOfWork.BranchRepositories.GetByIdAsync(request.BranchId);
 

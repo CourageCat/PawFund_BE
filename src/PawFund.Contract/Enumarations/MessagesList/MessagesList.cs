@@ -139,6 +139,9 @@ public enum MessagesList
     [Message("Create event successfully", "event_noti_01")]
     CreateEventSuccessfully,
 
+    [Message("The start date must be before the end date.", "event_exception_01")]
+    CreateEventDateException,
+
     [Message("Approve event successfully", "approve_event_noti_02")]
     ApproveEventSuccessfully,
 
@@ -285,4 +288,6 @@ public enum MessagesList
 
     [Message("This is all your event in your branch", "event_noti_success_5")]
     GetAllEventByStaffSuccess,
+
+
 }

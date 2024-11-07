@@ -20,5 +20,11 @@ namespace PawFund.Domain.Exceptions
             public EventNotFoundByStaffException(Guid Id) : base(string.Format(MessagesList.EventNotFoundByStaffException.GetMessage().Message, Id), MessagesList.EventNotFoundByStaffException.GetMessage().Code)
             { }
         }
+
+        public class EventDateException : BadRequestException
+        {
+            public EventDateException() : base(MessagesList.CreateEventDateException.GetMessage().Message, MessagesList.CreateEventDateException.GetMessage().Code)
+            { }
+        }
     }
 }
