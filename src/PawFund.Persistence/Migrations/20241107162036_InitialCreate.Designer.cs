@@ -12,7 +12,7 @@ using PawFund.Persistence;
 namespace PawFund.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241107055307_InitialCreate")]
+    [Migration("20241107162036_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -396,7 +396,6 @@ namespace PawFund.Persistence.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("ReasonReject")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")

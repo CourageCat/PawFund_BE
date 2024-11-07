@@ -12,7 +12,6 @@ namespace PawFund.Contract.Services.Events.Validator
             RuleFor(x => x.EndDate).NotEmpty();
             RuleFor(x => x.MaxAttendees).NotEmpty().GreaterThan(1);
             RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.BranchId).NotEmpty();
         }
 
     }

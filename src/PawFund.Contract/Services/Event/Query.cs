@@ -1,6 +1,6 @@
 ﻿using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Abstractions.Shared;
-using PawFund.Contract.DTOs.Event;
+using PawFund.Contract.DTOs.EventDTOs.Respone;
 using static PawFund.Contract.Services.Accounts.Response;
 using static PawFund.Contract.Services.Event.Respone;
 

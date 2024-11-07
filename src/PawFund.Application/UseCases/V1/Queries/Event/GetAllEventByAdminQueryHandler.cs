@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Abstractions.Shared;
-using PawFund.Contract.DTOs.Event;
+using PawFund.Contract.DTOs.EventDTOs.Respone;
 using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
@@ -41,7 +41,8 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
 
                 if (result != null && result.Items != null && result.Items.Count > 0)
                 {
-                    var eventDtos = _mapper.Map<List<EventForAdminStaffDTO>>(result.Items);
+                    var resultNoDelete = result.Items.Where(r => r.IsDeleted == false).ToList();
+                    var eventDtos = _mapper.Map<List<EventForAdminStaffDTO>>(resultNoDelete);
                     return Result.Success(new Success<PagedResult<EventForAdminStaffDTO>>(
                         MessagesList.GetAllEventByStaffSuccess.GetMessage().Code,
                         MessagesList.GetAllEventByStaffSuccess.GetMessage().Message,

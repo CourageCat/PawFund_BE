@@ -145,6 +145,9 @@ public enum MessagesList
     [Message("Approve event successfully", "approve_event_noti_02")]
     ApproveEventSuccessfully,
 
+    [Message("Reject event successfully", "reject_event_noti_02")]
+    RejectEventSuccessfully,
+
     [Message("Delete event successfully", "delete_event_noti_03")]
     DeleteEventSuccessfully,
 

@@ -2,8 +2,8 @@
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.DTOs.Account;
-using PawFund.Contract.DTOs.Event;
 using PawFund.Contract.DTOs.EventActivity;
+using PawFund.Contract.DTOs.EventDTOs.Respone;
 using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
@@ -31,7 +31,8 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
         {
             var result = await _eventRepository.GetAllEventAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
 
-            var eventDtos = _mapper.Map<List<EventForUserDTO.EventDTO>>(result.Items);
+            var resultNoDelete = result.Items.Where(r => r.IsDeleted == false).ToList();
+            var eventDtos = _mapper.Map<List<EventForUserDTO.EventDTO>>(resultNoDelete);
 
             return Result.Success(new Success<PagedResult<EventForUserDTO.EventDTO>>(MessagesList.GetEventsSuccess.GetMessage().Code, MessagesList.GetEventsSuccess.GetMessage().Message, new PagedResult<EventForUserDTO.EventDTO>(eventDtos, result.PageIndex, result.PageSize, result.TotalCount, result.TotalPages)));
         }

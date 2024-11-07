@@ -393,7 +393,6 @@ namespace PawFund.Persistence.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("ReasonReject")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")

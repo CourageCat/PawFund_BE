@@ -246,7 +246,7 @@ namespace PawFund.Persistence.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     MaxAttendees = table.Column<int>(type: "int", nullable: false),
-                    ReasonReject = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReasonReject = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ThumbHeroUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ThumbHeroId = table.Column<string>(type: "nvarchar(max)", nullable: true),

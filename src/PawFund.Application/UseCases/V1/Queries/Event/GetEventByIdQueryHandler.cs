@@ -2,11 +2,11 @@
 using AutoMapper;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Abstractions.Shared;
-using PawFund.Contract.DTOs.Event;
+using PawFund.Contract.DTOs.EventDTOs.Respone;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
-using static PawFund.Contract.DTOs.Event.EventForUserDTO;
+using static PawFund.Contract.DTOs.EventDTOs.Respone.EventForUserDTO;
 
 namespace PawFund.Application.UseCases.V1.Queries.Event
 {
@@ -24,7 +24,7 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
         public async Task<Result<Success<Respone.EventResponse>>> Handle(Query.GetEventByIdQuery request, CancellationToken cancellationToken)
         {
             var existEvent = await _dPUnitOfWork.EventRepository.GetByIdAsync(request.Id);
-            if (existEvent != null)
+            if (existEvent != null || existEvent.IsDeleted == false)
             {
                 //EventDTO eventDTO = new EventDTO()
                 //{
