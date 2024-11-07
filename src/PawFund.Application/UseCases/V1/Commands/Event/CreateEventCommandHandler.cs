@@ -46,8 +46,10 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
 
         if (branch != null || branch.IsDeleted != true)
         {
+            List<string> nullReason = new List<string>();
+            nullReason.Add("");
             //create new event
-            var newEvent = Domain.Entities.Event.CreateEvent(request.Name, request.StartDate, request.EndDate, request.Description, request.MaxAttendees, request.BranchId, uploadImages[0].ImageUrl, uploadImages[0].PublicImageId, uploadImages[1].ImageUrl, uploadImages[1].PublicImageId, DateTime.Now, DateTime.Now, false);
+            var newEvent = Domain.Entities.Event.CreateEvent(request.Name, request.StartDate, request.EndDate, request.Description, request.MaxAttendees, request.BranchId, uploadImages[0].ImageUrl, uploadImages[0].PublicImageId, uploadImages[1].ImageUrl, uploadImages[1].PublicImageId, DateTime.Now, DateTime.Now, false, nullReason);
             newEvent.Status = Contract.Enumarations.Event.EventStatus.NotApproved;
             _eventRepository.Add(newEvent);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
