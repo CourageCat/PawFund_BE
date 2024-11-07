@@ -68,10 +68,10 @@ public class CatRepository : ICatRepository
         {
             var validColumns = new HashSet<string>
         {
-            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Color", "c.Description", "c.Sterilization", "c.IsDeleted",
+            "c.Id", "c.Sex", "c.Name", "c.Age", "c.Breed", "c.Color", "c.Description", "c.Sterilization", "c.BranchId", "c.IsDeleted",
             "ImageCat.ImageUrl", "ImageCat.PublicImageId"
         };
-
+            
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
             var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : string.Join(", ", validColumns);
 
@@ -114,7 +114,16 @@ public class CatRepository : ICatRepository
             if (filterParams?.IsDeleted.HasValue == true)
             {
                 queryBuilder.Append(" AND c.IsDeleted = @IsDeleted");
+                totalCountQuery.Append(" AND c.IsDeleted = @IsDeleted");
                 parameters.Add("IsDeleted", filterParams.IsDeleted.Value);
+            }
+
+            // Filter by BranchId
+            if (filterParams?.BranchId.HasValue == true)
+            {
+                queryBuilder.Append(" AND c.BranchId = BranchId");
+                totalCountQuery.Append(" AND c.BranchId = @BranchId");
+                parameters.Add("BranchId", filterParams.BranchId.Value);
             }
 
             // Filter by Name
@@ -196,7 +205,7 @@ public class CatRepository : ICatRepository
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             var query = @"
-        SELECT c.*, ic.ImageUrl, ic.PublicImageId 
+        SELECT c.*, ic.ImageUrl, ic.PublicImageId, ic.Id
         FROM Cats c
         LEFT JOIN ImageCats ic ON c.Id = ic.CatId
         WHERE c.Id = @CatId";

@@ -5,10 +5,7 @@ using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions;
-using PawFund.Domain.Abstractions.Dappers;
-using PawFund.Domain.Abstractions.Repositories;
 using PawFund.Domain.Exceptions;
-using PawFund.Persistence;
 using static PawFund.Domain.Exceptions.EventException;
 
 namespace PawFund.Application.UseCases.V1.Commands.Event;
@@ -18,7 +15,9 @@ public sealed class CreateEventCommandHandler : ICommandHandler<Command.CreateEv
     private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IMediaService _mediaService;
 
-    public CreateEventCommandHandler(IRepositoryBase<Domain.Entities.Branch, Guid> branchRepository, IRepositoryBase<Domain.Entities.Event, Guid> eventRepository, IEFUnitOfWork efUnitOfWork, IDPUnitOfWork dPUnitOfWork, IMediaService mediaService)
+    public CreateEventCommandHandler(
+        IEFUnitOfWork efUnitOfWork,
+        IMediaService mediaService)
     {
         _efUnitOfWork = efUnitOfWork;
         _mediaService = mediaService;

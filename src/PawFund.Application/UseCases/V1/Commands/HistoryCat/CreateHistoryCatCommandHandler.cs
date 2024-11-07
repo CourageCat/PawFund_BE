@@ -35,7 +35,7 @@ namespace PawFund.Application.UseCases.V1.Commands.HistoryCat
                 throw new AccountException.AccountNotFoundException();
             var catFound = await _catRepository.FindByIdAsync(request.CatId);
             if (catFound == null)
-                throw new CatException.CatNotFoundException(request.CatId);
+                throw new CatException.CatNotFoundException();
             var historycatCreated = Domain.Entities.HistoryCat.CreateHistoryCat(request.DateAdopt, request.CatId, request.AccountId, DateTime.Now, DateTime.Now, false);
             _historycatRepository.Add(historycatCreated);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);

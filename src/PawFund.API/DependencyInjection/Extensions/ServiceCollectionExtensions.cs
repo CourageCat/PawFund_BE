@@ -67,6 +67,14 @@ public static class ServiceCollectionExtensions
             // Member Policy
             options.AddPolicy("MemberPolicy", policy =>
                 policy.RequireClaim(ClaimTypes.Role, ((int)RoleType.Member).ToString()));
+
+            // Member and Staff Policy
+            options.AddPolicy("MemberStaffPolicy", policy =>
+               policy.RequireAssertion(context =>
+                   context.User.HasClaim(c => c.Type == ClaimTypes.Role &&
+                       (c.Value == ((int)RoleType.Member).ToString() ||
+                        c.Value == ((int)RoleType.Staff).ToString()))
+               ));
         });
 
         return services;

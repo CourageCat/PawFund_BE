@@ -43,7 +43,7 @@ namespace PawFund.Domain.Entities
             return new Cat(sex, name, age, breed, weight, color, description, branchId, sterilization);
         }
 
-        public void UpdateCat(CatSex sex, string name, string age, string breed, decimal weight, string color, string description)
+        public void UpdateCat(CatSex sex, string name, string age, string breed, decimal weight, string color, string description, bool sterilization)
         {
             Sex = sex;
             Name = name;
@@ -52,6 +52,12 @@ namespace PawFund.Domain.Entities
             Weight = weight;
             Color = color;
             Description = description;
+            Sterilization = sterilization;
+        }
+
+        public void DeleteCat()
+        {
+            IsDeleted = true;
         }
     }
 }

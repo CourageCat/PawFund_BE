@@ -11,4 +11,8 @@ public static class Query
         Filter.CatAdoptFilter FilterParams,
         string[] SelectedColumns) : IQuery<Success<PagedResult<CatDto>>>;
 
+    public record GetCatsStaffQuery(int PageIndex,
+      int PageSize,
+      Filter.CatFilter FilterParams,
+      string[] SelectedColumns) : IQuery<Success<PagedResult<CatDto>>>;
 }
