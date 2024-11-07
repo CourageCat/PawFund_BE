@@ -10,5 +10,6 @@ namespace PawFund.Contract.Services.Event
         public record UpdateEventCommand(Guid Id, string Name, DateTime StartDate, DateTime EndDate, string Description, int MaxAttendees, Guid BranchId) : ICommand;
         public record DeleteEventCommand(Guid Id) : ICommand;
         public record ApprovedEventByAdmin(Guid Id) : ICommand;
+        public record RejectedEventByAdmin(Guid Id, string reasonReject) : ICommand;
     }
 }

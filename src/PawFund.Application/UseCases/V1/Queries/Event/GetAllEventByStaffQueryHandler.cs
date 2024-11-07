@@ -65,7 +65,8 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
                 //        } : null
                 //     }).ToList();
 
-                var eventDtos = _mapper.Map<List<EventForAdminStaffDTO>>(result.Items);
+                var resultNoDelete = result.Items.Where(r => r.IsDeleted == false).ToList();
+                var eventDtos = _mapper.Map<List<EventForAdminStaffDTO>>(resultNoDelete);
                 return Result.Success(new Success<PagedResult<EventForAdminStaffDTO>>(
                     MessagesList.GetAllEventByStaffSuccess.GetMessage().Code,
                     MessagesList.GetAllEventByStaffSuccess.GetMessage().Message,

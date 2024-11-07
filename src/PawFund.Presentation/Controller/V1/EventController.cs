@@ -43,6 +43,7 @@ public class EventController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Policy = "StaffPolicy")]
     [HttpPut("update_event_by_id", Name = "UpdateEventById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -55,6 +56,7 @@ public class EventController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Policy = "StaffPolicy")]
     [HttpDelete("delete_event_by_id", Name = "DeleteEventById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -83,7 +85,7 @@ public class EventController : ApiController
         return Ok(result);
     }
 
-    //[Authorize(Policy = "Admin")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpGet("get_all_event_by_admin", Name = "GetAllEventByAdmin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -117,13 +119,26 @@ public class EventController : ApiController
         return Ok(result);
     }
 
-    [Authorize(Policy = "Admin")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPut("approved_by_admin", Name = "ApprovedEventByAdmin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ApprovedEventByAdmin([FromBody] Command.ApprovedEventByAdmin approveEvent)
     {
         var result = await Sender.Send(approveEvent);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [Authorize(Policy = "AdminPolicy")]
+    [HttpPut("rejected_by_admin", Name = "RejectedEventByAdmin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RejectedEventByAdmin([FromBody] Command.RejectedEventByAdmin rejectEvent)
+    {
+        var result = await Sender.Send(rejectEvent);
         if (result.IsFailure)
             return HandlerFailure(result);
 
