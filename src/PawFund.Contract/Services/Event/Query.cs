@@ -15,14 +15,18 @@ namespace PawFund.Contract.Services.Event
          int PageSize,
          Filter.EventFilter FilterParams,
          string[] SelectedColumns)
-         : IQuery<Success<PagedResult<EventDTO>>>;
+         : IQuery<Success<PagedResult<EventForUserDTO.EventDTO>>>;
 
-        public record GetAllEventNotApproved() : IQuery<List<Respone.EventResponse>>;
+        public record GetAllEventByAdmin(Guid? StaffId,
+        int PageIndex,
+         int PageSize,
+         Filter.EventFilter FilterParams,
+         string[] SelectedColumns) : IQuery<Success<PagedResult<EventForAdminStaffDTO>>>;
 
         public record GetAllEventByStaff(Guid staffId,int PageIndex,
          int PageSize,
          Filter.EventFilter FilterParams,
          string[] SelectedColumns)
-         : IQuery<Success<PagedResult<EventDTO>>>;
+         : IQuery<Success<PagedResult<EventForAdminStaffDTO>>>;
     }
 }

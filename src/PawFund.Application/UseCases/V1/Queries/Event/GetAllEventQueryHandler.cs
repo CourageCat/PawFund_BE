@@ -14,7 +14,7 @@ using static PawFund.Contract.Services.EventActivity.Respone;
 
 namespace PawFund.Application.UseCases.V1.Queries.Event
 {
-    public sealed class GetAllEventQueryHandler : IQueryHandler<Query.GetAllEvent, Success<PagedResult<EventDTO>>>
+    public sealed class GetAllEventQueryHandler : IQueryHandler<Query.GetAllEvent, Success<PagedResult<EventForUserDTO.EventDTO>>>
     {
         private readonly IDPUnitOfWork _dpUnitOfWork;
         private readonly IMapper _mapper;
@@ -27,13 +27,13 @@ namespace PawFund.Application.UseCases.V1.Queries.Event
             _eventRepository = eventRepository;
         }
 
-        public async Task<Result<Success<PagedResult<EventDTO>>>> Handle(Query.GetAllEvent request, CancellationToken cancellationToken)
+        public async Task<Result<Success<PagedResult<EventForUserDTO.EventDTO>>>> Handle(Query.GetAllEvent request, CancellationToken cancellationToken)
         {
             var result = await _eventRepository.GetAllEventAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
 
-            var eventDtos = _mapper.Map<List<EventDTO>>(result.Items);
+            var eventDtos = _mapper.Map<List<EventForUserDTO.EventDTO>>(result.Items);
 
-            return Result.Success(new Success<PagedResult<EventDTO>>(MessagesList.GetEventsSuccess.GetMessage().Code, MessagesList.GetEventsSuccess.GetMessage().Message, new PagedResult<EventDTO>(eventDtos, result.PageIndex, result.PageSize, result.TotalCount, result.TotalPages)));
+            return Result.Success(new Success<PagedResult<EventForUserDTO.EventDTO>>(MessagesList.GetEventsSuccess.GetMessage().Code, MessagesList.GetEventsSuccess.GetMessage().Message, new PagedResult<EventForUserDTO.EventDTO>(eventDtos, result.PageIndex, result.PageSize, result.TotalCount, result.TotalPages)));
         }
     }
 }

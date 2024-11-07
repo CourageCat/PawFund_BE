@@ -139,6 +139,9 @@ public enum MessagesList
     [Message("Create event successfully", "event_noti_01")]
     CreateEventSuccessfully,
 
+    [Message("The start date must be before the end date.", "event_exception_01")]
+    CreateEventDateException,
+
     [Message("Approve event successfully", "approve_event_noti_02")]
     ApproveEventSuccessfully,
 
@@ -280,9 +283,15 @@ public enum MessagesList
     [Message("Can not find any volunteer application", "volunteer_application_noti_exception_01")]
     GetVolunteerApplicationException,
 
-    [Message("Can not find event with this staff id: {}", "event_noti_exception_3")]
+    [Message("Can not find event with this staff id: {0}", "event_noti_exception_3")]
     EventNotFoundByStaffException,
 
     [Message("This is all your event in your branch", "event_noti_success_5")]
     GetAllEventByStaffSuccess,
+
+    [Message("This is all your event in all your branch", "event_noti_success_6")]
+    GetAllEventByAdminSuccess,
+
+    [Message("Can not find event", "event_noti_exception_5")]
+    EventNotFoundByAdminException,
 }

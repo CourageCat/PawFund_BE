@@ -7,11 +7,12 @@ using PawFund.Contract.Services.Event;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
 using PawFund.Domain.Entities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static PawFund.Contract.DTOs.Event.GetEventByIdDTO;
+using static PawFund.Contract.DTOs.Event.EventForUserDTO;
 using static PawFund.Contract.Services.Event.Filter;
 using static PawFund.Contract.Services.Event.Respone;
 
@@ -68,7 +69,7 @@ JOIN Branchs b ON b.Id = e.BranchId";
         {
             var validColumns = new HashSet<string>
         {
-            "e.Id", "e.Name", "e.StartDate", "e.EndDate", "e.Description", "e.MaxAttendees",
+            "e.Id", "e.Name", "e.StartDate", "e.EndDate", "e.Description", "e.MaxAttendees", "e.ReasonReject", 
             "e.ImagesUrl", "e.Status", // Thêm Status từ bảng Events
             "b.Id", "b.Name", "b.PhoneNumberOfBranch", "b.EmailOfBranch",
             "b.Description", "b.NumberHome", "b.StreetName", "b.Ward", "b.District", "b.Province"
