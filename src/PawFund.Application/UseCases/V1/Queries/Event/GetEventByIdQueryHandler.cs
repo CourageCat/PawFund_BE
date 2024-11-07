@@ -2,11 +2,11 @@
 using AutoMapper;
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Abstractions.Shared;
-using PawFund.Contract.DTOs.Event;
+using PawFund.Contract.DTOs.EventDTOs.Respone;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;
 using PawFund.Domain.Abstractions.Dappers;
-using static PawFund.Contract.DTOs.Event.EventForUserDTO;
+using static PawFund.Contract.DTOs.EventDTOs.Respone.EventForUserDTO;
 
 namespace PawFund.Application.UseCases.V1.Queries.Event
 {

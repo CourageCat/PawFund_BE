@@ -2,7 +2,7 @@
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.DTOs.BranchDTOs;
-using PawFund.Contract.DTOs.Event;
+using PawFund.Contract.DTOs.EventDTOs.Respone;
 using PawFund.Contract.DTOs.VolunteerApplicationDTOs.Respone;
 using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Event;

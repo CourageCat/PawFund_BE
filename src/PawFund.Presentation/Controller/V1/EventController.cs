@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using PawFund.Contract.DTOs.EventDTOs.Request;
 using PawFund.Contract.Services.Event;
 using PawFund.Presentation.Abstractions;
 using System.Security.Claims;
@@ -16,12 +17,14 @@ public class EventController : ApiController
     {
     }
 
+    [Authorize(Policy = "StaffPolicy")]
     [HttpPost("create_event", Name = "CreateEvent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateEvents([FromForm] Command.CreateEventCommand CreateEvent)
+    public async Task<IActionResult> CreateEvents([FromForm] CreateEventFormDTO form)
     {
-        var result = await Sender.Send(CreateEvent);
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.CreateEventCommand(Guid.Parse(userId), form.Name, form.StartDate, form.EndDate, form.Description, form.MaxAttendees, form.ThumbHeroUrl, form.ImagesUrl));
         if (result.IsFailure)
             return HandlerFailure(result);
 

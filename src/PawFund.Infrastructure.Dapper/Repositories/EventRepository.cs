@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static PawFund.Contract.DTOs.Event.EventForUserDTO;
 using static PawFund.Contract.Services.Event.Filter;
 using static PawFund.Contract.Services.Event.Respone;
 
@@ -234,35 +233,6 @@ JOIN Branchs b ON b.Id = e.BranchId";
             )).ToList();
 
             return new PagedResult<Event>(items, pageIndex, pageSize, totalCount, totalPages);
-        }
-    }
-
-    public async Task<IEnumerable<Event>> GetAllNotApproved()
-    {
-        var sql = @"
-SELECT 
-    e.Id, e.Name, e.StartDate, e.EndDate, e.Description, e.MaxAttendees, e.IsDeleted as IsEventDelete,
-    b.Id, b.Name, b.PhoneNumberOfBranch, b.EmailOfBranch, b.Description, b.NumberHome, b.StreetName, b.Ward, b.District, b.Province, b.PostalCode, b.IsDeleted as IsBranchDeleted
-FROM Events e
-JOIN Branchs b ON b.Id = e.BranchId
-WHERE e.Status = @NotApprovedStatus";
-
-        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
-        {
-            await connection.OpenAsync();
-
-            var result = await connection.QueryAsync<Event, Branch, Event>(
-                sql,
-                (Event, Branch) =>
-                {
-                    Event.Branch = Branch;
-                    return Event;
-                },
-                new { NotApprovedStatus = (int)EventStatus.NotApproved },  // Truyền giá trị enum vào tham số
-                splitOn: "IsEventDelete"
-            );
-
-            return result;
         }
     }
 

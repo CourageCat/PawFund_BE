@@ -2,8 +2,8 @@
 using PawFund.Contract.Abstractions.Message;
 using PawFund.Contract.Abstractions.Shared;
 using PawFund.Contract.DTOs.Account;
-using PawFund.Contract.DTOs.Event;
 using PawFund.Contract.DTOs.EventActivity;
+using PawFund.Contract.DTOs.EventDTOs.Respone;
 using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Shared;

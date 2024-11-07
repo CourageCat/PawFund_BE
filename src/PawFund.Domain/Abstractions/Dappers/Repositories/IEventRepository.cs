@@ -15,8 +15,6 @@ namespace PawFund.Domain.Abstractions.Dappers.Repositories;
     {
     public Task<IEnumerable<Event>> GetAll();
 
-    public Task<IEnumerable<Event>> GetAllNotApproved();
-
     Task<PagedResult<Event>> GetAllEventAsync(int pageIndex, int pageSize, EventFilter filterParams, string[] selectedColumns);
 
     Task<PagedResult<Event>> GetAllEventByStaff(List<Guid> listsBranchId, int pageIndex, int pageSize, EventFilter filterParams, string[] selectedColumns);
