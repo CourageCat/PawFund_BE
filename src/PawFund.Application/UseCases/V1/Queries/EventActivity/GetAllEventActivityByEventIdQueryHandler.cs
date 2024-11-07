@@ -27,6 +27,7 @@ namespace PawFund.Application.UseCases.V1.Queries.EventActivity
         {
             var result = await _dpUnitOfWork.EventActivityRepositories.GetAllByEventId(request.EventId,request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
 
+        
             var resultItems = result.Items.Select(a => new ActivityDTO
             {
                 Id = a.Id,
