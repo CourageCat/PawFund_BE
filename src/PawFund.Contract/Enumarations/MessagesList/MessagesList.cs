@@ -315,4 +315,7 @@ public enum MessagesList
 
     [Message("Delete cat successfully", "cat_noti_05")]
     DeleteCatSuccessfully,
+
+    [Message("Please updating meeting time before apply adopt application", "adopt_noti_exception_08")]
+    AdoptNotUpdateMeetingTimeBeforeApplyException,
 }
