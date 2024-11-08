@@ -8,6 +8,11 @@ using PawFund.Contract.Enumarations.VolunteerApplication;
 using MediatR;
 using PawFund.Domain.Entities;
 using PawFund.Contract.Enumarations.MessagesList;
+using PawFund.Domain.Abstractions.Dappers;
+using Microsoft.VisualBasic;
+using static PawFund.Domain.Exceptions.VolunteerApplicationException;
+using static PawFund.Domain.Exceptions.AccountException;
+using static PawFund.Domain.Exceptions.EventActivityException;
 
 namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
 {
@@ -30,36 +35,78 @@ namespace PawFund.Application.UseCases.V1.Commands.VolunteerApplicationDetail
 
         public async Task<Result> Handle(Command.ApproveVolunteerApplicationCommand request, CancellationToken cancellationToken)
         {
-            // Tìm kiếm hồ sơ tình nguyện viên
+            // Find volunteer application
             var existVolunteerApplication = await _volunteerApplicationDetailRepository.FindByIdAsync(request.detailId);
 
-            // Lấy thông tin hoạt động sự kiện liên quan
-            var eventActivity = await _eventActivityRepository.FindByIdAsync(existVolunteerApplication.EventActivityId);
-
-            // Kiểm tra số lượng tình nguyện viên có đủ hay không
-            if (eventActivity.NumberOfVolunteer >= eventActivity.Quantity)
+            if (existVolunteerApplication == null)
             {
-                throw new InvalidOperationException("Event activity has reached the maximum number of volunteers.");
+                throw new VolunteerApplicationNotFoundException(request.detailId);
             }
 
-            //change status application
+            // Get related event activity
+            var eventActivity = await _eventActivityRepository.FindByIdAsync(existVolunteerApplication.EventActivityId);
+
+            if (eventActivity == null)
+            {
+                throw new EventActivityNotFoundException(existVolunteerApplication.EventActivityId);
+            }
+
+            // If rejected, cannot approve
+            if (existVolunteerApplication.Status == VolunteerApplicationStatus.Rejected)
+            {
+                throw new VolunteerApplicationAlreadyRejectException();
+            }
+
+            // Change status to approved
             existVolunteerApplication.UpdateVolunteerApplication(VolunteerApplicationStatus.Approved, null);
             await _efUnitOfWork.SaveChangesAsync();
 
-            // Cập nhật số lượng tình nguyện viên
+            // Update volunteer count
             eventActivity.NumberOfVolunteer += 1;
             _eventActivityRepository.Update(eventActivity);
-            await _efUnitOfWork.SaveChangesAsync(); // Lưu thay đổi ngay sau khi cập nhật số lượng
+            await _efUnitOfWork.SaveChangesAsync();
 
-            // Lấy thông tin tài khoản liên quan
+            // Check if volunteer slots are full
+            if (eventActivity.NumberOfVolunteer == eventActivity.Quantity)
+            {
+                var allVolunteerApplications = await _efUnitOfWork.VolunteerApplicationDetail.FindAllAsync(existVolunteerApplication.EventActivityId);
+
+                if (allVolunteerApplications.Any())
+                {
+                    string reason = "Number of volunteers is full now";
+
+                    foreach (var item in allVolunteerApplications)
+                    {
+                        item.UpdateVolunteerApplication(VolunteerApplicationStatus.Rejected, reason);
+
+                        // Send rejection email
+                        await _publisher.Publish(new DomainEvent.RejectSendMail(
+                            Guid.NewGuid(),
+                            reason,
+                            item.Account.Email,
+                            eventActivity.Name), cancellationToken);
+                    }
+                    await _efUnitOfWork.SaveChangesAsync();
+                }
+            }
+
+            // Get account information
             var account = await _accountRepository.FindByIdAsync(existVolunteerApplication.AccountId);
+            if (account == null)
+            {
+                throw new AccountNotFoundException();
+            }
 
-            // Send email
-            await Task.WhenAll(
-               _publisher.Publish(new DomainEvent.ApproveSendMail(Guid.NewGuid(), account.Email, existVolunteerApplication.EventActivity.Name), cancellationToken)
-           );
-            return Result.Success(new Success(MessagesList.ApproveVolunteerApplicationSuccessfully.GetMessage().Code, MessagesList.ApproveVolunteerApplicationSuccessfully.GetMessage().Message));
+            // Send approval email
+            await _publisher.Publish(new DomainEvent.ApproveSendMail(
+                Guid.NewGuid(),
+                account.Email,
+                eventActivity.Name), cancellationToken);
+
+            return Result.Success(new Success(
+                MessagesList.ApproveVolunteerApplicationSuccessfully.GetMessage().Code,
+                MessagesList.ApproveVolunteerApplicationSuccessfully.GetMessage().Message));
+            }
+
         }
-
     }
-}

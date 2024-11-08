@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PawFund.Contract.Services.EventActivity;
@@ -18,6 +19,7 @@ namespace PawFund.Presentation.Controller.V1
         {
         }
 
+        [Authorize(Policy = "StaffPolicy")]
         [HttpPost("create_event_activity", Name = "CreateEventActivity")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -42,6 +44,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
+        [Authorize(Policy = "StaffPolicy")]
         [HttpPut("update_event_activity_by_id", Name = "UpdateEventActivityById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -54,6 +57,7 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
+        [Authorize(Policy = "StaffPolicy")]
         [HttpDelete("delete_event_activity_by_id", Name = "DeleteEventActivityById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

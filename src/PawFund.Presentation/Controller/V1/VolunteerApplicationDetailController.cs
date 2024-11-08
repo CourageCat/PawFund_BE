@@ -31,6 +31,7 @@ public class VolunteerApplicationDetailController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Policy = "StaffPolicy")]
     [HttpPut("approve_volunteer_application", Name = "ApproveVolunteerApplicationCommand")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -42,6 +43,7 @@ public class VolunteerApplicationDetailController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Policy = "StaffPolicy")]
     [HttpPut("reject_volunteer_application", Name = "RejectVolunteerApplicationCommand")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
