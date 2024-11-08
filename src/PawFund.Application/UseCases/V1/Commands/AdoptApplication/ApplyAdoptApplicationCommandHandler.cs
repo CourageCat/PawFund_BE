@@ -8,6 +8,9 @@ using PawFund.Domain.Exceptions;
 using PawFund.Contract.Enumarations.AdoptPetApplication;
 using PawFund.Contract.Enumarations.MessagesList;
 using PawFund.Contract.Services.AdoptApplications;
+using PawFund.Contract.Abstractions.Services;
+using PawFund.Contract.DTOs.Adopt.Response;
+using static PawFund.Domain.Exceptions.AdoptApplicationException;
 
 namespace PawFund.Application.UseCases.V1.Commands.AdoptApplication;
 
@@ -16,12 +19,14 @@ public sealed class ApplyAdoptApplicationCommandHandler : ICommandHandler<Comman
     private readonly IRepositoryBase<AdoptPetApplication, Guid> _adoptPetApplicationRepository;
     private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IPublisher _publisher;
+    private readonly IResponseCacheService _responseCacheService;
 
-    public ApplyAdoptApplicationCommandHandler(IRepositoryBase<AdoptPetApplication, Guid> adoptPetApplicationRepository, IEFUnitOfWork efUnitOfWork, IPublisher publisher)
+    public ApplyAdoptApplicationCommandHandler(IRepositoryBase<AdoptPetApplication, Guid> adoptPetApplicationRepository, IEFUnitOfWork efUnitOfWork, IPublisher publisher, IResponseCacheService responseCacheService)
     {
         _adoptPetApplicationRepository = adoptPetApplicationRepository;
         _efUnitOfWork = efUnitOfWork;
         _publisher = publisher;
+        _responseCacheService = responseCacheService;
     }
 
     public async Task<Result> Handle(Command.ApplyAdoptApplicationCommand request, CancellationToken cancellationToken)
@@ -37,6 +42,14 @@ public sealed class ApplyAdoptApplicationCommandHandler : ICommandHandler<Comman
         {
             throw new AdoptApplicationException.AdoptApplicationHasAlreadyApprovedException();
         }
+        //Check if exist any meeting time
+        var branchName = applicationFound.Cat.Branch.Name;
+        var listMeetingTime = await _responseCacheService.GetListAsync<GetMeetingTimeByAdopterResponseDTO.MeetingTimeDTO>(branchName);
+        if(listMeetingTime == null)
+        {
+            throw new NotUpdateMeetingTimeBeforeApplyAdoptApplicationException();
+        }
+        
         //Update Status for Application
         applicationFound.Status = AdoptPetApplicationStatus.Approved;
         _adoptPetApplicationRepository.Update(applicationFound);

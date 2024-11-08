@@ -56,5 +56,12 @@ namespace PawFund.Domain.Exceptions
             { }
         }
 
+        public class NotUpdateMeetingTimeBeforeApplyAdoptApplicationException : BadRequestException
+        {
+            public NotUpdateMeetingTimeBeforeApplyAdoptApplicationException() : base
+                                              (MessagesList.AdoptNotUpdateMeetingTimeBeforeApplyException.GetMessage().Message, MessagesList.AdoptNotUpdateMeetingTimeBeforeApplyException.GetMessage().Code)
+            { }
+        }
+
     }
 }

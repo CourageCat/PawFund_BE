@@ -15,7 +15,7 @@ public class UpdateMeetingTimeValidator : AbstractValidator<Command.UpdateMeetin
                 .WithMessage("Each time in the list must be strictly greater than the current time.");
             listItem.RuleFor(item => item.NumberOfStaffsFree)
                 .GreaterThan(0)
-                .WithMessage("Number Of Staff Free must be higher than 0!");
+                .WithMessage("Number Of Staff Free must be higher than 0");
         });
     }
 }
