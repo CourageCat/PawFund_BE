@@ -10,6 +10,8 @@ public interface IVolunteerApplicationDetail : IGenericRepository<VolunteerAppli
     public Task<bool> CheckVolunteerApplicationExists(Guid eventId, Guid accountId);
     Task<int> CountAllVolunteerApplications();
 
+    Task<IEnumerable<VolunteerApplicationDetail>> GetByActivityIdWithPendingStatusAsync(Guid activityId);
+
     Task<PagedResult<VolunteerApplicationDetail>> GetAllVolunteerAppicationByActivityIdAsync(Guid id, int pageIndex, int pageSize, VolunteerApplicationFilter filterParams, string[] selectedColumns);
 
 }

@@ -280,6 +280,9 @@ public enum MessagesList
     [Message("You already regist to this event by volunteer role", "volunteer_noti_exception_2")]
     VolunteerApplicationAlreadyRegistException,
 
+    [Message("Can not approve this application after reject", "volunteer_noti_exception_2")]
+    VolunteerApplicationAlreadyRejectException,
+
     [Message("Get volunteer application by id success", "volunteer_noti_success_1")]
     GetVolunteerApplicationByIdSuccess,
 

@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using PawFund.Contract.Abstractions.Shared;
+using PawFund.Contract.Enumarations.VolunteerApplication;
 using PawFund.Contract.Services.Event;
 using PawFund.Contract.Services.VolunteerApplicationDetail;
 using PawFund.Domain.Abstractions.Dappers.Repositories;
@@ -173,6 +174,40 @@ WHERE EventId = @EventId AND AccountId = @AccountId";
         {
             await connection.OpenAsync();
             var result = await connection.ExecuteScalarAsync<int>(sql);
+            return result;
+        }
+    }
+
+    public async Task<IEnumerable<VolunteerApplicationDetail>> GetByActivityIdWithPendingStatusAsync(Guid activityId)
+    {
+        var sql = @"
+    SELECT 
+        vad.Id, vad.Status, vad.Description, vad.ReasonReject, vad.EventId, 
+        vad.EventActivityId, vad.AccountId, vad.CreatedDate, vad.ModifiedDate, vad.IsDeleted,
+        acc.Id AS AccountId, acc.FirstName, acc.LastName, acc.Email, acc.PhoneNumber
+    FROM VolunteerApplicationDetails vad
+    JOIN Accounts acc ON vad.AccountId = acc.Id
+    WHERE vad.EventActivityId = @ActivityId AND vad.Status = @PendingStatus";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.QueryAsync<VolunteerApplicationDetail, Account, VolunteerApplicationDetail>(
+                sql,
+                (volunteerApplicationDetail, account) =>
+                {
+                    volunteerApplicationDetail.Account = account;
+                    return volunteerApplicationDetail;
+                },
+                new
+                {
+                    ActivityId = activityId,
+                    PendingStatus = (int)VolunteerApplicationStatus.Pending // Assuming 0 corresponds to Pending in your enum
+                },
+                splitOn: "FirstName" // Use FirstName to split between VolunteerApplicationDetail and Account
+            );
+
             return result;
         }
     }
