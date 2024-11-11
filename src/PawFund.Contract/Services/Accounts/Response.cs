@@ -1,4 +1,6 @@
-﻿using PawFund.Contract.Enumarations.Authentication;
+﻿using PawFund.Contract.DTOs.Account;
+using PawFund.Contract.Enumarations.Authentication;
+using System.Security.Principal;
 
 namespace PawFund.Contract.Services.Accounts;
 public static class Response
@@ -15,5 +17,6 @@ public static class Response
     string? CropAvatarUrl,
     string? CropAvatarId,
     string? FullAvatarUrl,
-    string? FullAvatarId);
+    string? FullAvatarId,
+    DateTime? CreatedAt);    
 }

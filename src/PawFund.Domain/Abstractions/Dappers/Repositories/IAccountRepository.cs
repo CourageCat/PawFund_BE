@@ -16,4 +16,5 @@ public interface IAccountRepository : IGenericRepository<Domain.Entities.Account
     Task<PagedResult<Account>> GetUsersPagedAsync(int pageIndex, int pageSize, Filter.AccountsFilter filterParams, string[] selectedColumns);
     Task<int> CountAllUsers();
     Task<List<Account>> GetAccountDonated();
+    Task<Dictionary<int, List<Account>>> FindAllUsersByYear(int year);
 }

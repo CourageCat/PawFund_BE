@@ -13,5 +13,6 @@ public class UserProfile : Profile
         CreateMap<Account, UsersResponse>().ReverseMap();
         CreateMap<PagedResult<Account>, PagedResult<UsersResponse>>().ReverseMap();
         CreateMap<Account, AccountDto>();
+        CreateMap<Account, GetUserByYearDTO.CustomerDTO>();
     }
 }

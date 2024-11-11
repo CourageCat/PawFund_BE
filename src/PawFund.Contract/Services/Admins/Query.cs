@@ -19,5 +19,7 @@ namespace PawFund.Contract.Services.Admin
         //string[] SelectedColumns)
         //: IQuery<Success<PagedResult<UsersResponse>>>;
         public record GetDashboardQuery(int Year) : IQuery<Success<DashboardResponse>>;
+        public record GetUsersByYearQuery(int Year) : IQuery<Success<UsersByYearResponse>>;
+        public record GetUsersByYearAndMonthQuery(int Year, int month) : IQuery<Success<UsersByYearAndMonthResponse>>;
     }
 }

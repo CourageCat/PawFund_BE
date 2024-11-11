@@ -82,5 +82,29 @@ namespace PawFund.Presentation.Controller.V1
             return Ok(result);
         }
 
+        [HttpGet("get_list_user_by_year", Name = "GetListUserByYearAsync")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUsersByYear([FromQuery] int year)
+        {
+            var result = await Sender.Send(new Query.GetUsersByYearQuery(year));
+            if (result.IsFailure)
+                return HandlerFailure(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("get_list_user_by_year_and_month", Name = "GetListUserByYearAndMonthAsync")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUsersByYearAndMonth([FromQuery] int year, [FromQuery] int month)
+        {
+            var result = await Sender.Send(new Query.GetUsersByYearAndMonthQuery(year, month));
+            if (result.IsFailure)
+                return HandlerFailure(result);
+
+            return Ok(result);
+        }
+
     }
 }
