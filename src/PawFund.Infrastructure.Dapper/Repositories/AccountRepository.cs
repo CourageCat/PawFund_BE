@@ -329,6 +329,48 @@ public class AccountRepository : IAccountRepository
             return groupedUsers;
         }
     }
+
+    public async Task<Dictionary<int, List<Account>>> FindAllUsersByYearAndMonth(int year, int month)
+    {
+        var sql = @"
+    SELECT 
+        Id, 
+        FirstName, 
+        LastName, 
+        Email, 
+        PhoneNumber, 
+        Password, 
+        RoleId, 
+        LoginType, 
+        CropAvatarUrl, 
+        FullAvatarUrl, 
+        IsDeleted, 
+        CreatedDate
+    FROM 
+        Accounts
+    WHERE 
+        YEAR(CreatedDate) = @Year
+        AND MONTH(CreatedDate) = @Month
+        AND RoleId = 3
+    ORDER BY 
+        CreatedDate;
+";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            // Query all users by year
+            var users = await connection.QueryAsync<Account>(sql, new { Year = year, Month = month });
+
+            // Group users by month and return as a dictionary
+            var groupedUsersByDay = users
+                .GroupBy(user => user.CreatedDate.Value.Day)  // Group by month
+                .Where(group => group.Any())  // Only include months with users
+                .ToDictionary(group => group.Key, group => group.ToList());
+            return groupedUsersByDay;
+        }
+    }
 }
 
 

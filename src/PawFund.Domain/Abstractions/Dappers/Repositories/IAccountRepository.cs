@@ -17,4 +17,6 @@ public interface IAccountRepository : IGenericRepository<Domain.Entities.Account
     Task<int> CountAllUsers();
     Task<List<Account>> GetAccountDonated();
     Task<Dictionary<int, List<Account>>> FindAllUsersByYear(int year);
+    Task<Dictionary<int, List<Account>>> FindAllUsersByYearAndMonth(int year, int month);
+
 }

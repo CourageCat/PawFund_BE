@@ -14,5 +14,7 @@ public class UserProfile : Profile
         CreateMap<PagedResult<Account>, PagedResult<UsersResponse>>().ReverseMap();
         CreateMap<Account, AccountDto>();
         CreateMap<Account, GetUserByYearDTO.CustomerDTO>();
+        CreateMap<Account, GetUserByYearAndMonthDTO.CustomerDTO>();
+
     }
 }

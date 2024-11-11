@@ -9,6 +9,6 @@ public static class Response
     public record UsersDonateResponse();
     public record DashboardResponse(int TotalCats, int TotalAdoptApplications, int TotalEvents, double TotalDonations, int TotalVolunteerApplications, int TotalUsers, List<string> ListMonths, List<double> ListDonationInYear, List<AccountDonateDashboardDTO> ListFiveUsersDonated);
     public record UsersByYearResponse(int TotalCustomers, List<GetUserByYearDTO.MonthDTO> CustomersGroupByMonth);
-    public record UsersByYearAndMonthResponse(int totalCustomers);
+    public record UsersByYearAndMonthResponse(int TotalCustomers, List<GetUserByYearAndMonthDTO.WeekDTO> CustomersGroupByWeek);
 
 }

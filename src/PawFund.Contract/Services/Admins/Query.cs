@@ -20,6 +20,6 @@ namespace PawFund.Contract.Services.Admin
         //: IQuery<Success<PagedResult<UsersResponse>>>;
         public record GetDashboardQuery(int Year) : IQuery<Success<DashboardResponse>>;
         public record GetUsersByYearQuery(int Year) : IQuery<Success<UsersByYearResponse>>;
-        public record GetUsersByYearAndMonthQuery(int Year, int month) : IQuery<Success<UsersByYearAndMonthResponse>>;
+        public record GetUsersByYearAndMonthQuery(int Year, int Month) : IQuery<Success<UsersByYearAndMonthResponse>>;
     }
 }
