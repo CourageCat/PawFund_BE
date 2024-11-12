@@ -64,6 +64,7 @@ namespace PawFund.Application.UseCases.V1.Queries.Admin
                         DayOfWeek = dayOfWeek
                     };
                     week1DTO.Days.Add(dayDTO);
+                    continue;
                 }
 
                 if (Math.Ceiling(((item / (double)totalDaysIn4Weeks)) * 4) == 2)
@@ -76,6 +77,7 @@ namespace PawFund.Application.UseCases.V1.Queries.Admin
                         DayOfWeek = dayOfWeek
                     };
                     week2DTO.Days.Add(dayDTO);
+                    continue;
                 }
 
                 if (Math.Ceiling(((item / (double)totalDaysIn4Weeks)) * 4) == 3)
@@ -88,6 +90,7 @@ namespace PawFund.Application.UseCases.V1.Queries.Admin
                         DayOfWeek = dayOfWeek
                     };
                     week3DTO.Days.Add(dayDTO);
+                    continue;
                 }
 
                 if (Math.Ceiling(((item / (double)totalDaysIn4Weeks)) * 4) == 4)
@@ -100,6 +103,7 @@ namespace PawFund.Application.UseCases.V1.Queries.Admin
                         DayOfWeek = dayOfWeek
                     };
                     week4DTO.Days.Add(dayDTO);
+                    continue;
                 }
 
                 if (Math.Ceiling(((item / (double)totalDaysIn4Weeks)) * 4) == 5)
@@ -112,6 +116,7 @@ namespace PawFund.Application.UseCases.V1.Queries.Admin
                         DayOfWeek = dayOfWeek
                     };
                     week5DTO.Days.Add(dayDTO);
+                    continue;
                 }
             }
             if(week1DTO.Days.Count != 0)
